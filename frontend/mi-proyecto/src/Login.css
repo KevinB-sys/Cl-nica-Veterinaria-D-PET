@@ -1,0 +1,102 @@
+/* Estilos generales */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Mueve el login más abajo */
+    height: 90vh; /* Ajustado para navbar y footer */
+    padding-top: 100px; /* Baja más el formulario */
+    background: url('https://source.unsplash.com/1600x900/?pets,veterinary') no-repeat center center/cover;
+  }
+  
+  /* Tarjeta de login */
+  .login-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    width: 420px; /* Más ancho */
+  }
+  
+  /* Imagen del login */
+  .login-image img {
+    width: 120px; /* Tamaño adecuado */
+    height: auto;
+    margin-bottom: 15px;
+  }
+  
+  /* Formulario */
+  .login-form {
+    width: 100%;
+  }
+  
+  .login-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  /* Campos de entrada */
+  .input-group {
+    margin-bottom: 15px;
+  }
+  
+  .input-group label {
+    display: block;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  
+  /* Botón de login */
+  .login-button {
+    width: 100%;
+    padding: 12px;
+    background: #2c2c6c;
+    color: white;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+  }
+  
+  .login-button:hover {
+    background: #a7a7da;
+    transform: scale(1.05);
+  }
+  
+  /* Enlace de registro */
+  .register-text {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 1rem;
+  }
+  
+  .register-text a {
+    color: #2c2c6c;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .register-text a:hover {
+    text-decoration: underline;
+  }
+
+  .input-icon-login {
+    margin-right: 10px; /* Espacio entre el icono y el texto del label */
+    color: #2c2c6c; /* Color del icono */
+    vertical-align: middle; /* Alinea el icono con el texto */
+  }
+  

@@ -1,0 +1,80 @@
+.registro-vacunacion-container {
+    width: 96%;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  
+  .registro-vacunacion-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  
+  /* Ajuste para ocupar toda la pantalla */
+  .registro-vacunacion-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .registro-vacunacion-table th,
+  .registro-vacunacion-table td {
+    border: 1px solid #ccc;
+    padding: 16px;
+    text-align: center;
+    font-size: 18px;
+  }
+  
+  .registro-vacunacion-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .registro-vacunacion-table tr:nth-child(even) {
+    background-color: #fafafa;
+  }
+  
+  .registro-vacunacion-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Contenedor de botones */
+  .registro-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  /* Botón de retroceder */
+  .btn-retroceder,
+  .btn-imprimir {
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .btn-retroceder {
+    background-color: #ff5733;
+    color: white;
+  }
+  
+  .btn-retroceder:hover {
+    background-color: #cc4626;
+  }
+  
+  /* Botón de imprimir */
+  .btn-imprimir {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .btn-imprimir:hover {
+    background-color: #0056b3;
+  }
+  

@@ -1,0 +1,107 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Cita {
+  id                Int      @default(autoincrement())
+  cita_id            String   @id @db.VarChar(255) 
+  fecha             DateTime
+  hora              String
+  estado            String   @default("pendiente")
+  observaciones     String?
+  recordatorio_enviado Boolean @default(false)
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+}
+
+model HistorialMedico {
+  historial_id      String   @id @db.VarChar(255)  
+  mascota_id        Int  
+  veterinario_id    String   
+  diagnostico       String
+  tratamiento       String?
+  fecha_consulta    DateTime
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+
+  mascota           Mascota @relation(fields: [mascota_id], references: [mascota_id])
+  veterinario       Usuario @relation(fields: [veterinario_id], references: [usuario_id])
+}
+
+model Mascota {
+  mascota_id       Int   @id @default(autoincrement())
+  nombre           String
+  especie          String
+  raza             String?
+  sexo             String
+  duenio_id        String   
+  fecha_registro   DateTime
+  fecha_nacimiento DateTime?
+
+  duenio           Usuario @relation(fields: [duenio_id], references: [usuario_id])
+  historial       HistorialMedico[]
+  vacunaciones     Vacunacion[]
+}
+
+model Notificacion {
+  notificacion_id   String   @id @db.VarChar(255)  
+  usuario_id        String   
+  mensaje          String
+  tipo             String?
+  leido            Boolean  @default(false)
+  programada_para  DateTime?
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  usuario          Usuario @relation(fields: [usuario_id], references: [usuario_id])
+}
+
+model Rol {
+  rol_id           Int   @id @default(autoincrement())
+  nombre           String
+  usuarios        Usuario[]
+}
+
+model Usuario {
+  id             Int      @default(autoincrement())
+  usuario_id     String   @id @db.VarChar(255) 
+  nombre         String
+  email          String  @unique
+  password       String
+  telefono       String?
+  whatsapp       String?
+  direccion      String?
+  fecha_registro DateTime
+  rol_id         Int   
+
+  rol            Rol      @relation(fields: [rol_id], references: [rol_id])
+  mascotas      Mascota[]
+  historial     HistorialMedico[]
+  notificaciones Notificacion[]
+}
+
+model Vacunacion {
+  vacunacion_id  String   @id @db.VarChar(255)  
+  mascota_id     Int   
+  vacuna        String
+  fecha_aplicacion DateTime
+  proxima_visita DateTime?
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+  edad          String?
+  peso          BigInt?
+
+  mascota       Mascota @relation(fields: [mascota_id], references: [mascota_id])
+}

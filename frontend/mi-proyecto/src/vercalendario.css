@@ -1,0 +1,38 @@
+.react-calendar .highlight-day {
+    background-color: #dfcc83 !important;
+    /* Fondo amarillo para resaltar citas */
+    border-radius: 50%;
+    color: black;
+    font-weight: bold;
+}
+
+.info-message {
+    background-color: #fff3cd;
+    /* Fondo amarillo claro */
+    color: #856404;
+    /* Texto de color marrón */
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    width: 950px;
+}
+
+/* Estilo para eliminar los puntos de la lista y alinearlo de manera correcta */
+.citas-lista {
+    list-style-type: none;
+    /* Elimina los puntos de la lista */
+    padding: 0;
+    /* Quitar el padding por defecto */
+    margin: 0;
+    /* Eliminar el margen por defecto */
+}
+
+.citas-lista li {
+    margin-bottom: 8px;
+    /* Agregar espacio entre las citas */
+    font-size: 16px;
+    /* Ajustar el tamaño de la fuente */
+}

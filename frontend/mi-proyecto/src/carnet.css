@@ -1,0 +1,78 @@
+/* Estilos generales */
+.carnet-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 1px 20px;
+    background-color: #ffffff; /* Fondo blanco */
+    color: #2c2c6c;
+}
+
+/* Título */
+.carnet-page h1 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    animation: fadeIn 1s ease-out;
+}
+
+/* Contenedor de tarjetas */
+.carnet-container {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    max-width: 1000px;
+    gap: 50px; /* Más separación entre tarjetas */
+}
+
+/* Tarjetas */
+.carnet-card {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    width: 350px; /* Tarjetas más anchas */
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, background 0.3s ease;
+    animation: zoomIn 1s ease-out;
+    color: #2c2c6c;
+}
+
+/* Imagen de la tarjeta */
+.carnet-card img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 15px;
+}
+
+/* Efecto al pasar el mouse */
+.carnet-card:hover {
+    background: #85c3e2;
+    transform: scale(1.08);
+    color: white;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Diseño responsive */
+@media (max-width: 768px) {
+    .carnet-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .carnet-card {
+        width: 80%;
+    }
+}
