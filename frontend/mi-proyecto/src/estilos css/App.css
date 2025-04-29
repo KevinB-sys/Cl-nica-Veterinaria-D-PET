@@ -73,7 +73,7 @@ h1.titulogen{
   text-align: center;
   padding: 60px 20px;
   /* background-color: #2c2c6c;  */
-  background-image: url('./imagenes/banner.png');
+  background-image: url('../imagenes/banner.png');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
