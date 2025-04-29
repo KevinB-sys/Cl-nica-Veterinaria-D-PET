@@ -1,4 +1,4 @@
-import '../crearcarnet.css';
+import '../estilos css/crearcarnet.css';
 import { use, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaDog, FaCat, FaUser, FaBirthdayCake, FaPaw } from "react-icons/fa";

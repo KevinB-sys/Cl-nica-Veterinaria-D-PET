@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../carnet.css';
+import '../estilos css/carnet.css';
 
 export default function Carnet() {
   const navigate = useNavigate();

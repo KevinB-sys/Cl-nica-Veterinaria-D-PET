@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../Editarcarnet.css';
+import '../estilos css/Editarcarnet.css';
 // Para guardar vacunas 
 import { createvacuna } from "../services/vacunasService";
 
