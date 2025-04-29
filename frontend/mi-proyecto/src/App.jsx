@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';  // I
 import Agendar from './pages/Agendar'; //Pestaña de agendar cita
 import About from './pages/About'; //Pestaña de Nosotros 
 import Services from './pages/Services'; //Pestaña de servicios 
-import './App.css';
+import './estilos css/App.css';
 import Layout from './layouts/Layout';
 import HomeContent from './components/HomeContent';
 import Login from './pages/login';
