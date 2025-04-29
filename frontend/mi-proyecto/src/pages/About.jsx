@@ -3,7 +3,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from 'lucide-react';
-import '../about.css';
+import '../estilos css/about.css';
 
 // Importar las 18 imágenes
 import foto1 from '../imagenes/1.jpeg';
