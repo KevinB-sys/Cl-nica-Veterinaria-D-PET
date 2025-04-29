@@ -72,18 +72,18 @@ const SobreNosotros = () => {
         <div className="info-card">
           <h3><MapPin size={20} /> Contacto</h3>
           <div className="contact-info">
-            <p><Phone size={18} /> +1111111111</p>
-            <p><Mail size={18} /> contacto@dpetvet.com</p>
-            <p>Av. Guayquil Avn ddddd</p>
+            <p><Phone size={18} /> +593 963 854 380</p>
+            <p><Mail size={18} />Dr. Daniel Aldaz</p>
+            <p>Av. Dr. Pio Jaramillo Alvarado y Av.25 de Julio frente a CNT</p>
           </div>
         </div>
 
         <div className="info-card">
           <h3>Horario de Atención</h3>
           <ul className="schedule-list">
-            <li>Lunes a Viernes: 8:00 AM - 8:00 PM</li>
-            <li>Sábados: 9:00 AM - 5:00 PM</li>
-            <li>Domingos: Emergencias 24/7</li>
+            <li>Lunes a Viernes: 8:00 AM - 5:30 PM</li>
+            <li>Sábados: 9:00 AM - 12:00 PM</li>
+            <li>Emergencias 24/7 via teléfono</li>
           </ul>
         </div>
 
