@@ -95,7 +95,20 @@ const CalendarView = () => {
           <img src="https://st.depositphotos.com/2398521/2630/i/450/depositphotos_26307249-stock-photo-guilty-dog-on-white.jpg" alt="Mascota" />
         </div>
         <div className="calendar-container">
-          <Calendar onChange={setDate} value={date} className="custom-calendar" />
+          {/* <Calendar onChange={setDate} value={date} className="custom-calendar" /> */}
+          <Calendar
+            onChange={setDate}
+            value={date}
+            className="custom-calendar"
+            tileClassName={({ date }) => {
+              const today = new Date();
+              today.setHours(0, 0, 0, 0);
+              if (date < today) {
+                return "past-date";
+              }
+              return null;
+            }}
+          />
           <div className="time-selector">
             <label >Horas disponibles:</label>
             {horasDisponibles.length > 0 ? (

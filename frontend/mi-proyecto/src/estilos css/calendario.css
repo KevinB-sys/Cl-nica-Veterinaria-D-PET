@@ -207,3 +207,11 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* Estilo para días pasados */
+.past-date {
+  background-color: #f0f0f0 !important;
+  color: #bbb !important;
+  cursor: not-allowed;
+  pointer-events: none; /* Evita que se pueda hacer clic */
+  border-radius: 5px;
+}
