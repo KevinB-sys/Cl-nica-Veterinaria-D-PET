@@ -6,7 +6,7 @@ import Services from './pages/Services'; //Pestaña de servicios
 import './estilos css/App.css';
 import Layout from './layouts/Layout';
 import HomeContent from './components/HomeContent';
-import Login from './pages/login';
+import Login from './pages/Login';
 import Registro from './pages/Registro';
 import Carnet from './pages/Carnet';
 import CrearCarnet from './pages/CrearCarnet';
