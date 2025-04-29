@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../Login.css";
+import "../estilos css/Login.css";
 import { FaEnvelope, FaLock } from "react-icons/fa"; // Importamos los iconos
 import Swal from "sweetalert2";
 import { loginUser } from "../services/authService";

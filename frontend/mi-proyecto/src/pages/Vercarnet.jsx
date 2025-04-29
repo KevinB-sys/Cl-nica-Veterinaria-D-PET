@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../vercarnet.css';
+import '../estilos css/vercarnet.css';
 
 const registros = [
   { id: 1, fecha: '2023-10-05', edad: '2 años', peso: '15kg', vacuna: 'Rabia', proxVisita: '2024-10-05', sello: 'Firma1' },

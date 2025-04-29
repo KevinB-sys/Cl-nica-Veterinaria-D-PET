@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaEnvelope, FaLock, FaPhone, FaWhatsapp, FaHome } from 'react-icons/fa'; // Importamos los iconos
-import '../registro.css';
+import '../estilos css/registro.css';
 import { registerUser } from '../services/authService';
 
 const RegisterForm = () => {

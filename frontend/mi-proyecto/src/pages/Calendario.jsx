@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import "../vercalendario.css";
+import "../estilos css/vercalendario.css";
 import { obtenerCitas } from "../services/obtenercitaService";
 import Swal from "sweetalert2"; // Importamos SweetAlert2
 

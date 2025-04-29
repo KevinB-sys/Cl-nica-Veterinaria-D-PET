@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowUp } from 'lucide-react';
-import '../scroll.css'; // Archivo de estilos que crearemos después
+import '../estilos css/scroll.css'; // Archivo de estilos que crearemos después
 
 const ScrollToTopButton = () => {
   const [isVisible, setIsVisible] = useState(false);

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Home, Info, Calendar, Syringe, LogIn, User, X } from "lucide-react";
-import "../navbar.css";
+import "../estilos css/navbar.css";
 
 const Navbar = () => {
   const location = useLocation();

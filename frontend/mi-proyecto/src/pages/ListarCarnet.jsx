@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaPaw, FaDog, FaShapes, FaEye, FaEdit, FaVenusMars, FaCalendarAlt, FaPlus, FaAd } from 'react-icons/fa';
-import '../listar.css';
+import '../estilos css/listar.css';
 import { getMascotas } from "../services/obtenermascota";
 
 export default function ListarCarnet() {

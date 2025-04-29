@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import ScrollToTopButton from '../components/Scroll'
 import { Outlet } from 'react-router'
-import '../App.css'
+import '../estilos css/App.css'
 
 export default function Layout() {
   return (
