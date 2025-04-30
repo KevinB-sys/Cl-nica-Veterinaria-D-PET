@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Home, Info, Calendar, Syringe, LogIn, User, X } from "lucide-react";
 import "../estilos css/navbar.css";
+import ReactModal from "react-modal";
 
 const Navbar = () => {
   const location = useLocation();
@@ -50,20 +51,24 @@ const Navbar = () => {
           onClick={() => setIsUserModalOpen(true)} 
         />
       </div>
-
-      {/* Modal flotante de usuario */}
-      {isUserModalOpen && (
-        <div className="user-modal-overlay" onClick={() => setIsUserModalOpen(false)}>
-          <div className="user-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="close-btn" onClick={() => setIsUserModalOpen(false)}>
-              <X size={20} />
-            </button>
-            <h3>Menú de Usuario</h3>
-            <Link to="/profile">Ver Perfil</Link>
-            <button onClick={() => console.log("Cerrar sesión")}>Cerrar Sesión</button>
-          </div>
+      <ReactModal
+        isOpen={isUserModalOpen}
+        onRequestClose={() => setIsUserModalOpen(false)} // Cierra el modal al hacer clic fuera o presionar ESC
+        className="custom-modal-top-right"
+        overlayClassName="custom-overlay-transparent"
+        shouldCloseOnOverlayClick={true} // Cierra el modal al hacer clic fuera
+        ariaHideApp={false} // Necesario para evitar errores en entornos de desarrollo
+      >
+        <button className="close-btn" onClick={() => setIsUserModalOpen(false)}>
+          <X size={20} />
+        </button>
+        <h3>Menú de Usuario</h3>
+        <div className="button-row">
+          <Link to="/profile" className="modal-button">Ver Perfil</Link>
+          <button className="modal-button" onClick={() => console.log("Cerrar sesión")}>Cerrar Sesión</button>
         </div>
-      )}
+      </ReactModal>
+      
     </header>
   );
 };

@@ -16,6 +16,9 @@ import Editarcarnet from './pages/Editarcarnet';
 import Calendario from './pages/Calendario';
 import PrivateRoute from './components/PrivateRoute';
 import Addcarnet from './pages/Addcarnet'; //Pestaña de añadir carnet
+import Profile from './pages/Profile'; //Pestaña de perfil
+import ReactModal from "react-modal";
+
 
 const App = () => {
   return (
@@ -45,10 +48,11 @@ const App = () => {
           <Route path="/Editarcarnet" element={<Editarcarnet />} />
           <Route path="/Calendario" element={<Calendario />} />
           <Route path="/Addcarnet" element={<Addcarnet />} />
+          <Route path="/Profile" element={<Profile />} />
         </Route>
       </Routes>
     </Router>
   );
 };
-
+ReactModal.setAppElement("#root");
 export default App;
