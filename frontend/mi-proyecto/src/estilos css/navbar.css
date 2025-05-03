@@ -2,120 +2,131 @@
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Distribuye el espacio entre elementos */
+  justify-content: space-between;
   background-color: #fafafa;
   color: rgb(3, 3, 3);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   height: 80px;
   border-radius: 10px;
-  padding: 0 20px; /* Añade padding a los lados */
+  padding: 0 20px;
   width: 100%;
-  box-sizing: border-box; /* Incluye padding en el ancho total */
+  box-sizing: border-box;
+  position: relative;
 }
 
-/* Logo más grande */
+/* Contenedor del logo */
 .logo-container {
   display: flex;
   align-items: center;
   cursor: pointer;
+  flex-shrink: 0;
+  margin-right: 20px;
 }
 
 .logo {
-  width: 80px; /* Ajuste de tamaño */
+  width: 60px;
   height: auto;
-  margin-right: 5px;
+  margin-right: 8px;
 }
 
 .logo-text {
-  font-size: 24px; /* Texto un poco más pequeño */
+  font-size: 20px;
   font-weight: bold;
-  color: #fff;
+  color: #000;
 }
 
-/* Estilos de la navegación */
+/* Contenedor principal de navegación */
+.nav-container {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  width: 100%;
+}
+
+
+/* Barra de navegación */
 .nav {
   display: flex;
-  font-family: 'Poppins', sans-serif;
-  overflow-x: auto; /* Permite scroll horizontal si es necesario */
-  white-space: nowrap; /* Evita que los elementos se dividan en varias líneas */
-  flex-grow: 1; /* Ocupa el espacio disponible */
-  justify-content: center; /* Centra los elementos */
-  padding: 0 10px;
-  -webkit-overflow-scrolling: touch; /* Mejor scroll en dispositivos móviles */
-}
-.nav::-webkit-scrollbar {
-  display: none;
-}
-.nav {
-  -ms-overflow-style: none;
+  justify-content: center;
+  align-items: center;
+  gap: 1px; /* Reducimos el espacio entre items (antes era 10px) */
+  flex-wrap: nowrap;
+  overflow-x: auto;
   scrollbar-width: none;
 }
 
-/* Opciones del navbar más pequeñas y con menos separación */
-.nav a {
-  font-size: 6px;
-  padding: 6px 8px;
-  margin: 0 3px;
+.nav::-webkit-scrollbar {
+  display: none;
+}
+
+/* Enlaces de navegación */
+.nav-link {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  padding: 8px 10px; /* Reducimos el padding horizontal (antes era 12px) */
+  color: #000;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  border-radius: 6px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.nav-link svg {
+  margin-right: 5px; /* Reducimos un poco el espacio entre icono y texto */
 }
 
 
 /* Efecto hover */
-.nav a:hover {
-  background-color: rgba(255, 255, 255, 0.3);
+.nav-link:hover {
+  background-color: rgba(46, 79, 228, 0.253);
 }
 
-/* Página activa con fondo azul y letras blancas */
-.nav .active {
+/* Página activa */
+.nav-link.active {
   background-color: #2c2c6c;
   color: white;
-  font-weight: bold;
-  border-radius: 6px;
+  font-weight: 500;
 }
 
-/* Ajuste del menú de usuario */
-.user-button {
-  font-size: 14px; /* Letra más pequeña */
-
-}
-
-.dropdown-menu {
-  width: 130px; /* Más compacto */
-}
-
-.dropdown-item {
-  font-size: 14px; /* Letra más pequeña */
-  padding: 8px; /* Menos espacio */
-}
 /* Menú de usuario */
+/* Menú de usuario (se mantiene igual) */
 .user-menu {
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  margin-left: 20px;
   cursor: pointer;
 }
 
 .user-icon {
   color: rgb(0, 0, 0);
   transition: transform 0.2s ease;
+  padding: 8px;
+  border-radius: 50%;
 }
 
 .user-icon:hover {
   transform: scale(1.1);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* Overlay transparente y no bloqueante */
+/* Estilos del modal (se mantienen igual) */
 .custom-overlay-transparent {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  pointer-events: none; /* permite clics fuera del modal */
+  pointer-events: none;
 }
 
-/* Modal en la esquina superior izquierda */
 .custom-modal-top-right {
   position: absolute;
   top: 60px;
-  right: 20px; /* <-- cambiamos left por right */
+  right: 20px;
   width: 280px;
   background: white;
   padding: 1rem;
@@ -126,8 +137,6 @@
   animation: slideFadeIn 0.3s ease;
 }
 
-
-/* Animación de entrada */
 @keyframes slideFadeIn {
   from {
     opacity: 0;
@@ -139,18 +148,16 @@
   }
 }
 
-/* Botón de cerrar */
 .close-btn {
   position: absolute;
   top: 6px;
   right: 6px;
   background: transparent;
   border: none;
-  color: #888;
+  color: #888888;
   cursor: pointer;
 }
 
-/* Botones en fila */
 .button-row {
   display: flex;
   justify-content: space-between;
@@ -174,6 +181,3 @@
 .modal-button:hover {
   background-color: #256bb3;
 }
-
-
-

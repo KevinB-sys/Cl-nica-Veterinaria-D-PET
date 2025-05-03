@@ -11,7 +11,7 @@ const Navbar = () => {
 
   return (
     <header className="header">
-      {/* Logo */}
+      {/* Logo - izquierda */}
       <div className="logo-container" onClick={() => navigate("/")}>
         <img
           src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh8Hz0UUXxZm21BEiTgWaMMgmjHU0AKmWpwLck_ucBy2J0a2MlNaZbEeQ74sc_2-zxiqEPp3wpx43jHoEqKCWbbuwSXwSv3ihs9R2fSSh5K7-5nWVYtT6gSPG30_9qUoAZeFld2uCRcGiRmh8UD5QUH_jEzOGDncZluQbi6pnmYdjVDZIM0vmHDhetO0xE/s320/logo.png"
@@ -21,29 +21,31 @@ const Navbar = () => {
         <span className="logo-text">D'PET</span>
       </div>
 
-      {/* Navegación */}
-      <nav className="nav">
-        <Link to="/" className={location.pathname === "/" ? "active" : ""}>
-          <Home size={18} /> INICIO
-        </Link>
-        <Link to="/About" className={location.pathname === "/About" ? "active" : ""}>
-          <Info size={18} /> NOSOTROS
-        </Link>
-        <Link to="/Services" className={location.pathname === "/Services" ? "active" : ""}>
-          <Calendar size={18} /> SERVICIOS
-        </Link>
-        <Link to="/Agendar" className={location.pathname === "/Agendar" ? "active" : ""}>
-          <Calendar size={18} /> AGENDAR CITA
-        </Link>
-        <Link to="/ListarCarnet" className={location.pathname === "/ListarCarnet" ? "active" : ""}>
-          <Syringe size={18} /> CARNETS DE VACUNACIÓN
-        </Link>
-        <Link to="/Login" className={location.pathname === "/Login" ? "active" : ""}>
-          <LogIn size={18} /> INICIAR SESIÓN
-        </Link>
+      {/* Navegación - centro */}
+      <nav className="nav-container">
+        <div className="nav">
+          <Link to="/" className={`nav-link ${location.pathname === "/" ? "active" : ""}`}>
+            <Home size={16} /> INICIO
+          </Link>
+          <Link to="/About" className={`nav-link ${location.pathname === "/About" ? "active" : ""}`}>
+            <Info size={16} /> NOSOTROS
+          </Link>
+          <Link to="/Services" className={`nav-link ${location.pathname === "/Services" ? "active" : ""}`}>
+            <Calendar size={16} /> SERVICIOS
+          </Link>
+          <Link to="/Agendar" className={`nav-link ${location.pathname === "/Agendar" ? "active" : ""}`}>
+            <Calendar size={16} /> AGENDAR CITA
+          </Link>
+          <Link to="/ListarCarnet" className={`nav-link ${location.pathname === "/ListarCarnet" ? "active" : ""}`}>
+            <Syringe size={16} /> CARNETS
+          </Link>
+          <Link to="/Login" className={`nav-link ${location.pathname === "/Login" ? "active" : ""}`}>
+            <LogIn size={16} /> INICIAR SESIÓN
+          </Link>
+        </div>
       </nav>
 
-      {/* Icono de usuario con Link */}
+      {/* Icono de usuario - derecha */}
       <div className="user-menu">
         <User 
           size={24} 
@@ -51,13 +53,15 @@ const Navbar = () => {
           onClick={() => setIsUserModalOpen(true)} 
         />
       </div>
+      
+      {/* Modal del usuario */}
       <ReactModal
         isOpen={isUserModalOpen}
-        onRequestClose={() => setIsUserModalOpen(false)} // Cierra el modal al hacer clic fuera o presionar ESC
+        onRequestClose={() => setIsUserModalOpen(false)}
         className="custom-modal-top-right"
         overlayClassName="custom-overlay-transparent"
-        shouldCloseOnOverlayClick={true} // Cierra el modal al hacer clic fuera
-        ariaHideApp={false} // Necesario para evitar errores en entornos de desarrollo
+        shouldCloseOnOverlayClick={true}
+        ariaHideApp={false}
       >
         <button className="close-btn" onClick={() => setIsUserModalOpen(false)}>
           <X size={20} />
@@ -68,7 +72,6 @@ const Navbar = () => {
           <button className="modal-button" onClick={() => console.log("Cerrar sesión")}>Cerrar Sesión</button>
         </div>
       </ReactModal>
-      
     </header>
   );
 };
