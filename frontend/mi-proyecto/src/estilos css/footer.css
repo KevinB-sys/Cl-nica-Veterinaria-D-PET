@@ -1,0 +1,205 @@
+/* Estilos base */
+.footer {
+    background: linear-gradient(135deg, #2c2c6c 0%, #1e1e4a 100%);
+    color: white;
+    padding: 40px 0 0;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  /* Columnas */
+  .footer-column {
+    padding: 0 15px;
+  }
+  
+  .brand-info {
+    margin-bottom: 20px;
+  }
+  
+  .logo-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .footer-logo {
+    width: 40px;
+    height: auto;
+    margin-right: 10px;
+  }
+  
+  .brand-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+  }
+  
+  .brand-description {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  /* Títulos con subrayado */
+  .column-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    position: relative;
+  }
+  
+  .column-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 3px;
+    background-color: white;
+  }
+  
+  /* Listas de enlaces */
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .footer-links li {
+    margin-bottom: 12px;
+  }
+  
+  .footer-links a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    display: inline-block;
+  }
+  
+  .footer-links a:hover {
+    color: white;
+    transform: translateX(5px);
+  }
+  
+  /* Información de contacto */
+  .contact-info {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .contact-info li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .contact-info svg {
+    margin-right: 10px;
+    color: white;
+    min-width: 18px;
+  }
+  
+  /* Redes sociales - orden: Facebook, Instagram, TikTok */
+  .social-links {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .social-link {
+    color: white;
+    background: transparent;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .social-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-3px);
+  }
+  
+  .social-link svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  /* Footer inferior */
+  .footer-bottom {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 20px 0;
+    margin-top: 40px;
+    text-align: center;
+  }
+  
+  .copyright {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 10px;
+  }
+  
+  .legal-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .legal-links a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.3s;
+  }
+  
+  .legal-links a:hover {
+    color: white;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    
+    .footer-column {
+      padding: 0;
+      text-align: center;
+    }
+    
+    .logo-wrapper {
+      justify-content: center;
+    }
+    
+    .column-title::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    .social-links {
+      justify-content: center;
+    }
+    
+    .contact-info li {
+      justify-content: center;
+    }
+  }
