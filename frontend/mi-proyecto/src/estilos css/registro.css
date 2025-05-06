@@ -149,33 +149,42 @@
 
 .password-checklist {
   list-style: none;
-  padding-left: 20px;
+  padding-left: 0;
   margin-top: 10px;
   font-size: 0.9rem;
 }
 
 .password-checklist li {
-  margin-bottom: 5px;
-  position: relative;
-  padding-left: 20px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  color: #999;
+  transition: color 0.3s ease;
 }
 
 .password-checklist li::before {
-  content: '❌';
-  position: absolute;
-  left: 0;
-  color: red;
-}
-
-.password-checklist li.valid::before {
-  content: '✅';
-  color: green;
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  transition: background-color 0.3s ease;
 }
 
 .password-checklist li.valid {
-  color: green;
+  color: #4caf50;
+}
+
+.password-checklist li.valid::before {
+  background-color: #4caf50;
 }
 
 .password-checklist li.invalid {
-  color: red;
+  color: #2c2c6c;
+}
+
+.password-checklist li.invalid::before {
+  background-color: #2c2c6c;
 }
