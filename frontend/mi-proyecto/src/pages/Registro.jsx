@@ -15,17 +15,38 @@ const RegisterForm = () => {
     direccion: ''
   });
 
+
   const navigate = useNavigate();
 
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData({ ...formData, [name]: value });
+  // };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    if (name === 'password') {
+      validatePassword(value);
+    }
+  };
+  const [passwordValidation, setPasswordValidation] = useState({
+    length: false,
+    uppercase: false,
+    specialChar: false,
+  });
+  const validatePassword = (password) => {
+    const length = password.length >= 6;
+    const uppercase = /[A-Z]/.test(password);
+    const specialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    setPasswordValidation({ length, uppercase, specialChar });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    try {      
+
+    try {
       const data = await registerUser(formData);
       console.log(data);
       if (data.state === "success") {
@@ -51,7 +72,7 @@ const RegisterForm = () => {
       <div className='logo-register'>
         <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjW_u11YZ1rXI7Qoaz4qq9MrEYztERVAjjsxD60s2BYlvRu91RMazKQy2A1e9MhSHzCm39srvSnoR4e3FErUNkXJiEN9vLfG40BC6wuXIBjxkNYUX9MS6qD_X8A2d6PYuUPkF5q7pDw-cwtrhtPVIawnSeaFr3xS6mkcEz_3iAlWzX79SBQa3jznjNkQR4/s320/veterinaria%20logo%20y%20letras%20%20png%20(1).png" alt="Logo" />
       </div>
-      
+
       <form className="form" onSubmit={handleSubmit}>
         <div className="form-group">
           <label>
@@ -88,6 +109,17 @@ const RegisterForm = () => {
             onChange={handleChange}
             required
           />
+          <ul className="password-checklist">
+            <li className={passwordValidation.length ? "valid" : "invalid"}>
+              Mínimo 6 caracteres
+            </li>
+            <li className={passwordValidation.uppercase ? "valid" : "invalid"}>
+              Al menos una letra mayúscula
+            </li>
+            <li className={passwordValidation.specialChar ? "valid" : "invalid"}>
+              Al menos un carácter especial (!@#$%)
+            </li>
+          </ul>
         </div>
         <div className="form-group">
           <label>
