@@ -85,7 +85,13 @@ const RegisterForm = () => {
         });
         navigate("/login");
       } else {
-        alert(`Error: ${data.message}`);
+        Swal.fire({
+          icon: "error",
+          title: "¡Correo invalido!",
+          text: "El correo ya está registrado",
+          timer: 2000,
+          showConfirmButton: false,
+        });
       }
     } catch (error) {
       alert("Hubo un error al registrar el usuario");
