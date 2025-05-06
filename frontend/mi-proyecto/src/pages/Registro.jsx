@@ -88,7 +88,7 @@ const RegisterForm = () => {
         Swal.fire({
           icon: "error",
           title: "¡Correo invalido!",
-          text: "El correo ya está registrado",
+          text: "El correo ya está registrado, debe ser único",
           timer: 2000,
           showConfirmButton: false,
         });
