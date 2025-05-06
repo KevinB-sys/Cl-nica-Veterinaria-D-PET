@@ -1,17 +1,18 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../estilos css/Login.css";
 import { FaEnvelope, FaLock } from "react-icons/fa"; // Importamos los iconos
 import Swal from "sweetalert2";
 import { loginUser } from "../services/authService";
 // import AuthContext from "../state/AuthContext.jsx";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Login = () => {
   const [email, setEmail] = useState(""); // Estado para el email
   const [password, setPassword] = useState(""); // Estado para la contraseña
   const navigate = useNavigate(); // Hook para redirigir
   // const {login } = useContext(AuthContext); // Obtener la función de login del contexto
-
+  const [showPassword, setShowPassword] = useState(false);
   // Función para manejar el login
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -75,13 +76,21 @@ const Login = () => {
               <label>
                 <FaLock className="input-icon-login" /> Contraseña
               </label>
-              <input
-                type="password"
-                placeholder="Ingrese su contraseña"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <div className="password-wrapper">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Ingrese su contraseña"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <span
+                  className="toggle-password"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
             </div>
             <button type="submit" className="login-button">Ingresar</button>
           </form>
