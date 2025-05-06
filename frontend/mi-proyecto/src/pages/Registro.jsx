@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { FaUser, FaEnvelope, FaLock, FaPhone, FaWhatsapp, FaHome } from 'react-icons/fa'; // Importamos los iconos
 import '../estilos css/registro.css';
 import { registerUser } from '../services/authService';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -46,6 +48,30 @@ const RegisterForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validar la contraseña antes de enviar
+    const { length, uppercase, specialChar } = passwordValidation;
+    if (!length || !uppercase || !specialChar) {
+      Swal.fire({
+        icon: "error",
+        title: "Contraseña insegura",
+        text: "La contraseña debe tener al menos 6 caracteres, una mayúscula y un carácter especial.",
+      });
+      return; // no continúa si la contraseña es insegura
+    }
+
+    // Validar WhatsApp
+    const onlyNumbers = formData.whatsapp.replace(/[^0-9]/g, '');
+    const localNumber = onlyNumbers.replace(/^593/, '');
+
+    if (localNumber.length !== 9) {
+      Swal.fire({
+        icon: "error",
+        title: "Número inválido",
+        text: "El número de WhatsApp debe tener exactamente 9 dígitos (sin incluir el código de país)",
+      });
+      return;
+    }
+
     try {
       const data = await registerUser(formData);
       console.log(data);
@@ -54,10 +80,10 @@ const RegisterForm = () => {
           icon: "success",
           title: "¡Registro exitoso!",
           text: "Usuario creado correctamente",
-          timer: 2000, // El mensaje se cierra automáticamente después de 2 segundos
-          showConfirmButton: false, // No muestra el botón de confirmación
+          timer: 2000,
+          showConfirmButton: false,
         });
-        navigate("/login"); // Redirigir al login después del registro
+        navigate("/login");
       } else {
         alert(`Error: ${data.message}`);
       }
@@ -136,11 +162,24 @@ const RegisterForm = () => {
           <label>
             <FaWhatsapp className="input-icon" /> Whatsapp
           </label>
-          <input
-            type="text"
-            name="whatsapp"
+          <PhoneInput
+            country={'ec'}
             value={formData.whatsapp}
-            onChange={handleChange}
+            onChange={(phone) => {
+              const numericPart = phone.replace(/[^0-9]/g, '');
+              //const countryCode = phone.startsWith('+') ? phone.split(/[0-9]/)[0] : '';
+              const numberOnly = numericPart.replace(/^593/, ''); // quita código de Ecuador para validar 9 dígitos
+
+              if (numberOnly.length <= 9) {
+                setFormData({ ...formData, whatsapp: phone });
+              }
+            }}
+            inputProps={{
+              name: 'whatsapp',
+              required: true,
+            }}
+            masks={{ ec: '...-...-...' }}
+            enableSearch
           />
         </div>
         <div className="form-group">
