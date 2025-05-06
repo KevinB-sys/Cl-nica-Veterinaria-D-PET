@@ -6,6 +6,7 @@ import '../estilos css/registro.css';
 import { registerUser } from '../services/authService';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -44,7 +45,7 @@ const RegisterForm = () => {
 
     setPasswordValidation({ length, uppercase, specialChar });
   };
-
+  const [showPassword, setShowPassword] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -134,13 +135,23 @@ const RegisterForm = () => {
           <label>
             <FaLock className="input-icon" /> Contraseña
           </label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+
+          <div className="password-input-wrapper">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+            <span
+              className="toggle-password"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+
           <ul className="password-checklist">
             <li className={passwordValidation.length ? "valid" : "invalid"}>
               Mínimo 6 caracteres
