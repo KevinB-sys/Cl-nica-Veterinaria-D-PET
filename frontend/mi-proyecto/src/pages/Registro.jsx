@@ -89,7 +89,7 @@ const RegisterForm = () => {
           icon: "error",
           title: "¡Correo invalido!",
           text: "El correo ya está registrado, debe ser único",
-          timer: 2000,
+          timer: 2500,
           showConfirmButton: false,
         });
       }
