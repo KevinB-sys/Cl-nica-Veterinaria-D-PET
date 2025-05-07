@@ -18,10 +18,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-
-
       const data = await loginUser({ email, password }); // Llamar a la función de login
-
       console.log(data);
 
       if (data.state !== "success") {
@@ -32,8 +29,6 @@ const Login = () => {
         }); // Muestra el error si las credenciales son incorrectas
         return;
       }
-
-
       Swal.fire({
         icon: "success", // Ahora muestra un icono de éxito
         title: "¡Inicio de sesión exitoso!",
@@ -46,6 +41,7 @@ const Login = () => {
         navigate("/"); // Redirigir a la página principal
       }, 2000); // Espera 2 segundos antes de redirigir
 
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       alert("Error en el servidor");
     }
@@ -98,7 +94,7 @@ const Login = () => {
             ¿No tienes una cuenta? <Link to="/Registro">Crear cuenta</Link>
           </p>
           <p className="register-password">
-          <Link to="/Registro">Recuperar contraseña</Link>
+          <Link to="/Registro">¿Olvidó su contraseña</Link>
           </p>
         </div>
       </div>
