@@ -90,12 +90,22 @@
   text-align: center;
   font-size: 1rem;
 }
+.register-password{
+  margin-top: 20px;
+  text-align: center;
+  font-size: 1rem;
+}
 
 .register-text a {
   color: #2c2c6c;
   text-decoration: none;
   font-weight: bold;
 }
+.register-password a {
+  color: #2c2c6c;
+  font-weight: bold;
+}
+
 
 .register-text a:hover {
   text-decoration: underline;

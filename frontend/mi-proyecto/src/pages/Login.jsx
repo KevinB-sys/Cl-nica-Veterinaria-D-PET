@@ -97,6 +97,9 @@ const Login = () => {
           <p className="register-text">
             ¿No tienes una cuenta? <Link to="/Registro">Crear cuenta</Link>
           </p>
+          <p className="register-password">
+          <Link to="/Registro">Recuperar contraseña</Link>
+          </p>
         </div>
       </div>
     </div>
