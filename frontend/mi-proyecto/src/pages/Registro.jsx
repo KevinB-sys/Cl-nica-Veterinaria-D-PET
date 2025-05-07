@@ -101,11 +101,15 @@ const RegisterForm = () => {
   };
 
   return (
+
     <div className="form-container">
       <div className='logo-register'>
         <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjW_u11YZ1rXI7Qoaz4qq9MrEYztERVAjjsxD60s2BYlvRu91RMazKQy2A1e9MhSHzCm39srvSnoR4e3FErUNkXJiEN9vLfG40BC6wuXIBjxkNYUX9MS6qD_X8A2d6PYuUPkF5q7pDw-cwtrhtPVIawnSeaFr3xS6mkcEz_3iAlWzX79SBQa3jznjNkQR4/s320/veterinaria%20logo%20y%20letras%20%20png%20(1).png" alt="Logo" />
       </div>
-
+      {/* <div className='form-title'>
+        <h2>Registro</h2>
+        <p>Por favor, completa el formulario para crear una cuenta.</p>
+      </div> */}
       <form className="form" onSubmit={handleSubmit}>
         <div className="form-group">
           <label>

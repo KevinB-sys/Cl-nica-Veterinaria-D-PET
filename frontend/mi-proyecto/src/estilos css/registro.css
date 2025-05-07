@@ -10,6 +10,7 @@
 
 .logo-register img {
   width: 300px; /* Tamaño del logo */
+  height: 30px;
   margin-bottom: 20px;
 }
 
@@ -204,4 +205,19 @@
   right: 10px;
   color: #888;
   font-size: 1rem;
+}
+.form-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-title h2 {
+  font-size: 30px;
+  color: #34495e;
+  margin-bottom: 8px;
+}
+
+.form-title p {
+  font-size: 16px;
+  color: #7f8c8d;
 }
