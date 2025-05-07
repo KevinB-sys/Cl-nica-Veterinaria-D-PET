@@ -18,6 +18,7 @@ import PrivateRoute from './components/PrivateRoute';
 import Addcarnet from './pages/Addcarnet'; //Pestaña de añadir carnet
 import Profile from './pages/Profile'; //Pestaña de perfil
 import ReactModal from "react-modal";
+import Recuperacion from './pages/Recuperacion'; //Pestaña de recuperación de contraseña
 
 
 const App = () => {
@@ -49,6 +50,7 @@ const App = () => {
           <Route path="/Calendario" element={<Calendario />} />
           <Route path="/Addcarnet" element={<Addcarnet />} />
           <Route path="/Profile" element={<Profile />} />
+          <Route path="/Recuperacion" element={<Recuperacion />} />
         </Route>
       </Routes>
     </Router>

@@ -94,7 +94,7 @@ const Login = () => {
             ¿No tienes una cuenta? <Link to="/Registro">Crear cuenta</Link>
           </p>
           <p className="register-password">
-          <Link to="/Registro">¿Olvidó su contraseña</Link>
+          <Link to="/Recuperacion">¿Olvidó su contraseña</Link>
           </p>
         </div>
       </div>
