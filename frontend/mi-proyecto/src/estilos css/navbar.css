@@ -49,7 +49,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1px; /* Reducimos el espacio entre items (antes era 10px) */
+  gap: 1px;
+  /* Reducimos el espacio entre items (antes era 10px) */
   flex-wrap: nowrap;
   overflow-x: auto;
   scrollbar-width: none;
@@ -64,7 +65,8 @@
   display: flex;
   align-items: center;
   font-size: 14px;
-  padding: 8px 10px; /* Reducimos el padding horizontal (antes era 12px) */
+  padding: 8px 10px;
+  /* Reducimos el padding horizontal (antes era 12px) */
   color: #000;
   text-decoration: none;
   transition: all 0.3s ease;
@@ -74,7 +76,8 @@
 }
 
 .nav-link svg {
-  margin-right: 5px; /* Reducimos un poco el espacio entre icono y texto */
+  margin-right: 5px;
+  /* Reducimos un poco el espacio entre icono y texto */
 }
 
 
@@ -142,6 +145,7 @@
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -180,4 +184,50 @@
 
 .modal-button:hover {
   background-color: #256bb3;
+}
+
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  .nav-container {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    right: 0;
+    background-color: #fafafa;
+    flex-direction: column;
+    align-items: flex-start;
+    display: none;
+    padding: 10px 20px;
+    z-index: 999;
+  }
+
+  .nav-container.open {
+    display: flex;
+  }
+
+  .nav {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .nav-link {
+    width: 100%;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .user-menu {
+    display: none;
+  }
 }
