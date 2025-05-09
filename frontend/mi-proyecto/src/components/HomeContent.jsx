@@ -74,8 +74,8 @@ const HomeContent = () => {
           <h2>Desparacitación</h2>
           <p>Eliminamos parásitos para el bienestar de tu mascota.</p>
         </div>
-        <h3 className='pieinfo'>Atención personalizada sin necesidad de salir de casa</h3>
       </section>
+      <h3 className='pieinfo'>Atención personalizada sin necesidad de salir de casa</h3>
     </main>
   );
 };
