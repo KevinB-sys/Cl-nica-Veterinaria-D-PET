@@ -96,9 +96,7 @@ const SobreNosotros = () => {
             <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
               <Instagram size={24} /> Instagram
             </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-              <Twitter size={24} /> Twitter
-            </a>
+
           </div>
         </div>
       </div>
