@@ -128,6 +128,15 @@ h1.titulogen{
   justify-content: space-around;
   padding: 40px 20px;
   flex-wrap: wrap;
+  gap: 20px; /* espacio entre los elementos */
+}
+
+@media (max-width: 768px) {
+  .info-section {
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 10px;
+  }
 }
 
 .info-card {
