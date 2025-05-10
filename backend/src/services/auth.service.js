@@ -67,3 +67,6 @@ export const loginUser = async (data) => {
     throw new Error(error.message || "Error al iniciar sesión");
   }
 };
+export const logoutUser = () => {
+  localStorage.removeItem('token');
+};

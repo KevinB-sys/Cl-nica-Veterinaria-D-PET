@@ -36,10 +36,11 @@ const Login = () => {
         text: "Bienvenido, redirigiendo al Inicio...",
         timer: 2000, // El mensaje se cierra automáticamente después de 2 segundos
         showConfirmButton: false, // No muestra el botón de confirmación
+        
       });
-
       setTimeout(() => {
         navigate("/"); // Redirigir a la página principal
+         window.location.reload(); // Recargar la página
       }, 2000); // Espera 2 segundos antes de redirigir
 
     // eslint-disable-next-line no-unused-vars

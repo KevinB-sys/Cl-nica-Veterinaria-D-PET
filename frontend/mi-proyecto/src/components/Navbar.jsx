@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Home, Info, Calendar, Syringe, LogIn, User, X, Menu } from "lucide-react";
 import "../estilos css/navbar.css";
-import ReactModal from "react-modal";
+import Swal from "sweetalert2"; // Importa SweetAlert2
 
+const token = localStorage.getItem("token");
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // <-- NUEVO
 
   const toggleMenu = () => {
@@ -49,39 +49,46 @@ const Navbar = () => {
           <Link to="/ListarCarnet" className={`nav-link ${location.pathname === "/ListarCarnet" ? "active" : ""}`} onClick={toggleMenu}>
             <Syringe size={16} /> CARNETS
           </Link>
-          <Link to="/Login" className={`nav-link ${location.pathname === "/Login" ? "active" : ""}`} onClick={toggleMenu}>
-            <LogIn size={16} /> INICIAR SESIÓN
-          </Link>
+          {!token ? (
+            <Link
+              to="/Login"
+              className={`nav-link ${location.pathname === "/Login" ? "active" : ""}`}
+              onClick={toggleMenu}
+            >
+              <LogIn size={16} /> INICIAR SESIÓN
+            </Link>
+          ) : (
+            <Link
+              to="/"
+              className={`nav-link ${location.pathname === "/login" ? "active" : ""}`}
+              onClick={() => {
+                localStorage.removeItem("token"); // Elimina el token
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Cierre exitoso',
+                  text: 'Has cerrado sesión correctamente',
+                  confirmButtonText: 'Aceptar'
+                }).then(() => {
+                  // Recarga la página después de mostrar la alerta
+                  window.location.reload();
+                });
+              }}
+            >
+              <LogIn size={16} /> CERRAR SESIÓN
+            </Link>
+          )}
         </div>
       </nav>
 
       {/* Icono de usuario */}
       <div className="user-menu">
-        <User
-          size={24}
-          className="user-icon"
-          onClick={() => setIsUserModalOpen(true)}
-        />
+        <Link to="/profile">
+          <User
+            size={24}
+            className="user-icon"
+          />
+        </Link>
       </div>
-
-      {/* Modal del usuario */}
-      <ReactModal
-        isOpen={isUserModalOpen}
-        onRequestClose={() => setIsUserModalOpen(false)}
-        className="custom-modal-top-right"
-        overlayClassName="custom-overlay-transparent"
-        shouldCloseOnOverlayClick={true}
-        ariaHideApp={false}
-      >
-        <button className="close-btn" onClick={() => setIsUserModalOpen(false)}>
-          <X size={20} />
-        </button>
-        <h3>Menú de Usuario</h3>
-        <div className="button-row">
-          <Link to="/profile" className="modal-button">Ver Perfil</Link>
-          <button className="modal-button" onClick={() => console.log("Cerrar sesión")}>Cerrar Sesión</button>
-        </div>
-      </ReactModal>
     </header>
   );
 };
