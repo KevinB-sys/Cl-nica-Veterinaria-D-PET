@@ -63,9 +63,22 @@ const CalendarView = () => {
       return;
     }
 
+    // const confirmResult = await Swal.fire({
+    //   title: "¿Está seguro?",
+    //   text: "¿Desea agendar esta cita?",
+    //   icon: "warning",
+    //   showCancelButton: true,
+    //   confirmButtonColor: "#3085d6",
+    //   cancelButtonColor: "#d33",
+    //   confirmButtonText: "Sí, agendar",
+    //   cancelButtonText: "No, cancelar",
+    // });
+    const fechaFormateada = date.toLocaleDateString();
+    const textoConfirmacion = `¿Desea agendar esta cita el día ${fechaFormateada} a las ${time}?`;
+
     const confirmResult = await Swal.fire({
       title: "¿Está seguro?",
-      text: "¿Desea agendar esta cita?",
+      text: textoConfirmacion,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
