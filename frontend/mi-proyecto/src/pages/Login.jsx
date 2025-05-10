@@ -29,6 +29,7 @@ const Login = () => {
         }); // Muestra el error si las credenciales son incorrectas
         return;
       }
+      localStorage.setItem("token", data.token);  // Suponiendo que el token viene en data.token
       Swal.fire({
         icon: "success", // Ahora muestra un icono de éxito
         title: "¡Inicio de sesión exitoso!",
