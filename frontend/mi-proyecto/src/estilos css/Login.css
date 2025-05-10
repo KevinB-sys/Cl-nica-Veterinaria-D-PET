@@ -59,11 +59,13 @@
 
 .input-group input {
   width: 100%;
-  padding: 12px 40px 12px 12px;  /* Añadido espacio a la derecha */
+  padding: 12px 40px 12px 12px;
+  /* Añadido espacio a la derecha */
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 1rem;
-  box-sizing: border-box;  /* Asegura que el padding no rompa el tamaño total del input */
+  box-sizing: border-box;
+  /* Asegura que el padding no rompa el tamaño total del input */
 }
 
 /* Botón de login */
@@ -90,7 +92,8 @@
   text-align: center;
   font-size: 1rem;
 }
-.register-password{
+
+.register-password {
   margin-top: 20px;
   text-align: center;
   font-size: 1rem;
@@ -101,6 +104,7 @@
   text-decoration: none;
   font-weight: bold;
 }
+
 .register-password a {
   color: #2c2c6c;
   font-weight: bold;
@@ -137,4 +141,80 @@
   color: #888;
   cursor: pointer;
   font-size: 1rem;
+}
+
+/* Media Queries para Responsive */
+
+/* Para tablets (768px o menos) */
+@media (max-width: 768px) {
+  .login-container {
+    padding-top: 50px;
+    /* Reduce el espacio superior */
+    height: auto;
+    /* Altura automática */
+    min-height: 100vh;
+    /* Asegura que ocupe al menos toda la pantalla */
+    padding-bottom: 50px;
+    /* Espacio inferior */
+    margin-top: 3cm;
+    margin-bottom: -8cm;
+  }
+
+  .login-card {
+    width: 80%;
+    /* Ocupa más ancho en pantallas pequeñas */
+    padding: 30px;
+    /* Reduce el padding interno */
+  }
+}
+
+/* Para móviles (480px o menos) */
+@media (max-width: 480px) {
+  .login-container {
+    padding-top: 30px;
+    /* Menos espacio superior */
+    background-attachment: fixed;
+    /* Fija el fondo para mejor visualización */
+  }
+
+  .login-card {
+    width: 90%;
+    /* Ocupa casi todo el ancho */
+    padding: 20px;
+    /* Menos padding interno */
+  }
+
+  .login-image img {
+    width: 100px;
+    /* Imagen un poco más pequeña */
+  }
+
+  .login-form h2 {
+    font-size: 1.5rem;
+    /* Título más pequeño */
+  }
+
+  .login-button {
+    font-size: 1rem;
+    /* Texto del botón más pequeño */
+  }
+}
+
+/* Para pantallas muy pequeñas (360px o menos) */
+@media (max-width: 360px) {
+  .login-card {
+    padding: 15px;
+    /* Mínimo padding */
+  }
+
+  .input-group input {
+    padding: 10px 35px 10px 10px;
+    /* Padding más ajustado */
+  }
+
+  .register-text,
+  .register-password {
+    font-size: 0.9rem;
+    /* Texto más pequeño */
+  }
 }
