@@ -12,7 +12,7 @@ const Footer = () => {
           <div className="brand-info">
             <div className="logo-wrapper">
               <img 
-                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh8Hz0UUXxZm21BEiTgWaMMgmjHU0AKmWpwLck_ucBy2J0a2MlNaZbEeQ74sc_2-zxiqEPp3wpx43jHoEqKCWbbuwSXwSv3ihs9R2fSSh5K7-5nWVYtT6gSPG30_9qUoAZeFld2uCRcGiRmh8UD5QUH_jEzOGDncZluQbi6pnmYdjVDZIM0vmHDhetO0xE/s320/logo.png" 
+                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjg-pcDqRanDutZLB2nGHD_VCPoN8MC0AaFIUTmwKnsCIj2tevqtzBqSCXamxrvXVPNuyzWeL1xnl0Wu4EirpJL1QVOZG1oyJJ6ihg4kXmQUDZG-Sh7KNAbug2TM1YtiKhQq5GDLB4Dkbev-b9ZGzeJT_QBRS2RPBEavVYmttMTRAAdy1h7k6VzfNgTBz4/s1600/logo%20blanco.png" 
                 alt="D'PET" 
                 className="footer-logo"
               />
