@@ -23,9 +23,7 @@ const PrivateRoute = ({ children, allowedRoles }) => {
   }, [user, role, allowedRoles, navigate]);
 
   // Si no hay usuario autenticado, redirige al login inmediatamente.
-  if (!user) {
-    return <Navigate to="/login" />;
-  }
+
 
   // Si no se especifican roles permitidos, o el usuario tiene el rol permitido,
   // renderiza el componente hijo.

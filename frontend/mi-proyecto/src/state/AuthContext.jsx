@@ -7,21 +7,22 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState(null); // Guardar el rol
-  const [loading, setLoading] = useState(true); // Añade un estado de carga
+ 
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        const decodedToken = jwtDecode(token); // Decodificar el token
+        const decodedToken = jwtDecode(token);
         setUser(decodedToken);
-        setRole(decodedToken.rol_id); // Guardar el rol del usuario
+        setRole(decodedToken.rol_id);
       } catch (error) {
-        console.error('Token inválido');
-        logout();
+        console.error('Token inválido:', error);
+        // No llamamos a logout() aquí directamente.
+        // Dejamos que el componente maneje la ausencia de usuario.
       }
     }
-    setLoading(false); // La verificación inicial ha terminado
+   
   }, []);
 
   const login = async (userData) => {
@@ -42,7 +43,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setRole(null);
   };
-  
+
 
   return (
     <AuthContext.Provider value={{ user, role, login, logout }}>
