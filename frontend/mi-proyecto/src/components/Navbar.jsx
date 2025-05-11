@@ -2,16 +2,33 @@ import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Home, Info, Calendar, Syringe, LogIn, User, X, Menu } from "lucide-react";
 import "../estilos css/navbar.css";
-import Swal from "sweetalert2"; // Importa SweetAlert2
+import Swal from "sweetalert2";
 
-const token = localStorage.getItem("token");
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // <-- NUEVO
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const token = localStorage.getItem("token");
 
   const toggleMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  // Función para manejar accesos restringidos
+  const handleProtectedRoute = (e, path) => {
+    if (!token) {
+      e.preventDefault();
+      Swal.fire({
+        icon: 'warning',
+        title: 'Acceso restringido',
+        text: 'Por favor, inicie sesión para acceder a esta sección',
+        confirmButtonText: 'Aceptar'
+      });
+    } else {
+      toggleMenu();
+      navigate(path);
+    }
   };
 
   return (
@@ -37,18 +54,38 @@ const Navbar = () => {
           <Link to="/" className={`nav-link ${location.pathname === "/" ? "active" : ""}`} onClick={toggleMenu}>
             <Home size={16} /> INICIO
           </Link>
+
           <Link to="/About" className={`nav-link ${location.pathname === "/About" ? "active" : ""}`} onClick={toggleMenu}>
             <Info size={16} /> NOSOTROS
           </Link>
-          <Link to="/Services" className={`nav-link ${location.pathname === "/Services" ? "active" : ""}`} onClick={toggleMenu}>
+
+          <Link
+            to="/Services"
+            className={`nav-link ${location.pathname === "/Services" ? "active" : ""}`}
+            onClick={(e) => handleProtectedRoute(e, "/Services")}
+          >
             <Calendar size={16} /> SERVICIOS
           </Link>
-          <Link to="/Agendar" className={`nav-link ${location.pathname === "/Agendar" ? "active" : ""}`} onClick={toggleMenu}>
+
+          {/* Protegido: Agendar */}
+          <Link
+            to="/Agendar"
+            className={`nav-link ${location.pathname === "/Agendar" ? "active" : ""}`}
+            onClick={(e) => handleProtectedRoute(e, "/Agendar")}
+          >
             <Calendar size={16} /> AGENDAR CITA
           </Link>
-          <Link to="/ListarCarnet" className={`nav-link ${location.pathname === "/ListarCarnet" ? "active" : ""}`} onClick={toggleMenu}>
+
+          {/* Protegido: Carnets */}
+          <Link
+            to="/ListarCarnet"
+            className={`nav-link ${location.pathname === "/ListarCarnet" ? "active" : ""}`}
+            onClick={(e) => handleProtectedRoute(e, "/ListarCarnet")}
+          >
             <Syringe size={16} /> CARNETS
           </Link>
+
+          {/* Autenticación */}
           {!token ? (
             <Link
               to="/Login"
@@ -60,16 +97,15 @@ const Navbar = () => {
           ) : (
             <Link
               to="/"
-              className={`nav-link ${location.pathname === "/login" ? "active" : ""}`}
+              className="nav-link"
               onClick={() => {
-                localStorage.removeItem("token"); // Elimina el token
+                localStorage.removeItem("token");
                 Swal.fire({
                   icon: 'success',
                   title: 'Cierre exitoso',
                   text: 'Has cerrado sesión correctamente',
                   confirmButtonText: 'Aceptar'
                 }).then(() => {
-                  // Recarga la página después de mostrar la alerta
                   window.location.reload();
                 });
               }}
@@ -80,13 +116,19 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Icono de usuario */}
+      {/* Icono de usuario (acceso libre o protegido según tu lógica) */}
       <div className="user-menu">
-        <Link to="/profile">
-          <User
-            size={24}
-            className="user-icon"
-          />
+        <Link to={token ? "/profile" : "#"} onClick={(e) => {
+          if (!token) {
+            e.preventDefault();
+            Swal.fire({
+              icon: 'info',
+              title: 'Inicia sesión primero',
+              text: 'Para acceder a tu perfil necesitas iniciar sesión',
+            });
+          }
+        }}>
+          <User size={24} className="user-icon" />
         </Link>
       </div>
     </header>
