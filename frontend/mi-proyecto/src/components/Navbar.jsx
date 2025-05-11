@@ -22,7 +22,7 @@ const Navbar = () => {
       Swal.fire({
         icon: 'warning',
         title: 'Acceso restringido',
-        text: 'Por favor, inicie sesión para acceder a esta sección',
+        text: 'Por favor, inicie sesión para acceder a esta sección o contactanos por Whatsapp para más información.',
         confirmButtonText: 'Aceptar'
       });
     } else {
