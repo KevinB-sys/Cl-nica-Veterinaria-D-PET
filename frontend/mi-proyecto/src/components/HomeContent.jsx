@@ -7,7 +7,7 @@ const HomeContent = () => {
   const navigate = useNavigate();
 
   const handleContactClick = () => {
-    navigate("Login"); // Cambia "/contacto" por la ruta correcta
+    navigate("About"); // Cambia "/contacto" por la ruta correcta
   };
   // const handleAppClick = () => {
   //   const phoneNumber = "593980498038"; // Número en formato internacional sin "+"
