@@ -99,15 +99,29 @@ const Navbar = () => {
               to="/"
               className="nav-link"
               onClick={() => {
-                localStorage.removeItem("token");
+                
                 Swal.fire({
-                  icon: 'success',
-                  title: 'Cierre exitoso',
-                  text: 'Has cerrado sesión correctamente',
-                  confirmButtonText: 'Aceptar'
-                }).then(() => {
-                  window.location.reload();
-                });
+                  title: '¿Desea cerrar sesión?',
+                  text: 'No podrá acceder a todas las funciones de la aplicación',
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Sí, cerrar sesión',
+                  cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    localStorage.removeItem("token"); // Elimina el token
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Cierre exitoso',
+                      text: 'Has cerrado sesión correctamente',
+                      confirmButtonText: 'Aceptar'
+                    }).then(() => {
+                      window.location.reload();
+                    });
+                  }
+                });;
               }}
             >
               <LogIn size={16} /> CERRAR SESIÓN
