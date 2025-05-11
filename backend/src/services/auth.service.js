@@ -59,7 +59,7 @@ export const loginUser = async (data) => {
     const token = jwt.sign(
       { usuario_id: usuario.usuario_id, rol_id: usuario.rol_id },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" } // Token válido por 24 horas
+      { expiresIn: "1h" } // Token válido por 1 horas
     );
 
     return token; // Devuelves el token generado

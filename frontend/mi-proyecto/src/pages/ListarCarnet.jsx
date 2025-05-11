@@ -60,7 +60,7 @@ export default function ListarCarnet() {
               </div>
 
               <div className="list-carnet-actions">
-                <button className="list-carnet-btn list-carnet-view" onClick={() => navigate(`/Vercarnet/${carnet.mascota_id}`)}>
+                <button className="list-carnet-btn list-carnet-view" onClick={() => navigate(`/Vercarnet`)}>
                   <FaEye /> Ver
                 </button>
                 <button className="list-carnet-btn list-carnet-edit" onClick={() => navigate(`/Editarcarnet`)}>

@@ -1,30 +1,32 @@
 import { createContext, useState, useEffect } from 'react';
 import { loginUser, logoutUser } from '../services/authService.js';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [role, setRole] = useState(null);  // Guardar el rol
+  const [role, setRole] = useState(null); // Guardar el rol
+  const [loading, setLoading] = useState(true); // Añade un estado de carga
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        const decodedToken = jwtDecode(token);  // Decodificar el token
+        const decodedToken = jwtDecode(token); // Decodificar el token
         setUser(decodedToken);
-        setRole(decodedToken.role);  // Guardar el rol del usuario
+        setRole(decodedToken.rol_id); // Guardar el rol del usuario
       } catch (error) {
         console.error('Token inválido');
         logout();
       }
     }
+    setLoading(false); // La verificación inicial ha terminado
   }, []);
 
   const login = async (userData) => {
     try {
-      const {token} = await loginUser(userData);
+      const { token } = await loginUser(userData);
       localStorage.setItem('token', token);
       const decodedToken = jwtDecode(token);
       setUser(decodedToken);
@@ -36,9 +38,11 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     logoutUser();
+    localStorage.removeItem('token'); // Limpia el token al cerrar sesión
     setUser(null);
     setRole(null);
   };
+  
 
   return (
     <AuthContext.Provider value={{ user, role, login, logout }}>
