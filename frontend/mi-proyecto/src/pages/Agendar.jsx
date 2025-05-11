@@ -94,7 +94,7 @@ const CalendarView = () => {
 
     if (data.message === "Cita agendada con exito") {
       Swal.fire({ icon: "success", title: "¡Agenda exitoso!", text: "Cita agendada correctamente", timer: 2000, showConfirmButton: false })
-        .then(() => navigate("/Services"));
+        .then(() => navigate("/"));
     } else {
       Swal.fire({ icon: "error", title: "Error", text: data.message || "Ocurrió un problema al agendar la cita." });
     }
