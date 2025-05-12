@@ -10,7 +10,7 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const token = localStorage.getItem("token");
-  
+
 
   const toggleMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
