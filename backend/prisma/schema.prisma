@@ -84,7 +84,9 @@ model Usuario {
   whatsapp       String?
   direccion      String?
   fecha_registro DateTime
-  rol_id         Int   
+  rol_id         Int 
+  resetToken        String? 
+  resetTokenExpiry  DateTime?  
 
   rol            Rol      @relation(fields: [rol_id], references: [rol_id])
   mascotas      Mascota[]
