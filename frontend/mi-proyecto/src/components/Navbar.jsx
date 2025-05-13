@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Home, Info, Calendar, Syringe, LogIn, User, X, Menu } from "lucide-react";
 import "../estilos css/navbar.css";
 import Swal from "sweetalert2";
+import AuthContext from "../state/AuthContext"; // Importa el AuthContext
 
 const Navbar = () => {
   const location = useLocation();
@@ -10,6 +11,7 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const token = localStorage.getItem("token");
+  const { role } = useContext(AuthContext);
 
 
   const toggleMenu = () => {
@@ -31,6 +33,16 @@ const Navbar = () => {
       navigate(path);
     }
   };
+
+  const getRoleText = () => {
+    if (role === 1) {
+      return "VETERINARIO";
+    } else if (role === 2) {
+      return "CLIENTE";
+    }
+    return ""; // O algún otro valor por defecto si el rol no es 1 ni 2
+  };
+
 
   return (
     <header className="header">
@@ -100,7 +112,7 @@ const Navbar = () => {
               to="/"
               className="nav-link"
               onClick={() => {
-                
+
                 Swal.fire({
                   title: '¿Desea cerrar sesión?',
                   text: 'No podrá acceder a todas las funciones de la aplicación',
@@ -131,7 +143,7 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Icono de usuario (acceso libre o protegido según tu lógica) */}
+      {/* Icono de usuario (acceso libre o protegido según tu lógica, se debe poner abajo del icono el rol que ya viene del token) */}
       <div className="user-menu">
         <Link to={token ? "/profile" : "#"} onClick={(e) => {
           if (!token) {
@@ -145,6 +157,9 @@ const Navbar = () => {
         }}>
           <User size={24} className="user-icon" />
         </Link>
+
+        {/* Esto ya está fuera del <Link>, así se ubica debajo */}
+        {token && <span className="user-role">{getRoleText()}</span>}
       </div>
     </header>
   );

@@ -140,6 +140,14 @@
   animation: slideFadeIn 0.3s ease;
 }
 
+.user-role {
+  font-size: 0.8rem;
+  color: #000;
+
+  text-decoration: none;
+}
+
+
 @keyframes slideFadeIn {
   from {
     opacity: 0;
