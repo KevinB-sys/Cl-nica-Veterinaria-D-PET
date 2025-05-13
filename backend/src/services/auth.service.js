@@ -126,10 +126,26 @@ export const sendPasswordReset = async (email) => {
       to: email,
       subject: "Recuperación de contraseña",
       html: `
-        <h3>Recuperar Contraseña</h3>
-        <p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p>
-        <a href="${resetUrl}">${resetUrl}</a>
-        <p>Este enlace expirará en 1 hora.</p>
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
+          <h2 style="color: #2c3e50; text-align: center;">🔐 Recuperación de Contraseña</h2>
+          <p style="font-size: 16px; color: #333;">
+            Recibimos una solicitud para restablecer tu contraseña. Haz clic en el siguiente botón para continuar con el proceso:
+          </p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${resetUrl}" style="background-color: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+              Restablecer Contraseña
+            </a>
+          </div>
+          <p style="font-size: 14px; color: #666;">
+            Si el botón no funciona, copia y pega el siguiente enlace en tu navegador:
+          </p>
+          <p style="word-break: break-all; font-size: 14px; color: #007bff;">
+            <a href="${resetUrl}" style="color: #007bff;">${resetUrl}</a>
+          </p>
+          <p style="font-size: 14px; color: #999; margin-top: 30px;">
+            Este enlace expirará en 1 hora. Si no solicitaste este cambio, puedes ignorar este mensaje.
+          </p>
+        </div>
       `,
     });
 
