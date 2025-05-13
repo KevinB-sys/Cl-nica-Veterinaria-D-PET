@@ -1,13 +1,21 @@
 import { useState } from "react";
 import "../estilos css/recuperacion.css"; // Asegúrate de que la ruta sea correcta
+import Swal from "sweetalert2";
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Aquí haces la petición al backend para enviar el email
+        if (!email) return;
+
+        // Simular envío
         console.log("Email enviado:", email);
+        Swal.fire({
+            icon: 'success',
+            title: 'Correo enviado',
+            text: 'Revisa tu bandeja de entrada para restablecer tu contraseña.',
+        });
     };
 
     return (
