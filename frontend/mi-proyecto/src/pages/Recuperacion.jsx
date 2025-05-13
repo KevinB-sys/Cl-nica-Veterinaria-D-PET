@@ -1,21 +1,46 @@
 import { useState } from "react";
-import "../estilos css/recuperacion.css"; // Asegúrate de que la ruta sea correcta
+import "../estilos css/recuperacion.css";
 import Swal from "sweetalert2";
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!email) return;
 
-        // Simular envío
-        console.log("Email enviado:", email);
-        Swal.fire({
-            icon: 'success',
-            title: 'Correo enviado',
-            text: 'Revisa tu bandeja de entrada para restablecer tu contraseña.',
-        });
+        setLoading(true);
+
+        try {
+            const response = await fetch("http://localhost:5000/auth/forgot-password", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Correo enviado",
+                    text: data.message || "Revisa tu bandeja de entrada para restablecer tu contraseña.",
+                });
+            } else {
+                throw new Error(data.message || "Error al enviar el correo");
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: error.message,
+            });
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -41,8 +66,8 @@ export default function ForgotPassword() {
                     />
                 </div>
 
-                <button type="submit" className="btn-recuperacion">
-                    Enviar enlace
+                <button type="submit" className="btn-recuperacion" disabled={loading}>
+                    {loading ? "Enviando..." : "Enviar enlace"}
                 </button>
             </form>
         </div>
