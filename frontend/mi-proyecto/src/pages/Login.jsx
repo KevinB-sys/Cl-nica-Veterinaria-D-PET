@@ -13,37 +13,79 @@ const Login = () => {
   const navigate = useNavigate(); // Hook para redirigir
   // const {login } = useContext(AuthContext); // Obtener la función de login del contexto
   const [showPassword, setShowPassword] = useState(false);
+  //Para validar un couldant 
+  const [loginAttempts, setLoginAttempts] = useState(0);
+  const [isLocked, setIsLocked] = useState(false);
+  const [lockTime, setLockTime] = useState(30); // en segundos
   // Función para manejar el login
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (isLocked) {
+      Swal.fire({
+        icon: "warning",
+        title: "Demasiados intentos",
+        text: `Espere ${lockTime} segundos para volver a intentar.`,
+      });
+      return;
+    }
+
     try {
-      const data = await loginUser({ email, password }); // Llamar a la función de login
-      console.log(data);
+      const data = await loginUser({ email, password });
 
       if (data.state !== "success") {
+        const newAttempts = loginAttempts + 1;
+        setLoginAttempts(newAttempts);
+
+        if (newAttempts >= 4) {
+          setIsLocked(true);
+          Swal.fire({
+            icon: "error",
+            title: "Demasiados intentos fallidos",
+            text: `Espere ${lockTime} segundos para intentar de nuevo.`,
+          });
+
+          // Temporizador para desbloquear
+          let remaining = lockTime;
+          const interval = setInterval(() => {
+            remaining--;
+            setLockTime(remaining);
+
+            if (remaining <= 0) {
+              clearInterval(interval);
+              setIsLocked(false);
+              setLoginAttempts(0);
+              setLockTime(30); // reiniciar tiempo de espera
+            }
+          }, 1000);
+
+          return;
+        }
+
         Swal.fire({
-          icon: "error", // Cambié 'faild' por 'error'
+          icon: "error",
           title: "Credenciales incorrectas",
-          text: "Intente de nuevo",
-        }); // Muestra el error si las credenciales son incorrectas
+          text: `Intento ${newAttempts} de 4`,
+        });
+
         return;
       }
-      localStorage.setItem("token", data.token);  // Suponiendo que el token viene en data.token
+
+      // Login exitoso
+      localStorage.setItem("token", data.token);
       Swal.fire({
-        icon: "success", // Ahora muestra un icono de éxito
+        icon: "success",
         title: "¡Inicio de sesión exitoso!",
         text: "Bienvenido, redirigiendo al Inicio...",
-        timer: 2000, // El mensaje se cierra automáticamente después de 2 segundos
-        showConfirmButton: false, // No muestra el botón de confirmación
-        
+        timer: 2000,
+        showConfirmButton: false,
       });
-      setTimeout(() => {
-        navigate("/"); // Redirigir a la página principal
-         window.location.reload(); // Recargar la página
-      }, 2000); // Espera 2 segundos antes de redirigir
 
-    // eslint-disable-next-line no-unused-vars
+      setTimeout(() => {
+        navigate("/");
+        window.location.reload();
+      }, 2000);
+
     } catch (error) {
       alert("Error en el servidor");
     }
@@ -96,7 +138,7 @@ const Login = () => {
             ¿No tienes una cuenta? <Link to="/Registro">Crear cuenta</Link>
           </p>
           <p className="register-password">
-          <Link to="/Recuperacion">¿Olvidó su contraseña?</Link>
+            <Link to="/Recuperacion">¿Olvidó su contraseña?</Link>
           </p>
         </div>
       </div>
