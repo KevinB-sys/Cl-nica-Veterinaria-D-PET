@@ -29,6 +29,11 @@ const Servicios = () => {
             <h3>Visualizar calendario</h3>
             <p>Mantén actualizado tu calendario.</p>
           </div>
+          <div className="service-card" onClick={() => navigate('/Administrar')}>
+            <img src="https://img.freepik.com/vector-premium/concepto-inversion_118813-2769.jpg" alt="Vacunación" />
+            <h3>Administrar</h3>
+            <p>Cambio de opciones y creación de cuentas para veterinarios</p>
+          </div>
         </div>
       </div>
     </div>
