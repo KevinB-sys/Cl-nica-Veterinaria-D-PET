@@ -24,7 +24,7 @@ export const createNewUsuario = async (data) => {
       whatsapp,
       direccion,
       fecha_registro: now,
-      rol_id: 4
+      rol_id: 2, // Valor predeterminado de rol cliente
     },
   });
   
