@@ -13,7 +13,7 @@ const PrivateRoute = ({ children, allowedRoles }) => {
       // pero su rol no está incluido, mostramos la Sweet Alert y redirigimos.
       Swal.fire({
         title: 'Acceso Denegado',
-        text: 'Solo el veterinario tiene permiso para acceder a esta página.',
+        text: 'No tienes permiso para acceder a esta página.',
         icon: 'warning',
         confirmButtonText: 'Ir al Inicio'
       }).then(() => {

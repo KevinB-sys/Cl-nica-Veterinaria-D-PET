@@ -40,7 +40,7 @@ const Navbar = () => {
     } else if (role === 2) {
       return "CLIENTE";
     }
-    return ""; // O algún otro valor por defecto si el rol no es 1 ni 2
+    return "ADMIN"; // O algún otro valor por defecto si el rol no es 1 ni 2
   };
 
 

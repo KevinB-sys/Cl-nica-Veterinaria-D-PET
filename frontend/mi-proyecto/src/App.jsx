@@ -33,26 +33,26 @@ const App = () => {
           <Route
             path="/services"
             element={
-              <PrivateRoute allowedRoles={[1]}>
+              <PrivateRoute allowedRoles={[1, 3]}>
                 <Services />
               </PrivateRoute>
             }
           />
-          <Route path="/Agendar" element={<PrivateRoute allowedRoles={[1, 2]}><Agendar /></PrivateRoute>} />
+          <Route path="/Agendar" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Agendar /></PrivateRoute>} />
           <Route path="/Login" element={<Login />} />
           <Route path="/Registro" element={<Registro />} />
           {/* Rutas de Carnet protegidas para administradores (rol_id: 1) */}
-          <Route path="/Carnet" element={<PrivateRoute allowedRoles={[1]}><Carnet /></PrivateRoute>} />
-          <Route path="/CrearCarnet" element={<PrivateRoute allowedRoles={[1]}><CrearCarnet /></PrivateRoute>} />
-          <Route path="/ListarCarnet" element={<PrivateRoute allowedRoles={[1, 2]}><ListarCarnet /></PrivateRoute>} />
-          <Route path="/Vercarnet" element={<PrivateRoute allowedRoles={[1, 2]}><Vercarnet /></PrivateRoute>} />
-          <Route path="/Editarcarnet" element={<PrivateRoute allowedRoles={[1]}><Editarcarnet /></PrivateRoute>} />
-          <Route path="/Calendario" element={<PrivateRoute allowedRoles={[1, 2]}><Calendario /></PrivateRoute>} />
-          <Route path="/Addcarnet" element={<PrivateRoute allowedRoles={[1]}><Addcarnet /></PrivateRoute>} />
-          <Route path="/Profile" element={<PrivateRoute allowedRoles={[1, 2]}><Profile /></PrivateRoute>} />
+          <Route path="/Carnet" element={<PrivateRoute allowedRoles={[1, 3]}><Carnet /></PrivateRoute>} />
+          <Route path="/CrearCarnet" element={<PrivateRoute allowedRoles={[1, 3]}><CrearCarnet /></PrivateRoute>} />
+          <Route path="/ListarCarnet" element={<PrivateRoute allowedRoles={[1, 2, 3]}><ListarCarnet /></PrivateRoute>} />
+          <Route path="/Vercarnet" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Vercarnet /></PrivateRoute>} />
+          <Route path="/Editarcarnet" element={<PrivateRoute allowedRoles={[1, 3]}><Editarcarnet /></PrivateRoute>} />
+          <Route path="/Calendario" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Calendario /></PrivateRoute>} />
+          <Route path="/Addcarnet" element={<PrivateRoute allowedRoles={[1, 3]}><Addcarnet /></PrivateRoute>} />
+          <Route path="/Profile" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Profile /></PrivateRoute>} />
           <Route path="/Recuperacion" element={<Recuperacion />} /> {/* La recuperación usualmente es pública */}
           <Route path="/Reset" element={<Reset />} /> {/* Ruta para restablecer la contraseña */}
-          <Route path="/RegistrarVet" element={<PrivateRoute allowedRoles={[1]}><RegistrarVet /></PrivateRoute>} />
+          <Route path="/RegistrarVet" element={<PrivateRoute allowedRoles={[3]}><RegistrarVet /></PrivateRoute>} />
 
         </Route>
       </Routes>
