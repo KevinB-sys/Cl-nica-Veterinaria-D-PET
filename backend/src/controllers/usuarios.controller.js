@@ -1,4 +1,4 @@
-import { getAllUsuarios, createNewUsuario } from "../services/usuarios.service.js";
+import { getAllUsuarios, createNewUsuario, getUsuarioById, updateUsuario } from "../services/usuarios.service.js";
 
 export const getUsuarios = async (req, res) => {
   try {
@@ -17,3 +17,34 @@ export const createUsuario = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+export const getUsuario = async (req, res) => {
+  try {
+    const { id } = req.params; // Obtenemos el 'id' de los parámetros de la ruta
+    const usuario = await getUsuarioById(id);
+
+    if (usuario) {
+      res.json(usuario);
+    } else {
+      res.status(404).json({ message: "Usuario no encontrado" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const updateUsuarioController = async (req, res) => {
+  try {
+    const { id } = req.params; // Obtenemos el 'id' de los parámetros de la ruta
+    const usuarioActualizado = await updateUsuario(id, req.body);
+
+    if (usuarioActualizado) {
+      res.json({ message: "Usuario actualizado correctamente", data: usuarioActualizado });
+    } else {
+      res.status(404).json({ message: "Usuario no encontrado" });
+    }
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
