@@ -86,7 +86,19 @@ const UserProfile = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUsuario({ ...usuario, [name]: value });
+    if (name === 'telefono') {
+      const onlyNums = value.replace(/[^0-9]/g, '');
+      if (value !== onlyNums) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Solo números',
+          text: 'Por favor, ingresa solo números en el campo de teléfono.',
+        });
+      }
+      setUsuario({ ...usuario, [name]: onlyNums });
+    } else {
+      setUsuario({ ...usuario, [name]: value });
+    }
   };
 
   const handleGuardar = async () => {
