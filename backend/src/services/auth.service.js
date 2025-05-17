@@ -101,15 +101,7 @@ export const sendPasswordReset = async (email) => {
       },
     });
 
-    console.log("Configurando transporter...");
-    // const transporter = nodemailer.createTransport({
-    //   host: process.env.EMAIL_HOST,
-    //   port: process.env.EMAIL_PORT,
-    //   auth: {
-    //     user: process.env.EMAIL_USER,
-    //     pass: process.env.EMAIL_PASS,
-    //   },
-    // });
+    //Para pruebas
     var transporter = nodemailer.createTransport({
       host: "sandbox.smtp.mailtrap.io",
       port: 588, // Puerto correcto para STARTTLS
@@ -119,6 +111,17 @@ export const sendPasswordReset = async (email) => {
         pass: "1953c42fef8962"   // Tu contraseña
       }
     });
+   //Para ambiente de produccion
+    // var transporter = nodemailer.createTransport({
+    //   host: 'smtp.gmail.com',
+    //   port: 587,            // O 587
+    //   secure: false,         // true para puerto 465, false para 587 con STARTTLS
+    //   auth: {
+    //     user: 'veterinaria.dpet.ec@gmail.com',
+    //     pass: 'qnifxgycgnaoxhgg'
+    //   }
+    // });
+
     const resetUrl = `http://localhost:5173/Reset?token=${token}`;
     console.log("Enviando correo...");
     await transporter.sendMail({
