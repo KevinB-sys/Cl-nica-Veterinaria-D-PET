@@ -29,10 +29,15 @@ const Servicios = () => {
             <h3>Visualizar calendario</h3>
             <p>Mantén actualizado tu calendario.</p>
           </div>
+          <div className="service-card" onClick={() => navigate('/RegistrarVet')}>
+            <img src="https://img.freepik.com/vector-gratis/ilustracion-dibujos-animados-veterinario-dibujado-mano_23-2150738482.jpg" alt="Vacunación" />
+            <h3>Registrar Veterinario</h3>
+            <p>Crea cuenta para tus veterinarios</p>
+          </div>
           <div className="service-card" onClick={() => navigate('/Administrar')}>
             <img src="https://img.freepik.com/vector-premium/concepto-inversion_118813-2769.jpg" alt="Vacunación" />
             <h3>Administrar</h3>
-            <p>Cambio de opciones y creación de cuentas para veterinarios</p>
+            <p>Cambio de opciones del aplicativo</p>
           </div>
         </div>
       </div>

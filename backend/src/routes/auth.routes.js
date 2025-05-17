@@ -1,5 +1,5 @@
 import express from "express";
-import { registerUsuario, loginUsuario, enviarCorreoRecuperacion, restablecerContrasena } from "../controllers/auth.controller.js";
+import { registerUsuario, loginUsuario, registerVeterinario, enviarCorreoRecuperacion, restablecerContrasena } from "../controllers/auth.controller.js";
 import { body } from "express-validator";
 import { handleInputErrors } from "../middlewares/handleInputErrors.js";
 
@@ -15,6 +15,16 @@ router.post(
   ],
   handleInputErrors,
   registerUsuario
+);
+router.post(
+  "/registerveterinario",
+  [
+    body("nombre").notEmpty().withMessage("El nombre es obligatorio"),
+    body("email").isEmail().withMessage("Debe ser un email válido"),
+    body("password").isLength({ min: 6 }).withMessage("La contraseña debe tener al menos 6 caracteres"),
+  ],
+  handleInputErrors,
+  registerVeterinario
 );
 
 // 📌 Ruta para loguear usuario

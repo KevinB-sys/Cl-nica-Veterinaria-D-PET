@@ -1,4 +1,4 @@
-import { loginUser, register, sendPasswordReset, resetPassword } from "../services/auth.service.js";
+import { loginUser, register, registerVet, sendPasswordReset, resetPassword } from "../services/auth.service.js";
 
 // 📌 REGISTRAR USUARIO
 export const registerUsuario = async (req, res) => {
@@ -14,6 +14,24 @@ export const registerUsuario = async (req, res) => {
     // Si hay un error, lo manejamos aquí
     res.status(500).json({
       message: "Error al registrar usuario",
+      error: error.message,
+      state: "error",
+    });
+  }
+};
+export const registerVeterinario = async (req, res) => {
+  try {
+    const newUser = await registerVet(req.body); // Esperamos la respuesta del servicio
+
+    // Si se registra correctamente, respondemos al cliente
+    res.status(201).json({
+      message: "Veterinario registrado con éxito",
+      state: "success"
+    });
+  } catch (error) {
+    // Si hay un error, lo manejamos aquí
+    res.status(500).json({
+      message: "Error al registrar veterinario",
       error: error.message,
       state: "error",
     });

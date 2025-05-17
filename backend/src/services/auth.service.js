@@ -45,6 +45,42 @@ export const register = async (data) => {
   }
 };
 
+export const registerVet = async (data) => {
+  const { nombre, email, password, telefono, whatsapp, direccion } = data;
+
+  try {
+    // Verificar si el usuario ya existe
+    const existingUser = await prisma.usuario.findUnique({ where: { email } });
+    if (existingUser) {
+      throw new Error("El correo ya está registrado");
+    }
+
+    const usuarioId = uuidv4();
+
+    // Hashear la contraseña
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Crear usuario en la base de datos
+    const nuevoUsuario = await prisma.usuario.create({
+      data: {
+        usuario_id: usuarioId,
+        nombre,
+        email,
+        password: hashedPassword,
+        telefono,
+        whatsapp,
+        direccion,
+        fecha_registro: new Date(),
+        rol_id: 1, // Valor predeterminado de rol veterinario
+      },
+    });
+
+    return nuevoUsuario; // Devuelves el nuevo usuario creado
+  } catch (error) {
+    throw new Error(error.message || "Error al registrar el veterinario");
+  }
+};
+
 export const loginUser = async (data) => {
   const { email, password } = data;
 
