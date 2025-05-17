@@ -13,9 +13,39 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordValidation, setPasswordValidation] = useState({
+    length: false,
+    uppercase: false,
+    specialChar: false,
+  });
+
+  const validatePassword = (password) => {
+    const length = password.length >= 6;
+    const uppercase = /[A-Z]/.test(password);
+    const specialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    setPasswordValidation({ length, uppercase, specialChar });
+  };
+
+  const handleNewPasswordChange = (e) => {
+    const { value } = e.target;
+    setNewPassword(value);
+    validatePassword(value);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const { length, uppercase, specialChar } = passwordValidation;
+    if (!length || !uppercase || !specialChar) {
+      Swal.fire({
+        icon: "error",
+        title: "Contraseña insegura",
+        text: "La contraseña debe tener al menos 6 caracteres, una mayúscula y un carácter especial.",
+        confirmButtonColor: '#2c2c6c'
+      });
+      return; // No continúa si la contraseña es insegura
+    }
 
     if (newPassword !== confirmPassword) {
       Swal.fire({
@@ -80,7 +110,7 @@ const ResetPassword = () => {
               type={showNewPassword ? "text" : "password"}
               id="newPassword"
               value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
+              onChange={handleNewPasswordChange}
               required
             />
             <span
@@ -90,6 +120,17 @@ const ResetPassword = () => {
               {showNewPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
+          <ul className="password-checklist">
+            <li className={passwordValidation.length ? "valid" : "invalid"}>
+              Mínimo 6 caracteres
+            </li>
+            <li className={passwordValidation.uppercase ? "valid" : "invalid"}>
+              Al menos una letra mayúscula
+            </li>
+            <li className={passwordValidation.specialChar ? "valid" : "invalid"}>
+              Al menos un carácter especial (!@#$%)
+            </li>
+          </ul>
         </div>
 
         <div className="reset_group">
