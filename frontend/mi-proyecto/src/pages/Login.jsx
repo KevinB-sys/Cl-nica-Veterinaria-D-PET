@@ -86,6 +86,7 @@ const Login = () => {
         window.location.reload();
       }, 2000);
 
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       alert("Error en el servidor");
     }

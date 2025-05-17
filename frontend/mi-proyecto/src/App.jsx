@@ -19,6 +19,7 @@ import Addcarnet from './pages/Addcarnet';
 import Profile from './pages/Profile';
 import ReactModal from "react-modal";
 import Recuperacion from './pages/Recuperacion';
+import Reset from './pages/Reset'; // Asegúrate de que la ruta sea correcta
 
 const App = () => {
   return (
@@ -49,6 +50,7 @@ const App = () => {
           <Route path="/Addcarnet" element={<PrivateRoute allowedRoles={[1]}><Addcarnet /></PrivateRoute>} />
           <Route path="/Profile" element={<PrivateRoute allowedRoles={[1, 2]}><Profile /></PrivateRoute>} />
           <Route path="/Recuperacion" element={<Recuperacion />} /> {/* La recuperación usualmente es pública */}
+          <Route path="/Reset" element={<Reset />} /> {/* Ruta para restablecer la contraseña */}
         </Route>
       </Routes>
     </Router>
