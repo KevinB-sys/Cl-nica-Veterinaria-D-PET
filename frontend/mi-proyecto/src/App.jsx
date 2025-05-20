@@ -21,6 +21,7 @@ import ReactModal from "react-modal";
 import Recuperacion from './pages/Recuperacion';
 import Reset from './pages/Reset'; // Asegúrate de que la ruta sea correcta
 import RegistrarVet from'./pages/RegistrarVet';
+import Administrar from './pages/Administrar';
 
 const App = () => {
   return (
@@ -53,6 +54,7 @@ const App = () => {
           <Route path="/Recuperacion" element={<Recuperacion />} /> {/* La recuperación usualmente es pública */}
           <Route path="/Reset" element={<Reset />} /> {/* Ruta para restablecer la contraseña */}
           <Route path="/RegistrarVet" element={<PrivateRoute allowedRoles={[3]}><RegistrarVet /></PrivateRoute>} />
+          <Route path="/Administrar" element={<PrivateRoute allowedRoles={[3]}><Administrar /></PrivateRoute>} />
 
         </Route>
       </Routes>
