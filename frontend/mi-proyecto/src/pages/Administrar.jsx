@@ -3,8 +3,9 @@ import "../estilos css/administrar.css";
 
 const AdminSettingsPage = () => {
     const [settings, setSettings] = useState({
-        maxLoginAttempts: 5,
-        lockoutDuration: 15,
+        maxLoginAttempts: 4,
+        lockoutDuration: 0.5,
+        lockout: 60,
         siteName: "D'PET",
         maintenanceMode: false,
     });
@@ -60,6 +61,17 @@ const AdminSettingsPage = () => {
                         id="lockoutDuration"
                         name="lockoutDuration"
                         value={settings.lockoutDuration}
+                        onChange={handleChange}
+                        min="1"
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="lockoutDuration">Tiempo valido de cambio de contraseña (minutos)</label>
+                    <input
+                        type="number"
+                        id="lockoutDuration"
+                        name="lockoutDuration"
+                        value={settings.lockout}
                         onChange={handleChange}
                         min="1"
                     />
