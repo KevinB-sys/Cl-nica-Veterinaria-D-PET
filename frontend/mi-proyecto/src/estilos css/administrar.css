@@ -1,54 +1,107 @@
+/* Contenedor principal */
 .admin-container {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 40px 40px;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  margin-top: 3cm;
-  margin-bottom: 1cm;
+    max-width: 600px;
+    margin: 100px auto;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    font-family: Arial, sans-serif;
 }
 
-.logo-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 30px;
-}
-
-.admin-logo {
-  width: 140px;
-  height: auto;
-}
-
+/* Título */
 .admin-title {
-  font-size: 24px;
-  margin-bottom: 25px;
-  color: #2c2c6c;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 25px;
+    color: #2c2c6c;
 }
 
+/* Grupo de campos */
 .admin-form .form-group {
-  margin-bottom: 20px;
-  text-align: left;
+    margin-bottom: 20px;
 }
 
 .admin-form label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: bold;
-  color: #333;
+    display: block;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 6px;
 }
 
+/* Inputs */
 .admin-form input[type="text"],
 .admin-form input[type="number"] {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
 }
 
-/* Botones */
+/* Checkbox alineado */
+.form-group.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #555;
+}
+
+/* Botón */
+.form-actions {
+    text-align: right;
+    margin-top: 30px;
+}
+
+.form-actions button {
+    width: 100%;
+    padding: 12px;
+    background: #2c2c6c;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+.login-image img {
+  width: 120px;
+  /* Tamaño adecuado */
+  height: auto;
+  margin-bottom: 15px;
+}
+
+.form-actions button:hover {
+    background: #a7a7da;
+    transform: scale(1.03);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .admin-container {
+        width: 85%;
+        padding: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-container {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .admin-title {
+        font-size: 1.5rem;
+    }
+
+    .form-actions button {
+        font-size: 1rem;
+    }
+}
+
 .form-actions {
   display: flex;
   justify-content: center;
@@ -56,6 +109,7 @@
   margin-top: 25px;
 }
 
+/* Botón de guardar */
 .save-button {
   padding: 12px 24px;
   background: #2c2c6c;
@@ -72,14 +126,16 @@
   transform: scale(1.05);
 }
 
+/* Botón de cancelar (color medio rojizo) */
 .cancel-button {
   display: inline-block;
   padding: 12px 24px;
-  background: #f44336;
+  background: #f44336; /* medio rojizo */
   color: white;
   font-size: 1.1rem;
   text-align: center;
   text-decoration: none;
+  border: none;
   border-radius: 8px;
   transition: background 0.3s, transform 0.2s;
 }
@@ -88,3 +144,11 @@
   background: #a33a3a;
   transform: scale(1.05);
 }
+ .logimage{
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  margin-left: 100px;
+ }

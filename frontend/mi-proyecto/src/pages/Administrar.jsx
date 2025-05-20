@@ -25,12 +25,8 @@ const AdminSettingsPage = () => {
 
     return (
         <div className="admin-container">
-            <div className="logo-container">
-                <img
-                    src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh8Hz0UUXxZm21BEiTgWaMMgmjHU0AKmWpwLck_ucBy2J0a2MlNaZbEeQ74sc_2-zxiqEPp3wpx43jHoEqKCWbbuwSXwSv3ihs9R2fSSh5K7-5nWVYtT6gSPG30_9qUoAZeFld2uCRcGiRmh8UD5QUH_jEzOGDncZluQbi6pnmYdjVDZIM0vmHDhetO0xE/s320/logo.png"
-                    alt="Login"
-                    className="admin-logo"
-                />
+            <div className="logimage">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh8Hz0UUXxZm21BEiTgWaMMgmjHU0AKmWpwLck_ucBy2J0a2MlNaZbEeQ74sc_2-zxiqEPp3wpx43jHoEqKCWbbuwSXwSv3ihs9R2fSSh5K7-5nWVYtT6gSPG30_9qUoAZeFld2uCRcGiRmh8UD5QUH_jEzOGDncZluQbi6pnmYdjVDZIM0vmHDhetO0xE/s320/logo.png" alt="Login" />
             </div>
             <h2 className="admin-title">Configuración del Sitio</h2>
             <form onSubmit={handleSubmit} className="admin-form">
@@ -68,10 +64,9 @@ const AdminSettingsPage = () => {
                         min="1"
                     />
                 </div>
-
-                <div className="form-actions">
-                    <button type="submit" className="save-button">Guardar cambios</button>
-                    <a href="/" className="cancel-button">Cancelar</a>
+                <div class="form-actions">
+                    <button type="submit" class="save-button">Guardar cambios</button>
+                    <a href="/" class="cancel-button">Cancelar</a>
                 </div>
             </form>
         </div>
