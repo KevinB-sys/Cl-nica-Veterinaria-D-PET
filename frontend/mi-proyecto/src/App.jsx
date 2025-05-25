@@ -22,6 +22,7 @@ import Recuperacion from './pages/Recuperacion';
 import Reset from './pages/Reset'; // Asegúrate de que la ruta sea correcta
 import RegistrarVet from'./pages/RegistrarVet';
 import Administrar from './pages/Administrar';
+import Horario from './pages/Horario';
 
 const App = () => {
   return (
@@ -55,6 +56,7 @@ const App = () => {
           <Route path="/Reset" element={<Reset />} /> {/* Ruta para restablecer la contraseña */}
           <Route path="/RegistrarVet" element={<PrivateRoute allowedRoles={[3]}><RegistrarVet /></PrivateRoute>} />
           <Route path="/Administrar" element={<PrivateRoute allowedRoles={[3]}><Administrar /></PrivateRoute>} />
+          <Route path="/Horario" element={<PrivateRoute allowedRoles={[3]}><Horario /></PrivateRoute>} />
 
         </Route>
       </Routes>

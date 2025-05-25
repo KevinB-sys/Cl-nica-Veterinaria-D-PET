@@ -1,0 +1,184 @@
+/* Contenedor principal del horario */
+.horario-container-veterinaria {
+    padding: 0;
+    max-width: 900px; /* Un poco más ancho como pediste */
+    margin: 3cm auto 0;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    margin-bottom: 2cm;
+    width: 700px;
+}
+
+/* Sección de la imagen de fondo en la parte superior */
+.horario-imagen-fondo {
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+/* Cuerpo del horario (donde va el texto y los botones) */
+.horario-body {
+    padding: 30px;
+}
+
+/* Título de la sección */
+.horario-titulo {
+    margin-top: 0;
+    font-size: 2.2em;
+    color: #2c2c6c; /* Tu color principal */
+    margin-bottom: 10px;
+}
+
+/* Subtítulo de la sección */
+.horario-subtitulo {
+    font-size: 1.1em;
+    color: #4a4a7f; /* Derivado de tu color principal (más claro) */
+    margin-bottom: 30px;
+}
+
+/* Contenedor de la cuadrícula de horas */
+.horas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 12px;
+    margin: 30px 0;
+    justify-content: center;
+}
+
+/* Estilo base de los botones de hora */
+.hora-btn {
+    padding: 12px 10px;
+    border: 1px solid #aeb8c2; /* Gris azulado claro */
+    border-radius: 8px;
+    background-color: #f0f4f8; /* Gris muy claro con un toque azul */
+    color: #4a4a7f; /* Texto azul oscuro (derivado de tu color principal) */
+    font-size: 1.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-weight: 500;
+}
+
+.hora-btn:hover:not(.disabled) {
+    background-color: #e0e6ec; /* Gris azulado más oscuro al pasar el ratón */
+    border-color: #8c9cb3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Estilos para el estado de selección de los botones de hora */
+.hora-btn.inicio-seleccionado,
+.hora-btn.fin-seleccionado {
+    background-color: #2c2c6c; /* Tu color principal para inicio/fin */
+    border-color: #2c2c6c;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(44, 44, 108, 0.3);
+}
+
+.hora-btn.rango-posible {
+    background-color: #8c8cbd; /* Un tono más claro de tu color principal */
+    border-color: #6c6c9a;
+    color: white;
+}
+
+.hora-btn.en-rango-seleccionado {
+    background-color: #5c5ca0; /* Un tono intermedio de tu color principal */
+    border-color: #4c4c8a;
+    color: white;
+}
+
+/* Estilo para los botones de hora deshabilitados */
+.hora-btn.disabled,
+.hora-btn:disabled {
+    background-color: #e9ecef;
+    color: #ced4da;
+    border-color: #e9ecef;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Sección para mostrar la selección actual */
+.seleccion-actual {
+    margin-top: 25px;
+    font-size: 1.1em;
+    color: #4a4a7f; /* Texto azul oscuro (derivado de tu color principal) */
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.seleccion-actual p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.seleccion-actual strong {
+    color: #2c2c6c; /* Tu color principal para resaltar las horas */
+}
+
+/* Contenedor para los botones de acción */
+.horario-acciones {
+    margin-top: 35px;
+    display: flex; /* Para poner los botones en línea */
+    justify-content: center; /* Centrar los botones */
+    gap: 15px; /* Espacio entre los botones */
+}
+
+/* Estilo del botón de guardar/confirmar */
+.guardar-btn {
+    padding: 14px 30px;
+    background-color: #2c2c6c; /* Tu color principal */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s ease;
+    letter-spacing: 0.5px;
+}
+
+.guardar-btn:hover:not(:disabled) {
+    background-color: #1f1f5c; /* Un derivado más oscuro de tu color principal */
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(44, 44, 108, 0.3);
+}
+
+/* Deshabilitar el botón de guardar si no se han seleccionado ambas horas */
+.guardar-btn:disabled {
+    background-color: #aeb8c2; /* Gris azulado para deshabilitado */
+    color: #f0f4f8; /* Texto claro */
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Nuevo estilo para el botón de cancelar */
+.cancelar-btn {
+    padding: 14px 30px;
+    background-color: #f44336; /* Un gris neutro */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s ease;
+    letter-spacing: 0.5px;
+}
+
+.cancelar-btn:hover {
+    background-color: #5a6268; /* Gris más oscuro al pasar el ratón */
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(108, 117, 125, 0.3);
+}
