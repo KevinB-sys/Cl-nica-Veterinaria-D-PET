@@ -39,7 +39,7 @@
 /* Subtítulo de la sección */
 .horario-subtitulo {
     font-size: 1.1em;
-    color: #4a4a7f; /* Derivado de tu color principal (más claro) */
+    color: #000; /* Derivado de tu color principal (más claro) */
     margin-bottom: 30px;
 }
 
@@ -57,8 +57,8 @@
     padding: 12px 10px;
     border: 1px solid #aeb8c2; /* Gris azulado claro */
     border-radius: 8px;
-    background-color: #f0f4f8; /* Gris muy claro con un toque azul */
-    color: #4a4a7f; /* Texto azul oscuro (derivado de tu color principal) */
+    background-color: #f0f4f8d7; /* Gris muy claro con un toque azul */
+    color: #0a0a0a; /* Texto azul oscuro (derivado de tu color principal) */
     font-size: 1.05em;
     cursor: pointer;
     transition: all 0.3s ease;

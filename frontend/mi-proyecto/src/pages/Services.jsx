@@ -39,6 +39,11 @@ const Servicios = () => {
             <h3>Administrar</h3>
             <p>Cambio de opciones del aplicativo</p>
           </div>
+           <div className="service-card" onClick={() => navigate('/Horario')}>
+            <img src="https://i.pinimg.com/736x/9e/17/2f/9e172f641958d16570b5600bcd9dd476.jpg" alt="Horario" />
+            <h3>Horario</h3>
+            <p>Cambia el horario laboral de la veterinaria</p>
+          </div>
         </div>
       </div>
     </div>
