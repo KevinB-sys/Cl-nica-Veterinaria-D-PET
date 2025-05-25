@@ -156,6 +156,8 @@ const CalendarView = () => {
           <p className="selected-date">Fecha seleccionada: <span>{date.toLocaleDateString()}</span></p>
           <p className="selected-time">Hora seleccionada: <span>{time || "No seleccionada"}</span></p>
           <button className="schedule-btn" onClick={handleAgendarCita} disabled={!time}>Agendar</button>
+          <br />
+          <button className="schedule-btn">Administrar Mis Citas</button>
         </div>
       </div>
     </div>
