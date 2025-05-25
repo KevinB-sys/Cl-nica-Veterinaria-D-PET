@@ -7,7 +7,7 @@ export const getAllCitas = async () => {
     });
 };
 export const createNewCita = async (data) => {
-    const { fecha, hora, estado, observaciones } = data;
+    const { fecha, hora, estado, observaciones, usuario_id } = data;
     const CITA_ID = uuidv4();
     return await prisma.cita.create({
       data: {
@@ -15,7 +15,8 @@ export const createNewCita = async (data) => {
         fecha: new Date(fecha),
         hora,
         estado,
-        observaciones
+        observaciones,
+        usuario_id
       },
     });
   

@@ -48,14 +48,12 @@ const CalendarView = () => {
 
     setHorasDisponibles(disponibles);
 
-    // Seleccionar la primera hora disponible automáticamente
     if (disponibles.length > 0) {
       setTime(disponibles[0]);
     } else {
-      setTime(""); // Si no hay horas disponibles, vacía la selección
+      setTime("");
     }
   };
-
 
   const handleAgendarCita = async () => {
     if (!time) {
@@ -63,16 +61,6 @@ const CalendarView = () => {
       return;
     }
 
-    // const confirmResult = await Swal.fire({
-    //   title: "¿Está seguro?",
-    //   text: "¿Desea agendar esta cita?",
-    //   icon: "warning",
-    //   showCancelButton: true,
-    //   confirmButtonColor: "#3085d6",
-    //   cancelButtonColor: "#d33",
-    //   confirmButtonText: "Sí, agendar",
-    //   cancelButtonText: "No, cancelar",
-    // });
     const fechaFormateada = date.toLocaleDateString();
     const textoConfirmacion = `¿Desea agendar esta cita el día ${fechaFormateada} a las ${time}?`;
 
@@ -89,7 +77,27 @@ const CalendarView = () => {
 
     if (!confirmResult.isConfirmed) return;
 
-    const citaData = { fecha: date.toISOString().split("T")[0], hora: time, observaciones: observacion };
+    // Obtener el usuario_id desde el token
+    const token = localStorage.getItem("token");
+    let usuario_id = null;
+
+    if (token) {
+      try {
+        const payloadBase64 = token.split(".")[1];
+        const decodedPayload = JSON.parse(atob(payloadBase64));
+        usuario_id = decodedPayload.usuario_id;
+      } catch (error) {
+        console.error("Error al decodificar el token:", error);
+      }
+    }
+
+    const citaData = {
+      fecha: date.toISOString().split("T")[0],
+      hora: time,
+      observaciones: observacion,
+      usuario_id: usuario_id
+    };
+
     const data = await agendarcita(citaData);
 
     if (data.message === "Cita agendada con exito") {
@@ -108,7 +116,6 @@ const CalendarView = () => {
           <img src="https://st.depositphotos.com/2398521/2630/i/450/depositphotos_26307249-stock-photo-guilty-dog-on-white.jpg" alt="Mascota" />
         </div>
         <div className="calendar-container">
-          {/* <Calendar onChange={setDate} value={date} className="custom-calendar" /> */}
           <Calendar
             onChange={setDate}
             value={date}
@@ -123,7 +130,7 @@ const CalendarView = () => {
             }}
           />
           <div className="time-selector">
-            <label >Horas disponibles:</label>
+            <label>Horas disponibles:</label>
             {horasDisponibles.length > 0 ? (
               <div className="time-buttons">
                 {horasDisponibles.map((hora) => (
@@ -138,7 +145,13 @@ const CalendarView = () => {
           </div>
           <div className="observation-input">
             <label htmlFor="observacion">Observaciones:</label>
-            <input type="text" id="observacion" value={observacion} onChange={(e) => setObservacion(e.target.value)} placeholder="Ej: Atención general, Peluquería, Vacunación" />
+            <input
+              type="text"
+              id="observacion"
+              value={observacion}
+              onChange={(e) => setObservacion(e.target.value)}
+              placeholder="Ej: Atención general, Peluquería, Vacunación"
+            />
           </div>
           <p className="selected-date">Fecha seleccionada: <span>{date.toLocaleDateString()}</span></p>
           <p className="selected-time">Hora seleccionada: <span>{time || "No seleccionada"}</span></p>
