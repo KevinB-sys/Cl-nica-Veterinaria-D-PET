@@ -21,9 +21,9 @@ export const getCitasByUser = async (req, res) => {
     try {
         const { usuario_id } = req.params; // Obtenemos el usuario_id de los parámetros de la URL
         const citas = await getCitasByUserId(usuario_id);
-        if (citas.length === 0) {
-            return res.status(404).json({ message: "No se encontraron citas para este usuario." });
-        }
+        // if (citas.length === 0) {
+        //     return res.status(404).json({ message: "No se encontraron citas para este usuario." });
+        // }
         res.json(citas);
     } catch (error) {
         res.status(500).json({ message: error.message });
