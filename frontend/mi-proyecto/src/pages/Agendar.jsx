@@ -13,7 +13,8 @@ const CalendarView = () => {
   const [time, setTime] = useState("");
   const [observacion, setObservacion] = useState("");
   const [citas, setCitas] = useState([]);
-  const [horasDisponibles, setHorasDisponibles] = useState([]);
+  // Ahora este estado solo guardará las horas que realmente están disponibles para selección
+  const [horasDisponiblesParaSeleccion, setHorasDisponiblesParaSeleccion] = useState([]);
   const navigate = useNavigate();
   const manejarClick = () => {
     navigate('/citas');
@@ -36,32 +37,106 @@ const CalendarView = () => {
   }, [date, citas]);
 
   const actualizarHorasDisponibles = (fechaSeleccionada) => {
-    const fechaString = new Date(fechaSeleccionada.getTime() - fechaSeleccionada.getTimezoneOffset() * 60000)
-      .toISOString()
-      .split("T")[0];
-    const horas = [
+    const ALL_POSSIBLE_HOURS = [
       "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
       "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM"
     ];
 
+    // Ajustamos la fecha seleccionada a las 00:00:00 para comparación solo por día
+    const selectedDateAtMidnight = new Date(fechaSeleccionada);
+    selectedDateAtMidnight.setHours(0, 0, 0, 0);
+
+    const now = new Date(); // Hora actual precisa
+    const todayAtMidnight = new Date(now);
+    todayAtMidnight.setHours(0, 0, 0, 0);
+
+    // Helper para convertir AM/PM a 24h y obtener un objeto Date para comparación
+    const parseTimeToDate = (timeStr, baseDate) => {
+      const [time, modifier] = timeStr.split(' ');
+      let [hours, minutes] = time.split(':').map(Number);
+
+      if (modifier === 'PM' && hours < 12) {
+        hours += 12;
+      } else if (modifier === 'AM' && hours === 12) { // 12 AM (medianoche)
+        hours = 0;
+      }
+
+      const d = new Date(baseDate); // Usar la baseDate para mantener el día, mes, año
+      d.setHours(hours, minutes, 0, 0);
+      return d;
+    };
+
+    const fechaStringISO = new Date(fechaSeleccionada.getTime() - fechaSeleccionada.getTimezoneOffset() * 60000)
+      .toISOString()
+      .split("T")[0];
+
     const horasOcupadas = citas
-      .filter((cita) => cita.fecha.split("T")[0] === fechaString)
+      .filter((cita) => cita.fecha.split("T")[0] === fechaStringISO)
       .map((cita) => cita.hora);
 
-    const disponibles = horas.filter((hora) => !horasOcupadas.includes(hora));
+    // FILTRADO INICIAL: Solo pasamos las horas que no están ocupadas ni en el pasado
+    let horasFiltradas = ALL_POSSIBLE_HOURS.filter(hora => {
+      const isOccupied = horasOcupadas.includes(hora);
+      let isPast = false;
 
-    setHorasDisponibles(disponibles);
+      if (selectedDateAtMidnight.getTime() === todayAtMidnight.getTime()) {
+        const horaCitaCompleta = parseTimeToDate(hora, now);
+        isPast = horaCitaCompleta.getTime() <= now.getTime();
+      }
 
-    if (disponibles.length > 0) {
-      setTime(disponibles[0]);
-    } else {
-      setTime("");
+      return !isOccupied && !isPast; // Solo se incluyen las que NO están ocupadas y NO han pasado
+    });
+
+    setHorasDisponiblesParaSeleccion(horasFiltradas); // Guardamos solo las horas realmente seleccionables
+
+    // Ajusta la hora seleccionada si la actual ya no está disponible
+    if (!horasFiltradas.includes(time)) {
+      setTime(horasFiltradas.length > 0 ? horasFiltradas[0] : "");
     }
   };
 
   const handleAgendarCita = async () => {
     if (!time) {
       Swal.fire({ icon: "error", title: "Error", text: "Debe seleccionar una hora." });
+      return;
+    }
+
+    // Validación FINAL justo antes de agendar (clave para la robustez)
+    const now = new Date();
+    const selectedDateTime = new Date(date);
+    const [selectedHour, selectedMinute] = time.split(':').map(Number);
+    let finalHour = selectedHour;
+    let finalMinute = selectedMinute;
+    const modifier = time.includes('PM') ? 'PM' : 'AM';
+
+    if (modifier === 'PM' && finalHour < 12) {
+      finalHour += 12;
+    } else if (modifier === 'AM' && finalHour === 12) {
+      finalHour = 0;
+    }
+    selectedDateTime.setHours(finalHour, finalMinute, 0, 0);
+
+    // Re-chequear si la hora ya pasó (hora o fecha)
+    if (selectedDateTime.getTime() <= now.getTime()) {
+      Swal.fire({
+        icon: "error",
+        title: "Hora no válida",
+        text: "No puedes agendar citas para una hora que ya ha pasado. Por favor, selecciona una hora futura.",
+      });
+      return;
+    }
+
+    // Re-chequear si la hora está ocupada (consultando la lista de citas actual)
+    const fechaStringISO = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+      .toISOString()
+      .split("T")[0];
+    const isHoraOcupada = citas.some(cita => cita.fecha.split("T")[0] === fechaStringISO && cita.hora === time);
+    if (isHoraOcupada) {
+      Swal.fire({
+        icon: "error",
+        title: "Hora Ocupada",
+        text: "Esa hora ya está reservada para otra cita. Por favor, elige otro horario.",
+      });
       return;
     }
 
@@ -136,10 +211,14 @@ const CalendarView = () => {
           />
           <div className="time-selector">
             <label>Horas disponibles:</label>
-            {horasDisponibles.length > 0 ? (
+            {horasDisponiblesParaSeleccion.length > 0 ? ( // Usamos el nuevo estado
               <div className="time-buttons">
-                {horasDisponibles.map((hora) => (
-                  <button key={hora} className={`time-btn ${time === hora ? "selected" : ""}`} onClick={() => setTime(hora)}>
+                {horasDisponiblesParaSeleccion.map((hora) => ( // Iteramos solo sobre las disponibles
+                  <button
+                    key={hora}
+                    className={`time-btn ${time === hora ? "selected" : ""}`}
+                    onClick={() => setTime(hora)} // Sencillo setTime
+                  >
                     {hora}
                   </button>
                 ))}
