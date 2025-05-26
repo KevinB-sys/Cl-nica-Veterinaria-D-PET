@@ -23,6 +23,7 @@ import Reset from './pages/Reset'; // Asegúrate de que la ruta sea correcta
 import RegistrarVet from'./pages/RegistrarVet';
 import Administrar from './pages/Administrar';
 import Horario from './pages/Horario';
+import Citas from './pages/Citas'; // Asegúrate de que la ruta sea correcta
 
 const App = () => {
   return (
@@ -57,6 +58,7 @@ const App = () => {
           <Route path="/RegistrarVet" element={<PrivateRoute allowedRoles={[3]}><RegistrarVet /></PrivateRoute>} />
           <Route path="/Administrar" element={<PrivateRoute allowedRoles={[3]}><Administrar /></PrivateRoute>} />
           <Route path="/Horario" element={<PrivateRoute allowedRoles={[3]}><Horario /></PrivateRoute>} />
+          <Route path="/Citas" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Citas /></PrivateRoute>} />
 
         </Route>
       </Routes>

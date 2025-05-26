@@ -7,6 +7,7 @@ import { agendarcita } from "../services/agendarService";
 import { useNavigate } from "react-router-dom";
 import { obtenerCitas } from "../services/obtenercitaService";
 
+
 const CalendarView = () => {
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState("");
@@ -14,6 +15,9 @@ const CalendarView = () => {
   const [citas, setCitas] = useState([]);
   const [horasDisponibles, setHorasDisponibles] = useState([]);
   const navigate = useNavigate();
+  const manejarClick = () => {
+    navigate('/citas');
+  };
 
   useEffect(() => {
     const fetchCitas = async () => {
@@ -98,6 +102,7 @@ const CalendarView = () => {
       usuario_id: usuario_id
     };
 
+
     const data = await agendarcita(citaData);
 
     if (data.message === "Cita agendada con exito") {
@@ -157,7 +162,7 @@ const CalendarView = () => {
           <p className="selected-time">Hora seleccionada: <span>{time || "No seleccionada"}</span></p>
           <button className="schedule-btn" onClick={handleAgendarCita} disabled={!time}>Agendar</button>
           <br />
-          <button className="schedule-btn">Administrar Mis Citas</button>
+          <button className="schedule-btn" onClick={manejarClick}>Administrar Mis Citas</button>
         </div>
       </div>
     </div>

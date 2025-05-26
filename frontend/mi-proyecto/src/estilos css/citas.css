@@ -1,0 +1,172 @@
+/* -- estilos css/citas.css -- */
+
+/* Contenedor principal de la vista de citas */
+.citas-container {
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+    max-width: 960px;
+    margin: 20px auto;
+    background-color: #f4f7f6;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Encabezado principal */
+.citas-heading {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+}
+
+/* Mensajes de estado (cargando, error, sin citas) */
+.citas-message {
+    text-align: center;
+    font-size: 1.1em;
+    color: #555;
+    padding: 20px;
+    background-color: #e7f3ff;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.citas-message.error { /* Estilo específico para mensajes de error */
+    color: red;
+    font-weight: bold;
+    background-color: #ffe7e7;
+}
+
+
+/* Rejilla para las tarjetas de citas */
+.citas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+/* Estilo para cada tarjeta de cita individual */
+.cita-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease-in-out;
+}
+
+.cita-card:hover {
+    transform: translateY(-5px);
+}
+
+.cita-card h3 {
+    margin-top: 0;
+    color: #34495e;
+}
+
+.cita-card p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.cita-card strong {
+    color: #333;
+}
+
+
+/* Acciones dentro de la tarjeta (botones) */
+.card-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* Estilos base para todos los botones */
+.btn {
+    padding: 10px 18px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+    color: white; /* Color de texto por defecto para botones */
+}
+
+/* Estilos específicos para los botones de editar y eliminar */
+.btn-edit {
+    background-color: #3498db; /* Azul */
+}
+
+.btn-delete {
+    background-color: #e74c3c; /* Rojo */
+}
+
+/* --- Estilos para el Modal de Edición --- */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.6); /* Fondo oscuro semitransparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    width: 90%;
+    max-width: 550px;
+    z-index: 1001;
+}
+
+.modal-content h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #2c3e50;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Incluye padding y border en el ancho total */
+}
+
+.form-actions {
+    margin-top: 25px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* Botones dentro del formulario del modal */
+.btn-save {
+    background-color: #2ecc71; /* Verde */
+}
+
+.btn-cancel {
+    background-color: #95a5a6; /* Gris */
+}
