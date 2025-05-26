@@ -201,8 +201,8 @@ function MisCitas() {
             <div className="citas-grid">
                 {!loading && !error && citas.map((cita) => (
                     <div key={cita.cita_id} className="cita-card">
-                        <h3>Cita ID: {cita.cita_id.substring(0, 8)}...</h3>
-                        <p><strong>Fecha:</strong>{new Date(new Date(cita.fecha).getTime() + new Date(cita.fecha).getTimezoneOffset() * 60000).toLocaleDateString()}</p>
+                        <img src="https://lares.com.co/wp-content/uploads/2023/06/blog-mascotas-lares-scaled.jpg" alt="Descripción de la imagen" />
+                        <p><strong>Fecha:</strong> {new Date(new Date(cita.fecha).getTime() + new Date(cita.fecha).getTimezoneOffset() * 60000).toLocaleDateString()}</p>
                         <p><strong>Hora:</strong> {cita.hora}</p>
                         <p><strong>Estado:</strong> {cita.estado}</p>
                         <p><strong>Observaciones:</strong> {cita.observaciones || 'N/A'}</p>
@@ -215,6 +215,7 @@ function MisCitas() {
                             </button>
                         </div>
                     </div>
+
                 ))}
             </div>
 

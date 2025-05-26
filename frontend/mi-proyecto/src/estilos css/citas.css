@@ -1,23 +1,24 @@
-/* -- estilos css/citas.css -- */
-
 /* Contenedor principal de la vista de citas */
 .citas-container {
     font-family: 'Arial', sans-serif;
     padding: 20px;
-    max-width: 960px;
+    max-width: 1200px;
+    width: 80%;
     margin: 20px auto;
-    background-color: #f4f7f6;
+    background-color: #ffffffc7; /* Gris claro para el fondo */
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-top: 3cm;
+    margin-bottom: 1cm;
 }
 
 /* Encabezado principal */
 .citas-heading {
     text-align: center;
-    color: #2c3e50;
+    color: #2c2c6c; /* Azul Profundo principal */
     margin-bottom: 30px;
     font-size: 2.5em;
-    border-bottom: 2px solid #3498db;
+    border-bottom: 2px solid #4a4a8f; /* Azul más claro como acento para la línea */
     padding-bottom: 10px;
 }
 
@@ -25,58 +26,59 @@
 .citas-message {
     text-align: center;
     font-size: 1.1em;
-    color: #555;
+    color: #2c2c6c; /* Texto principal */
     padding: 20px;
-    background-color: #e7f3ff;
+    background-color: #e0f0e0; /* Un verde muy suave para mensajes positivos */
     border-radius: 8px;
     margin-bottom: 20px;
 }
 
 .citas-message.error { /* Estilo específico para mensajes de error */
-    color: red;
+    color: #d9534f; /* Rojo de alerta */
     font-weight: bold;
-    background-color: #ffe7e7;
+    background-color: #ffe0e0; /* Un rojo muy claro */
 }
-
 
 /* Rejilla para las tarjetas de citas */
 .citas-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 25px;
+    justify-content: center;
 }
 
 /* Estilo para cada tarjeta de cita individual */
 .cita-card {
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
+    background-color: #ffffff; /* Blanco para el fondo de la tarjeta */
+    border: 1px solid #cccccc; /* Borde gris medio */
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    flex-grow: 1; 
 }
 
 .cita-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
 }
 
 .cita-card h3 {
     margin-top: 0;
-    color: #34495e;
+    color: #2c2c6c; /* Azul Profundo para títulos de tarjeta */
 }
 
 .cita-card p {
     margin: 5px 0;
-    color: #555;
+    color: #666666; /* Gris oscuro para texto general */
 }
 
 .cita-card strong {
-    color: #333;
+    color: #2c2c6c; /* Azul Profundo para texto en negrita */
 }
-
 
 /* Acciones dentro de la tarjeta (botones) */
 .card-actions {
@@ -94,18 +96,31 @@
     cursor: pointer;
     font-size: 0.95em;
     font-weight: bold;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.1s ease;
     color: white; /* Color de texto por defecto para botones */
+}
+
+.btn:hover {
+    transform: translateY(-2px);
 }
 
 /* Estilos específicos para los botones de editar y eliminar */
 .btn-edit {
-    background-color: #3498db; /* Azul */
+    background-color: #4a4a8f; /* Azul más claro como acento para editar */
 }
 
 .btn-delete {
-    background-color: #e74c3c; /* Rojo */
+    background-color: #f44336; /* Rojo de alerta para eliminar */
 }
+
+.btn-edit:hover {
+    background-color: #2c2c6c; /* Azul Profundo en hover para editar */
+}
+
+.btn-delete:hover {
+    background-color: #c9302c; /* Rojo más oscuro en hover para eliminar */
+}
+
 
 /* --- Estilos para el Modal de Edición --- */
 
@@ -115,7 +130,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0,0,0,0.6); /* Fondo oscuro semitransparente */
+    background-color: rgba(0,0,0,0.6); 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -123,19 +138,33 @@
 }
 
 .modal-content {
-    background-color: white;
+    background-color: #ffffff; /* Fondo blanco */
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.4);
     width: 90%;
     max-width: 550px;
     z-index: 1001;
+    animation: fadeInScale 0.3s ease-out forwards; 
 }
+
+/* Animación para el modal */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 
 .modal-content h2 {
     text-align: center;
     margin-bottom: 25px;
-    color: #2c3e50;
+    color: #2c2c6c; /* Azul Profundo para título del modal */
 }
 
 .form-label {
@@ -143,16 +172,24 @@
     margin-bottom: 8px;
     margin-top: 15px;
     font-weight: bold;
-    color: #333;
+    color: #2c2c6c; /* Azul Profundo para etiquetas */
 }
 
 .form-input {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
+    border: 1px solid #cccccc; /* Borde gris medio */
     border-radius: 5px;
-    box-sizing: border-box; /* Incluye padding y border en el ancho total */
+    box-sizing: border-box; 
+    font-size: 1em; 
+    color: #333; /* Color de texto dentro del input */
+}
+
+.form-input:focus {
+    border-color: #4a4a8f; /* Azul más claro al enfocar */
+    outline: none; 
+    box-shadow: 0 0 5px rgba(74, 74, 143, 0.5); /* Sombra suave azul */
 }
 
 .form-actions {
@@ -164,9 +201,74 @@
 
 /* Botones dentro del formulario del modal */
 .btn-save {
-    background-color: #2ecc71; /* Verde */
+    background-color: #5cb85c; /* Verde Esmeralda para guardar */
 }
 
 .btn-cancel {
-    background-color: #95a5a6; /* Gris */
+    background-color: #f44336; /* Gris oscuro para cancelar */
+}
+
+.btn-save:hover {
+    background-color: #4cae4c; /* Verde más oscuro en hover */
+}
+
+.btn-cancel:hover {
+    background-color: #444444; /* Gris más oscuro en hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .citas-container {
+        width: 95%;
+        margin: 1cm auto;
+        padding: 15px;
+    }
+
+    .citas-heading {
+        font-size: 2em;
+    }
+
+    .citas-grid {
+        grid-template-columns: 1fr; 
+    }
+
+    .cita-card {
+        width: auto; 
+        margin: 0 auto; 
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .form-input {
+        font-size: 0.9em;
+    }
+
+    .btn {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    .citas-heading {
+        font-size: 1.8em;
+    }
+
+    .btn {
+        font-size: 0.85em;
+        padding: 7px 12px;
+    }
+
+    .card-actions, .form-actions {
+        flex-direction: column; 
+        gap: 8px;
+    }
+
+    .card-actions .btn, .form-actions .btn {
+        width: 100%; 
+        text-align: center;
+    }
 }

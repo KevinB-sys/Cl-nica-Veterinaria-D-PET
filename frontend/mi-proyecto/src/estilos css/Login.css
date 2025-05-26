@@ -1,220 +1,306 @@
-/* Estilos generales */
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  /* Mueve el login más abajo */
-  height: 90vh;
-  /* Ajustado para navbar y footer */
-  padding-top: 100px;
-  /* Baja más el formulario */
-  background: url('https://source.unsplash.com/1600x900/?pets,veterinary') no-repeat center center/cover;
+/* Contenedor principal de la vista de citas */
+.citas-container {
+  font-family: 'Arial', sans-serif;
+  padding: 20px;
+  max-width: 1200px;
+  width: 95%;
+  margin: 20px auto;
+  background-color: #f0f0f0;
+  /* Gris claro para el fondo */
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 3cm;
+  margin-bottom: 1cm;
 }
 
-/* Tarjeta de login */
-.login-card {
+/* Encabezado principal */
+.citas-heading {
+  text-align: center;
+  color: #2c2c6c;
+  /* Azul Profundo principal */
+  margin-bottom: 30px;
+  font-size: 2.5em;
+  border-bottom: 2px solid #4a4a8f;
+  /* Azul más claro como acento para la línea */
+  padding-bottom: 10px;
+}
+
+/* Mensajes de estado (cargando, error, sin citas) */
+.citas-message {
+  text-align: center;
+  font-size: 1.1em;
+  color: #2c2c6c;
+  /* Texto principal */
+  padding: 20px;
+  background-color: #e0f0e0;
+  /* Un verde muy suave para mensajes positivos */
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.citas-message.error {
+  /* Estilo específico para mensajes de error */
+  color: #d9534f;
+  /* Rojo de alerta */
+  font-weight: bold;
+  background-color: #ffe0e0;
+  /* Un rojo muy claro */
+}
+
+/* Rejilla para las tarjetas de citas */
+.citas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  justify-content: center;
+}
+
+/* Estilo para cada tarjeta de cita individual */
+.cita-card {
+  background-color: #ffffff;
+  /* Blanco para el fondo de la tarjeta */
+  border: 1px solid #cccccc;
+  /* Borde gris medio */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-  width: 420px;
-  /* Más ancho */
+  justify-content: space-between;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  flex-grow: 1;
 }
 
-/* Imagen del login */
-.login-image img {
-  width: 120px;
-  /* Tamaño adecuado */
-  height: auto;
-  margin-bottom: 15px;
+.cita-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Formulario */
-.login-form {
-  width: 100%;
+.cita-card h3 {
+  margin-top: 0;
+  color: #2c2c6c;
+  /* Azul Profundo para títulos de tarjeta */
 }
 
-.login-form h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
+.cita-card p {
+  margin: 5px 0;
+  color: #666666;
+  /* Gris oscuro para texto general */
 }
 
-/* Campos de entrada */
-.input-group {
-  margin-bottom: 15px;
-  position: relative;
+.cita-card strong {
+  color: #2c2c6c;
+  /* Azul Profundo para texto en negrita */
 }
 
-.input-group label {
-  display: block;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #555;
-  margin-bottom: 5px;
-}
-
-.input-group input {
-  width: 100%;
-  padding: 12px 40px 12px 12px;
-  /* Añadido espacio a la derecha */
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-  box-sizing: border-box;
-  /* Asegura que el padding no rompa el tamaño total del input */
-}
-
-/* Botón de login */
-.login-button {
-  width: 100%;
-  padding: 12px;
-  background: #2c2c6c;
-  color: white;
-  font-size: 1.2rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
-}
-
-.login-button:hover {
-  background: #a7a7da;
-  transform: scale(1.05);
-}
-
-/* Enlace de registro */
-.register-text {
-  margin-top: 15px;
-  text-align: center;
-  font-size: 1rem;
-}
-
-.register-password {
+/* Acciones dentro de la tarjeta (botones) */
+.card-actions {
   margin-top: 20px;
-  text-align: center;
-  font-size: 1rem;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
 }
 
-.register-text a {
-  color: #2c2c6c;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.register-password a {
-  color: #2c2c6c;
-  font-weight: bold;
-}
-
-
-.register-text a:hover {
-  text-decoration: underline;
-}
-
-.input-icon-login {
-  margin-right: 10px;
-  /* Espacio entre el icono y el texto del label */
-  color: #2c2c6c;
-  /* Color del icono */
-  vertical-align: middle;
-  /* Alinea el icono con el texto */
-}
-
-.password-wrapper {
-  position: relative;
-}
-
-.password-wrapper input {
-  width: 100%;
-  padding-right: 40px;
-}
-
-.toggle-password {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  color: #888;
+/* Estilos base para todos los botones */
+.btn {
+  padding: 10px 18px;
+  border-radius: 5px;
+  border: none;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.95em;
+  font-weight: bold;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  color: white;
+  /* Color de texto por defecto para botones */
 }
 
-/* Media Queries para Responsive */
+.btn:hover {
+  transform: translateY(-2px);
+}
 
-/* Para tablets (768px o menos) */
+/* Estilos específicos para los botones de editar y eliminar */
+.btn-edit {
+  background-color: #4a4a8f;
+  /* Azul más claro como acento para editar */
+}
+
+.btn-delete {
+  background-color: #d9534f;
+  /* Rojo de alerta para eliminar */
+}
+
+.btn-edit:hover {
+  background-color: #2c2c6c;
+  /* Azul Profundo en hover para editar */
+}
+
+.btn-delete:hover {
+  background-color: #c9302c;
+  /* Rojo más oscuro en hover para eliminar */
+}
+
+
+/* --- Estilos para el Modal de Edición --- */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  /* Fondo blanco */
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+  width: 90%;
+  max-width: 550px;
+  z-index: 1001;
+  animation: fadeInScale 0.3s ease-out forwards;
+}
+
+/* Animación para el modal */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+.modal-content h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #2c2c6c;
+  /* Azul Profundo para título del modal */
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  margin-top: 15px;
+  font-weight: bold;
+  color: #2c2c6c;
+  /* Azul Profundo para etiquetas */
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #cccccc;
+  /* Borde gris medio */
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 1em;
+  color: #333;
+  /* Color de texto dentro del input */
+}
+
+.form-input:focus {
+  border-color: #4a4a8f;
+  /* Azul más claro al enfocar */
+  outline: none;
+  box-shadow: 0 0 5px rgba(74, 74, 143, 0.5);
+  /* Sombra suave azul */
+}
+
+.form-actions {
+  margin-top: 25px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* Botones dentro del formulario del modal */
+.btn-save {
+  background-color: #5cb85c;
+  /* Verde Esmeralda para guardar */
+}
+
+.btn-cancel {
+  background-color: #666666;
+  /* Gris oscuro para cancelar */
+}
+
+.btn-save:hover {
+  background-color: #4cae4c;
+  /* Verde más oscuro en hover */
+}
+
+.btn-cancel:hover {
+  background-color: #444444;
+  /* Gris más oscuro en hover */
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  .login-container {
-    padding-top: 50px;
-    /* Reduce el espacio superior */
-    height: auto;
-    /* Altura automática */
-    min-height: 100vh;
-    /* Asegura que ocupe al menos toda la pantalla */
-    padding-bottom: 50px;
-    /* Espacio inferior */
-    margin-top: 3cm;
-    margin-bottom: -8cm;
-  }
-
-  .login-card {
-    width: 80%;
-    /* Ocupa más ancho en pantallas pequeñas */
-    padding: 30px;
-    /* Reduce el padding interno */
-  }
-}
-
-/* Para móviles (480px o menos) */
-@media (max-width: 480px) {
-  .login-container {
-    padding-top: 30px;
-    /* Menos espacio superior */
-    background-attachment: fixed;
-    /* Fija el fondo para mejor visualización */
-  }
-
-  .login-card {
-    width: 90%;
-    /* Ocupa casi todo el ancho */
-    padding: 20px;
-    /* Menos padding interno */
-  }
-
-  .login-image img {
-    width: 100px;
-    /* Imagen un poco más pequeña */
-  }
-
-  .login-form h2 {
-    font-size: 1.5rem;
-    /* Título más pequeño */
-  }
-
-  .login-button {
-    font-size: 1rem;
-    /* Texto del botón más pequeño */
-  }
-}
-
-/* Para pantallas muy pequeñas (360px o menos) */
-@media (max-width: 360px) {
-  .login-card {
+  .citas-container {
+    width: 95%;
+    margin: 1cm auto;
     padding: 15px;
-    /* Mínimo padding */
   }
 
-  .input-group input {
-    padding: 10px 35px 10px 10px;
-    /* Padding más ajustado */
+  .citas-heading {
+    font-size: 2em;
   }
 
-  .register-text,
-  .register-password {
-    font-size: 0.9rem;
-    /* Texto más pequeño */
+  .citas-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cita-card {
+    width: auto;
+    margin: 0 auto;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+  }
+
+  .form-input {
+    font-size: 0.9em;
+  }
+
+  .btn {
+    padding: 8px 15px;
+    font-size: 0.9em;
+  }
+}
+
+@media (max-width: 480px) {
+  .citas-heading {
+    font-size: 1.8em;
+  }
+
+  .btn {
+    font-size: 0.85em;
+    padding: 7px 12px;
+  }
+
+  .card-actions,
+  .form-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .card-actions .btn,
+  .form-actions .btn {
+    width: 100%;
+    text-align: center;
   }
 }
