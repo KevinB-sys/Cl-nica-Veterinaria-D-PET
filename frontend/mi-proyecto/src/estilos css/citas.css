@@ -5,9 +5,10 @@
     max-width: 1200px;
     width: 80%;
     margin: 20px auto;
-    background-color: #ffffffc7; /* Gris claro para el fondo */
+    background-color: #ffffffc7;
+    /* Gris claro para el fondo */
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     margin-top: 3cm;
     margin-bottom: 1cm;
 }
@@ -15,10 +16,12 @@
 /* Encabezado principal */
 .citas-heading {
     text-align: center;
-    color: #2c2c6c; /* Azul Profundo principal */
+    color: #2c2c6c;
+    /* Azul Profundo principal */
     margin-bottom: 30px;
     font-size: 2.5em;
-    border-bottom: 2px solid #4a4a8f; /* Azul más claro como acento para la línea */
+    border-bottom: 2px solid #4a4a8f;
+    /* Azul más claro como acento para la línea */
     padding-bottom: 10px;
 }
 
@@ -26,58 +29,75 @@
 .citas-message {
     text-align: center;
     font-size: 1.1em;
-    color: #2c2c6c; /* Texto principal */
+    color: #2c2c6c;
+    /* Texto principal */
     padding: 20px;
-    background-color: #e0f0e0; /* Un verde muy suave para mensajes positivos */
+    background-color: #e0f0e0;
+    /* Un verde muy suave para mensajes positivos */
     border-radius: 8px;
     margin-bottom: 20px;
 }
 
-.citas-message.error { /* Estilo específico para mensajes de error */
-    color: #d9534f; /* Rojo de alerta */
+.citas-message.error {
+    /* Estilo específico para mensajes de error */
+    color: #d9534f;
+    /* Rojo de alerta */
     font-weight: bold;
-    background-color: #ffe0e0; /* Un rojo muy claro */
+    background-color: #ffe0e0;
+    /* Un rojo muy claro */
 }
 
 /* Rejilla para las tarjetas de citas */
 .citas-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
-    justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
 }
 
 /* Estilo para cada tarjeta de cita individual */
 .cita-card {
-    background-color: #ffffff; /* Blanco para el fondo de la tarjeta */
-    border: 1px solid #cccccc; /* Borde gris medio */
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 1rem;
+    max-width: 300px;
+    margin: 1rem auto;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    flex-grow: 1; 
+    align-items: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+.cita-card img {
+    width: 100%;
+    height: auto;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: 0.5rem;
 }
 
 .cita-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .cita-card h3 {
     margin-top: 0;
-    color: #2c2c6c; /* Azul Profundo para títulos de tarjeta */
+    color: #2c2c6c;
+    /* Azul Profundo para títulos de tarjeta */
 }
 
 .cita-card p {
     margin: 5px 0;
-    color: #666666; /* Gris oscuro para texto general */
+    color: #666666;
+    /* Gris oscuro para texto general */
 }
 
 .cita-card strong {
-    color: #2c2c6c; /* Azul Profundo para texto en negrita */
+    color: #2c2c6c;
+    /* Azul Profundo para texto en negrita */
 }
 
 /* Acciones dentro de la tarjeta (botones) */
@@ -97,7 +117,8 @@
     font-size: 0.95em;
     font-weight: bold;
     transition: background-color 0.2s ease, transform 0.1s ease;
-    color: white; /* Color de texto por defecto para botones */
+    color: white;
+    /* Color de texto por defecto para botones */
 }
 
 .btn:hover {
@@ -106,19 +127,23 @@
 
 /* Estilos específicos para los botones de editar y eliminar */
 .btn-edit {
-    background-color: #4a4a8f; /* Azul más claro como acento para editar */
+    background-color: #4a4a8f;
+    /* Azul más claro como acento para editar */
 }
 
 .btn-delete {
-    background-color: #f44336; /* Rojo de alerta para eliminar */
+    background-color: #f44336;
+    /* Rojo de alerta para eliminar */
 }
 
 .btn-edit:hover {
-    background-color: #2c2c6c; /* Azul Profundo en hover para editar */
+    background-color: #2c2c6c;
+    /* Azul Profundo en hover para editar */
 }
 
 .btn-delete:hover {
-    background-color: #c9302c; /* Rojo más oscuro en hover para eliminar */
+    background-color: #c9302c;
+    /* Rojo más oscuro en hover para eliminar */
 }
 
 
@@ -130,7 +155,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0,0,0,0.6); 
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -138,14 +163,15 @@
 }
 
 .modal-content {
-    background-color: #ffffff; /* Fondo blanco */
+    background-color: #ffffff;
+    /* Fondo blanco */
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
     width: 90%;
     max-width: 550px;
     z-index: 1001;
-    animation: fadeInScale 0.3s ease-out forwards; 
+    animation: fadeInScale 0.3s ease-out forwards;
 }
 
 /* Animación para el modal */
@@ -154,6 +180,7 @@
         opacity: 0;
         transform: scale(0.9);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
@@ -164,7 +191,8 @@
 .modal-content h2 {
     text-align: center;
     margin-bottom: 25px;
-    color: #2c2c6c; /* Azul Profundo para título del modal */
+    color: #2c2c6c;
+    /* Azul Profundo para título del modal */
 }
 
 .form-label {
@@ -172,24 +200,29 @@
     margin-bottom: 8px;
     margin-top: 15px;
     font-weight: bold;
-    color: #2c2c6c; /* Azul Profundo para etiquetas */
+    color: #2c2c6c;
+    /* Azul Profundo para etiquetas */
 }
 
 .form-input {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #cccccc; /* Borde gris medio */
+    border: 1px solid #cccccc;
+    /* Borde gris medio */
     border-radius: 5px;
-    box-sizing: border-box; 
-    font-size: 1em; 
-    color: #333; /* Color de texto dentro del input */
+    box-sizing: border-box;
+    font-size: 1em;
+    color: #333;
+    /* Color de texto dentro del input */
 }
 
 .form-input:focus {
-    border-color: #4a4a8f; /* Azul más claro al enfocar */
-    outline: none; 
-    box-shadow: 0 0 5px rgba(74, 74, 143, 0.5); /* Sombra suave azul */
+    border-color: #4a4a8f;
+    /* Azul más claro al enfocar */
+    outline: none;
+    box-shadow: 0 0 5px rgba(74, 74, 143, 0.5);
+    /* Sombra suave azul */
 }
 
 .form-actions {
@@ -201,19 +234,23 @@
 
 /* Botones dentro del formulario del modal */
 .btn-save {
-    background-color: #5cb85c; /* Verde Esmeralda para guardar */
+    background-color: #5cb85c;
+    /* Verde Esmeralda para guardar */
 }
 
 .btn-cancel {
-    background-color: #f44336; /* Gris oscuro para cancelar */
+    background-color: #f44336;
+    /* Gris oscuro para cancelar */
 }
 
 .btn-save:hover {
-    background-color: #4cae4c; /* Verde más oscuro en hover */
+    background-color: #4cae4c;
+    /* Verde más oscuro en hover */
 }
 
 .btn-cancel:hover {
-    background-color: #444444; /* Gris más oscuro en hover */
+    background-color: #444444;
+    /* Gris más oscuro en hover */
 }
 
 /* Responsive adjustments */
@@ -229,12 +266,12 @@
     }
 
     .citas-grid {
-        grid-template-columns: 1fr; 
+        grid-template-columns: 1fr;
     }
 
     .cita-card {
-        width: auto; 
-        margin: 0 auto; 
+        width: auto;
+        margin: 0 auto;
     }
 
     .modal-content {
@@ -262,13 +299,15 @@
         padding: 7px 12px;
     }
 
-    .card-actions, .form-actions {
-        flex-direction: column; 
+    .card-actions,
+    .form-actions {
+        flex-direction: column;
         gap: 8px;
     }
 
-    .card-actions .btn, .form-actions .btn {
-        width: 100%; 
+    .card-actions .btn,
+    .form-actions .btn {
+        width: 100%;
         text-align: center;
     }
 }
