@@ -7,26 +7,29 @@
   --background-gray: #f9f9f9;
   --border-gray: #ccc;
   --darker-primary: #1f1f4f; /* Un poco más oscuro para el hover */
+  --accent-green: #2c2c6c; /* Verde amigable para los botones de opción */
+  --accent-green-hover: #b2b2d3; /* Verde más oscuro para hover de botones */
 }
 
 .chatbot-container {
-
   display: flex;
   flex-direction: column;
-  height: 100%;
-  width: 100%;
+  height: 100%; /* O el tamaño fijo que desees, por ejemplo: 500px */
+  width: 100%;  /* O el tamaño fijo que desees, por ejemplo: 350px */
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  font-family: 'Arial', sans-serif; /* Unifica la fuente */
 }
 
 .chatbot-header {
   text-align: center;
-  background-color: var(--primary-color); /* ¡Cambiado aquí! */
+  background-color: var(--primary-color);
   color: white;
   margin: 0;
-  padding: 10px 0;
+  padding: 15px 0; /* Ajustado para unificar padding */
   border-radius: 8px 8px 0 0;
+  font-size: 1.2em; /* Ajustado para unificar font-size */
 }
 
 .chatbot-messages {
@@ -34,6 +37,8 @@
   padding: 15px;
   overflow-y: auto;
   background-color: var(--background-gray);
+  display: flex; /* Asegura el flex para el scroll */
+  flex-direction: column; /* Asegura el flex para el scroll */
 }
 
 .message-row {
@@ -52,25 +57,27 @@
 .message-bubble {
   max-width: 70%;
   padding: 10px 15px;
-  border-radius: 20px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  white-space: pre-wrap;
-  word-wrap: break-word;
+  border-radius: 20px; /* Unificado a 20px */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  white-space: pre-wrap; /* Asegura que respeta los saltos de línea */
+  word-wrap: break-word; /* Asegura que el texto se rompe si es muy largo */
 }
 
 .bot-bubble {
   background-color: var(--light-gray);
   color: #000;
+  /* border-bottom-left-radius: 2px; /* Si quieres un borde distinto, puedes añadirlo aquí */
 }
 
 .user-bubble {
-  background-color: var(--primary-color); /* ¡Cambiado aquí! */
+  background-color: var(--primary-color); /* Usando la variable */
   color: #fff;
+  /* border-bottom-right-radius: 2px; /* Si quieres un borde distinto, puedes añadirlo aquí */
 }
 
 .chatbot-input-area {
   display: flex;
-  padding: 15px;
+  padding: 15px; /* Unificado a 15px */
   border-top: 1px solid var(--border-gray);
   background-color: white;
 }
@@ -81,22 +88,46 @@
   border-radius: 20px;
   border: 1px solid var(--border-gray);
   outline: none;
-  font-size: 16px;
+  font-size: 16px; /* Unificado a 16px */
+  margin-right: 10px; /* Mantenemos el margen aquí */
 }
 
 .chatbot-send-button {
   margin-left: 10px;
-  padding: 10px 20px;
-  background-color: var(--primary-color); /* ¡Cambiado aquí! */
+  padding: 10px 20px; /* Unificado a 10px 20px */
+  background-color: var(--primary-color); /* Usando la variable */
   border: none;
   border-radius: 20px;
   color: white;
-  font-weight: bold;
+  font-weight: bold; /* Mantenemos el bold */
   cursor: pointer;
-  font-size: 16px;
+  font-size: 16px; /* Unificado a 16px */
   transition: background-color 0.3s ease;
 }
 
 .chatbot-send-button:hover {
-  background-color: var(--darker-primary); /* ¡Cambiado aquí! */
+  background-color: var(--darker-primary); /* Usando la variable */
+}
+
+/* Estilos para los botones de opciones */
+.chatbot-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.option-button {
+  background-color: var(--accent-green); /* Usando la nueva variable */
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.3s ease;
+}
+
+.option-button:hover {
+  background-color: var(--accent-green-hover); /* Usando la nueva variable */
 }

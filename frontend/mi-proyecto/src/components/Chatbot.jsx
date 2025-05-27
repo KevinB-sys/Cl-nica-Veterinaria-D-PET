@@ -7,7 +7,7 @@ import '../estilos css/chatbot.css'; // ¡Importamos los estilos aquí!
 
 const ChatBotAgendar = () => {
     const [messages, setMessages] = useState([
-        { from: "bot", text: "¡Guau-hola! 🐾 Soy tu amigable asistente peludo. ¿En qué fecha quieres agendar una cita para tu pequeño amigo? (ej: 2025-05-30)" }
+        { from: "bot", text: "¡Guau-hola! 🐾 Soy Lucky tu asistente peludo. ¿En qué fecha quieres agendar una !Guau-cita! veterinaria?", options: "initial_dates" }
     ]);
     const [step, setStep] = useState("esperando_fecha");
     const [selectedDate, setSelectedDate] = useState(null);
@@ -33,6 +33,7 @@ const ChatBotAgendar = () => {
     }, []);
 
     // Formatea la fecha sin zona horaria a AAAA-MM-DD
+    // Esta función está bien para obtener la cadena de fecha sin importar la zona horaria.
     const formatearFechaSinZona = (date) => {
         const year = date.getFullYear();
         // Usamos getUTCMonth y getUTCDate para evitar zona horaria
@@ -47,36 +48,37 @@ const ChatBotAgendar = () => {
             "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM"
         ];
 
-        const selectedDateAtMidnight = new Date(fecha);
-        selectedDateAtMidnight.setHours(0, 0, 0, 0);
+        // Obtén la fecha de hoy formateada para una comparación sencilla
+        const todayString = formatearFechaSinZona(new Date());
+        // Obtén la fecha seleccionada formateada para una comparación sencilla
+        const selectedDateString = formatearFechaSinZona(fecha);
 
-        const now = new Date();
-        const todayAtMidnight = new Date(now);
-        todayAtMidnight.setHours(0, 0, 0, 0);
+        const now = new Date(); // La hora actual en la zona horaria local
 
         const parseTimeToDate = (timeStr, baseDate) => {
             const [time, modifier] = timeStr.split(' ');
             let [hours, minutes] = time.split(':').map(Number);
             if (modifier === 'PM' && hours < 12) hours += 12;
             if (modifier === 'AM' && hours === 12) hours = 0;
-            const d = new Date(baseDate);
+            const d = new Date(baseDate); // Usar la baseDate (que es la fecha seleccionada)
             d.setHours(hours, minutes, 0, 0);
             return d;
         };
 
-        const fechaStringISO = formatearFechaSinZona(fecha);
-
         const horasOcupadas = citas
-            .filter(cita => cita.fecha.split("T")[0] === fechaStringISO)
+            .filter(cita => cita.fecha.split("T")[0] === selectedDateString) // Usar la cadena de fecha para filtrar
             .map(cita => cita.hora);
 
         let horasFiltradas = ALL_POSSIBLE_HOURS.filter(hora => {
             const isOccupied = horasOcupadas.includes(hora);
             let isPast = false;
 
-            if (selectedDateAtMidnight.getTime() === todayAtMidnight.getTime()) {
-                const horaCitaCompleta = parseTimeToDate(hora, now);
-                isPast = horaCitaCompleta.getTime() <= now.getTime();
+            // Solo aplicar filtro de hora si la fecha seleccionada es HOY
+            if (selectedDateString === todayString) {
+                const horaCitaCompleta = parseTimeToDate(hora, now); // now es la fecha y hora actual local
+                // La hora debe ser al menos 15 minutos en el futuro para poder ser seleccionada
+                // Usamos now directamente para la comparación horaria
+                isPast = horaCitaCompleta.getTime() < (now.getTime() + (15 * 60 * 1000)); // +15 minutos de margen
             }
 
             return !isOccupied && !isPast;
@@ -85,42 +87,64 @@ const ChatBotAgendar = () => {
         return horasFiltradas;
     };
 
+    const getInitialDateOptions = () => {
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+        const dayAfterTomorrow = new Date(today);
+        dayAfterTomorrow.setDate(today.getDate() + 2);
+
+        const options = [
+            { label: `Hoy (${formatearFechaSinZona(today)})`, value: formatearFechaSinZona(today) },
+            { label: `Mañana (${formatearFechaSinZona(tomorrow)})`, value: formatearFechaSinZona(tomorrow) },
+            { label: `Pasado mañana (${formatearFechaSinZona(dayAfterTomorrow)})`, value: formatearFechaSinZona(dayAfterTomorrow) }
+        ];
+
+        return options;
+    };
+
+
     const handleUserMessage = async (msg) => {
-        setMessages(prev => [...prev, { from: "user", text: msg }]);
+        // No añadir el mensaje del usuario si es una opción de botón
+        if (!getInitialDateOptions().some(opt => opt.value === msg) && !horasDisponibles.includes(msg) && !["sí", "si", "no"].includes(msg.toLowerCase())) {
+            setMessages(prev => [...prev, { from: "user", text: msg }]);
+        }
 
         if (step === "esperando_fecha") {
             const [year, month, day] = msg.split("-");
             if (!year || !month || !day || isNaN(parseInt(year)) || isNaN(parseInt(month)) || isNaN(parseInt(day))) {
-                setMessages(prev => [...prev, { from: "bot", text: "¡Oops! Parece que no entendí la fecha. 🙀 Por favor, escríbela en formato AAAA-MM-DD, como '2025-06-01'. ¡Gracias por tu paciencia felina! 🐱" }]);
+                setMessages(prev => [...prev, { from: "bot", text: "¡Oops! Parece que no entendí la fecha. 🐶 Por favor, escríbela en formato AAAA-MM-DD, como '2025-06-01'. ¡Gracias por tu paciencia felina! 🐶", options: "initial_dates" }]);
                 return;
             }
             // Crear fecha con UTC para evitar zona horaria
-            const fecha = new Date(Date.UTC(parseInt(year), parseInt(month) - 1, parseInt(day)));
+            // Importante: Al crear la fecha para `setSelectedDate`, es mejor usarla de forma que represente el día sin importar la zona horaria.
+            // new Date(año, mes-1, día) crea la fecha en la zona horaria local, lo cual es más consistente con `now`.
+            const fecha = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+            fecha.setHours(0,0,0,0); // Asegura que la fecha seleccionada sea la medianoche de ese día en la zona local
 
             if (isNaN(fecha.getTime())) {
-                setMessages(prev => [...prev, { from: "bot", text: "¡Ay, mi colita! 🐶 Esa fecha no parece correcta. Intenta de nuevo con el formato AAAA-MM-DD, por ejemplo: 2025-06-01." }]);
+                setMessages(prev => [...prev, { from: "bot", text: "¡Ay, mi colita! 🐶 Esa fecha no parece correcta. Intenta de nuevo con el formato AAAA-MM-DD, por ejemplo: 2025-06-01.", options: "initial_dates" }]);
                 return;
             }
             setSelectedDate(fecha);
             const horas = calcularHorasDisponibles(fecha);
             setHorasDisponibles(horas);
             if (horas.length === 0) {
-                setMessages(prev => [...prev, { from: "bot", text: "¡Miau! 😿 Parece que estamos completos para esa fecha. Por favor, elige otro día para consentir a tu mascota." }]);
+                setMessages(prev => [...prev, { from: "bot", text: `¡Guau! 🐶 Parece que estamos completos para el día ${msg}. Por favor, elige otra fecha para consentir a tu mascota.`, options: "initial_dates" }]);
+                setStep("esperando_fecha"); // Volver a pedir fecha
                 return;
             }
             setStep("esperando_hora");
-            // *** CAMBIO CLAVE AQUÍ: Usamos directamente 'msg' para mostrar la fecha ingresada ***
-            setMessages(prev => [...prev, { from: "bot", text: `¡Genial! Para el día ${msg}, las horas disponibles son: ${horas.join(", ")}. ¿Cuál le viene mejor? 🐶⏰` }]);
+            setMessages(prev => [...prev, { from: "bot", text: `¡Muy bien! Para el día ${msg}, las horas disponibles son:`, options: horas }]);
         }
         else if (step === "esperando_hora") {
             if (!horasDisponibles.includes(msg)) {
-                setMessages(prev => [...prev, { from: "bot", text: "¡Ups! Esa hora ya está ocupada o no es válida. Por favor, elige una de estas opciones para tu amigo peludo: " + horasDisponibles.join(", ") + " 🐾" }]);
+                setMessages(prev => [...prev, { from: "bot", text: "¡Guau! 🐶Esa hora ya está ocupada o no es válida. Por favor, elige una de estas opciones para tu amigo peludo: ", options: horasDisponibles }]);
                 return;
             }
             setSelectedTime(msg);
             setStep("confirmacion");
-            // *** CAMBIO CLAVE AQUÍ: Usamos formatearFechaSinZona(selectedDate) para la confirmación ***
-            setMessages(prev => [...prev, { from: "bot", text: `¡Excelente elección! ¿Quieres confirmar la cita para tu mascota el ${formatearFechaSinZona(selectedDate)} a las ${msg}? (Responde "sí" para confirmar o "no" para cancelar y buscar otra hora). 🐕‍⬛` }]);
+            setMessages(prev => [...prev, { from: "bot", text: `¡Buena elección! ¿Quieres confirmar la cita para tu mascota el ${formatearFechaSinZona(selectedDate)} a las ${msg}?`, options: ["Sí", "No"] }]);
         }
         else if (step === "confirmacion") {
             if (msg.toLowerCase().includes("sí") || msg.toLowerCase().includes("si")) {
@@ -134,27 +158,34 @@ const ChatBotAgendar = () => {
                         usuario_id = decodedPayload.usuario_id; // Ajusta esto si tu token tiene la ID anidada
                     } catch (error) {
                         console.error("Error al decodificar token:", error);
+                        // Considerar cómo manejar este error en el chatbot (e.g., pedir login)
                     }
+                }
+
+                if (!usuario_id) {
+                    setMessages(prev => [...prev, { from: "bot", text: "Para agendar una cita, necesito que inicies sesión. Por favor, recarga la página y asegúrate de haber iniciado sesión. ¡Gracias! 🐶" }]);
+                    setStep("finalizado");
+                    return;
                 }
 
                 const citaData = {
                     fecha: fechaISO,
                     hora: selectedTime,
-                    observaciones: "",
+                    observaciones: "", // Puedes añadir una etapa para esto si lo necesitas
                     usuario_id
                 };
 
                 const resultado = await agendarcita(citaData);
 
                 if (resultado.message === "Cita agendada con exito") {
-                    setMessages(prev => [...prev, { from: "bot", text: "¡Fantástico! 🎉 Tu cita ha sido agendada con éxito. ¡Estamos ansiosos por conocer a tu mascota! 🐶🐱" }]);
+                    setMessages(prev => [...prev, { from: "bot", text: "¡Guah! 🐶 Tu cita ha sido agendada con éxito. ¡Estamos ansiosos por conocer a tu mascota! 🐶" }]);
                     setStep("finalizado");
                 } else {
-                    setMessages(prev => [...prev, { from: "bot", text: "¡Oh no! Algo salió mal al agendar la cita. 😔 " + (resultado.message || "Por favor, inténtalo de nuevo más tarde o contáctanos directamente si el problema persiste. ¡No te rindas con tu patita!") }]);
+                    setMessages(prev => [...prev, { from: "bot", text: "¡Oh no! Algo salió mal al agendar la cita. 🐶😔 " + (resultado.message || "Por favor, inténtalo de nuevo más tarde o contáctanos directamente si el problema persiste. ¡No te rindas con tu patita!") }]);
                     setStep("finalizado");
                 }
             } else {
-                setMessages(prev => [...prev, { from: "bot", text: "¡Entendido! Cita cancelada. Si quieres agendar otra vez, solo dime la fecha para tu amigo peludo. 🐾" }]);
+                setMessages(prev => [...prev, { from: "bot", text: "¡Entendido! Cita cancelada. Si quieres agendar otra vez, solo dime la fecha para tu amigo peludo. 🐾", options: "initial_dates" }]);
                 setStep("esperando_fecha");
             }
         }
@@ -166,10 +197,15 @@ const ChatBotAgendar = () => {
         setInput("");
     };
 
+    const handleOptionClick = (optionValue) => {
+        handleUserMessage(optionValue);
+        setInput(""); // Limpiar el input después de seleccionar una opción
+    };
+
     return (
         <div className="chatbot-container">
             <h3 className="chatbot-header">
-                🐶 Agendamiento Veterinario 🐱
+                🐶 Agendamiento D'PET 
             </h3>
             <div className="chatbot-messages">
                 {messages.map((m, i) => (
@@ -179,6 +215,23 @@ const ChatBotAgendar = () => {
                     >
                         <div className={`message-bubble ${m.from === "bot" ? "bot-bubble" : "user-bubble"}`}>
                             {m.text}
+                            {m.options && (
+                                <div className="chatbot-options">
+                                    {m.options === "initial_dates" ? (
+                                        getInitialDateOptions().map((opt, idx) => (
+                                            <button key={idx} onClick={() => handleOptionClick(opt.value)} className="option-button">
+                                                {opt.label}
+                                            </button>
+                                        ))
+                                    ) : (
+                                        m.options.map((opt, idx) => (
+                                            <button key={idx} onClick={() => handleOptionClick(opt)} className="option-button">
+                                                {opt}
+                                            </button>
+                                        ))
+                                    )}
+                                </div>
+                            )}
                         </div>
                     </div>
                 ))}
