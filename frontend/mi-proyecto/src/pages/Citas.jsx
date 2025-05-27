@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
-import '../estilos css/citas.css'; // Asegúrate de que la ruta sea correcta
+import '../estilos css/citas.css';
+import { obtenerCitas } from "../services/obtenercitaService";
 
 function MisCitas() {
     const [citas, setCitas] = useState([]);
+    const [allCitas, setAllCitas] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [usuarioId, setUsuarioId] = useState(null);
     const [citaSeleccionadaParaEditar, setCitaSeleccionadaParaEditar] = useState(null);
 
-    // Define aquí las horas posibles, igual que en CalendarView
     const ALL_POSSIBLE_HOURS = [
         "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
         "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM"
     ];
 
     const getUserIdFromToken = () => {
-        const token = localStorage.getItem('token'); // Corregido: 'token'
+        const token = localStorage.getItem('token');
         if (token) {
             try {
                 const decodedToken = jwtDecode(token);
@@ -40,15 +41,31 @@ function MisCitas() {
         }
     }, []);
 
+    const fetchAllCitas = async () => {
+        try {
+            const response = await obtenerCitas();
+            if (response.state === "error") {
+                throw new Error(response.message);
+            }
+            setAllCitas(response);
+        } catch (err) {
+            console.error("Error al cargar todas las citas:", err);
+        }
+    };
+
     useEffect(() => {
-        const fetchCitas = async () => {
+        fetchAllCitas();
+    }, []);
+
+    useEffect(() => {
+        const fetchUserCitas = async () => {
             if (!usuarioId) return;
 
             setLoading(true);
             setError(null);
 
             try {
-                const token = localStorage.getItem('token'); // Corregido: 'token'
+                const token = localStorage.getItem('token');
                 const response = await fetch(`http://localhost:5000/api/citas/usuario/${usuarioId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -70,39 +87,45 @@ function MisCitas() {
             }
         };
 
-        fetchCitas();
+        fetchUserCitas();
     }, [usuarioId]);
 
-    // Función para obtener las horas disponibles para una fecha específica
     const getAvailableHoursForDate = (selectedDate) => {
-        // Formatea la fecha seleccionada a 'YYYY-MM-DD' en la zona horaria local,
-        // igual que se hace en CalendarView para consistencia.
-        // Ojo: Si el backend envía las fechas como YYYY-MM-DD y las maneja correctamente,
-        // esta transformación podría no ser estrictamente necesaria aquí, pero ayuda a la consistencia.
-        const fechaStringLocal = new Date(selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000)
-            .toISOString()
-            .split("T")[0];
+        if (!selectedDate || !allCitas.length) return ALL_POSSIBLE_HOURS;
 
-        // Filtra las citas que ya están agendadas para esa fecha
-        const bookedHours = citas
-            .filter(cita => {
-                // Asegúrate de comparar las fechas de la misma manera que se guardan
-                const citaFechaStringLocal = new Date(cita.fecha).toISOString().split("T")[0];
-                return citaFechaStringLocal === fechaStringLocal;
-            })
-            .map(cita => cita.hora); // Obtén solo las horas ocupadas
+        try {
+            const fechaString = new Date(selectedDate);
+            fechaString.setHours(0, 0, 0, 0);
+            const fechaNormalizada = fechaString.toISOString().split('T')[0];
 
-        // Filtra las horas posibles para obtener solo las disponibles
-        const available = ALL_POSSIBLE_HOURS.filter(hour => !bookedHours.includes(hour));
-        return available;
+            const horasOcupadas = allCitas
+                .filter(cita => {
+                    try {
+                        const citaFecha = new Date(cita.fecha);
+                        citaFecha.setHours(0, 0, 0, 0);
+                        return citaFecha.toISOString().split('T')[0] === fechaNormalizada;
+                    } catch (e) {
+                        console.error("Error procesando fecha de cita:", e);
+                        return false;
+                    }
+                })
+                .map(cita => cita.hora);
+
+            return ALL_POSSIBLE_HOURS.filter(hora => !horasOcupadas.includes(hora));
+        } catch (error) {
+            console.error("Error al calcular horas disponibles:", error);
+            return ALL_POSSIBLE_HOURS;
+        }
     };
 
-    // Manejador para el cambio de fecha en el input (ej. en el modal de edición)
     const handleDateChange = (e) => {
         const newDate = new Date(e.target.value);
         setCitaSeleccionadaParaEditar(prev => ({
             ...prev,
-            fecha: newDate.toISOString().split("T")[0] // Guarda la fecha en formato ISO
+            fecha: e.target.value,
+            hora: prev.hora && getAvailableHoursForDate(newDate).includes(prev.hora)
+                ? prev.hora
+                : ''
         }));
     };
 
@@ -116,13 +139,13 @@ function MisCitas() {
     const handleEditarClick = (cita) => {
         setCitaSeleccionadaParaEditar({
             ...cita,
-            fecha: new Date(cita.fecha).toISOString().split('T')[0] // <-- Esta línea prepara la fecha para el input type="date"
+            fecha: cita.fecha.includes('T') ? cita.fecha.split('T')[0] : cita.fecha
         });
     };
 
     const handleGuardarEdicion = async (citaId, datosActualizados) => {
         try {
-            const token = localStorage.getItem('token'); // Corregido: 'token'
+            const token = localStorage.getItem('token');
             const response = await fetch(`http://localhost:5000/api/citas/${citaId}`, {
                 method: 'PUT',
                 headers: {
@@ -140,15 +163,26 @@ function MisCitas() {
             const updatedCitaResponse = await response.json();
             console.log("Cita actualizada:", updatedCitaResponse.cita);
 
-            // Actualiza el estado local de citas para reflejar los cambios inmediatamente
             setCitas(citas.map(c =>
                 c.cita_id === citaId ? updatedCitaResponse.cita : c
             ));
-            setCitaSeleccionadaParaEditar(null); // Cierra el modal de edición
-            Swal.fire({ icon: "success", title: "¡Actualización exitosa!", text: "Cita actualizada correctamente", timer: 2000, showConfirmButton: false });
+            setCitaSeleccionadaParaEditar(null);
+            Swal.fire({
+                icon: "success",
+                title: "¡Actualización exitosa!",
+                text: "Cita actualizada correctamente",
+                timer: 2000,
+                showConfirmButton: false
+            });
+
+            fetchAllCitas();
         } catch (err) {
             console.error("Error al actualizar cita:", err);
-            Swal.fire({ icon: "error", title: "Error", text: `Error al actualizar la cita: ${err.message}` });
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: `Error al actualizar la cita: ${err.message}`
+            });
         }
     };
 
@@ -165,7 +199,7 @@ function MisCitas() {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const token = localStorage.getItem('token'); // Corregido: 'token'
+                    const token = localStorage.getItem('token');
                     const response = await fetch(`http://localhost:5000/api/citas/${citaId}`, {
                         method: 'DELETE',
                         headers: {
@@ -179,10 +213,22 @@ function MisCitas() {
                     }
 
                     setCitas(citas.filter(c => c.cita_id !== citaId));
-                    Swal.fire({ icon: "success", title: "¡Eliminada!", text: "Cita eliminada con éxito.", timer: 2000, showConfirmButton: false });
+                    Swal.fire({
+                        icon: "success",
+                        title: "¡Eliminada!",
+                        text: "Cita eliminada con éxito.",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+
+                    fetchAllCitas();
                 } catch (err) {
                     console.error("Error al eliminar cita:", err);
-                    Swal.fire({ icon: "error", title: "Error", text: `Error al eliminar la cita: ${err.message}` });
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: `Error al eliminar la cita: ${err.message}`
+                    });
                 }
             }
         });
@@ -197,29 +243,38 @@ function MisCitas() {
             {!loading && !error && citas.length === 0 && (
                 <p className="citas-message">Parece que no tienes citas agendadas aún. ¡Anímate a crear una!</p>
             )}
-
             <div className="citas-grid">
-                {!loading && !error && citas.map((cita) => (
-                    <div key={cita.cita_id} className="cita-card">
-                        <img src="https://lares.com.co/wp-content/uploads/2023/06/blog-mascotas-lares-scaled.jpg" alt="Descripción de la imagen" />
-                        <p><strong>Fecha:</strong> {new Date(new Date(cita.fecha).getTime() + new Date(cita.fecha).getTimezoneOffset() * 60000).toLocaleDateString()}</p>
-                        <p><strong>Hora:</strong> {cita.hora}</p>
-                        <p><strong>Estado:</strong> {cita.estado}</p>
-                        <p><strong>Observaciones:</strong> {cita.observaciones || 'N/A'}</p>
-                        <div className="card-actions">
-                            <button className="btn btn-edit" onClick={() => handleEditarClick(cita)}>
-                                Editar
-                            </button>
-                            <button className="btn btn-delete" onClick={() => handleEliminarClick(cita.cita_id)}>
-                                Eliminar
-                            </button>
+                {!loading && !error && citas.map((cita) => {
+                    // Función para formatear correctamente la fecha
+                    const formatDate = (dateString) => {
+                        if (!dateString) return 'Fecha no disponible';
+
+                        // Extraer solo la parte de la fecha si viene con hora
+                        const fechaSolo = dateString.split('T')[0];
+
+                        const [yyyy, mm, dd] = fechaSolo.split('-');
+                        return `${dd}/${mm}/${yyyy}`;
+                    };
+
+                    return (
+                        <div key={cita.cita_id} className="cita-card">
+                            <img src="https://lares.com.co/wp-content/uploads/2023/06/blog-mascotas-lares-scaled.jpg" alt="Mascota" />
+                            <p><strong>Fecha:</strong> {formatDate(cita.fecha)}</p>
+                            <p><strong>Hora:</strong> {cita.hora}</p>
+                            <p><strong>Estado:</strong> {cita.estado}</p>
+                            <p><strong>Observaciones:</strong> {cita.observaciones || 'N/A'}</p>
+                            <div className="card-actions">
+                                <button className="btn btn-edit" onClick={() => handleEditarClick(cita)}>
+                                    Editar
+                                </button>
+                                <button className="btn btn-delete" onClick={() => handleEliminarClick(cita.cita_id)}>
+                                    Eliminar
+                                </button>
+                            </div>
                         </div>
-                    </div>
-
-                ))}
+                    );
+                })}
             </div>
-
-            {/* Modal/Formulario de Edición */}
             {citaSeleccionadaParaEditar && (
                 <div className="modal-overlay">
                     <div className="modal-content">
@@ -240,38 +295,45 @@ function MisCitas() {
                                 <input
                                     type="date"
                                     name="fecha"
-                                    // Asegúrate de que el formato de fecha para defaultValue sea 'YYYY-MM-DD'
-                                    defaultValue={citaSeleccionadaParaEditar.fecha}
-                                    onChange={handleDateChange} // Nuevo manejador
+                                    value={citaSeleccionadaParaEditar.fecha}
+                                    onChange={handleDateChange}
                                     required
                                     className="form-input"
+                                    min={new Date().toISOString().split('T')[0]}
                                 />
                             </label>
                             <label className="form-label">
                                 Hora:
                                 <select
                                     name="hora"
-                                    value={citaSeleccionadaParaEditar.hora} // Usar value para un control total
-                                    onChange={handleTimeChange} // Nuevo manejador
+                                    value={citaSeleccionadaParaEditar.hora || ''}
+                                    onChange={handleTimeChange}
                                     required
                                     className="form-input"
+                                    disabled={!citaSeleccionadaParaEditar.fecha}
                                 >
-                                    {/* Aquí mostramos solo las horas disponibles para la fecha seleccionada en el modal */}
+                                    <option value="">Seleccione una hora</option>
                                     {getAvailableHoursForDate(new Date(citaSeleccionadaParaEditar.fecha)).map(hora => (
                                         <option key={hora} value={hora}>{hora}</option>
                                     ))}
-                                    {/* Si la hora actual de la cita no está en las disponibles (ej. fue cancelada), asegúrate de que se muestre */}
-                                    {!getAvailableHoursForDate(new Date(citaSeleccionadaParaEditar.fecha)).includes(citaSeleccionadaParaEditar.hora) && citaSeleccionadaParaEditar.hora && (
-                                        <option value={citaSeleccionadaParaEditar.hora} disabled>{citaSeleccionadaParaEditar.hora} (Ocupada o Anterior)</option>
-                                    )}
+                                    {citaSeleccionadaParaEditar.hora &&
+                                        !getAvailableHoursForDate(new Date(citaSeleccionadaParaEditar.fecha)).includes(citaSeleccionadaParaEditar.hora) && (
+                                            <option
+                                                value={citaSeleccionadaParaEditar.hora}
+                                                disabled
+                                            >
+                                                {citaSeleccionadaParaEditar.hora} (Ocupada)
+                                            </option>
+                                        )}
                                 </select>
                             </label>
                             <label className="form-label">
                                 Estado:
                                 <select
                                     name="estado"
-                                    defaultValue={citaSeleccionadaParaEditar.estado}
+                                    value={citaSeleccionadaParaEditar.estado}
                                     className="form-input"
+                                    required
                                 >
                                     <option value="Pendiente">Pendiente</option>
                                     <option value="Confirmada">Confirmada</option>
@@ -283,9 +345,9 @@ function MisCitas() {
                                 Observaciones:
                                 <textarea
                                     name="observaciones"
-                                    defaultValue={citaSeleccionadaParaEditar.observaciones || ''}
+                                    value={citaSeleccionadaParaEditar.observaciones || ''}
                                     className="form-input"
-                                ></textarea>
+                                />
                             </label>
                             <div className="form-actions">
                                 <button type="submit" className="btn btn-save">Guardar Cambios</button>
