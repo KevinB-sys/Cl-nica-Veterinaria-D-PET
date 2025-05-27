@@ -47,7 +47,7 @@ const FloatingChatbotWrapper = ({ children }) => {
       <div
         style={{
           position: 'fixed', // También fijo en la pantalla
-          bottom: isOpen ? '40px' : '-550px', // Animación de aparición/desaparición
+          bottom: isOpen ? '20px' : '-550px', // Animación de aparición/desaparición
           right: '30px',
           zIndex: 1000, // Menor que el botón para que el botón esté encima del chat
           width: '370px', // Ancho del contenedor del chat
