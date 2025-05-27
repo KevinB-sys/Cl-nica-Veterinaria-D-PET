@@ -7,7 +7,7 @@ import '../estilos css/chatbot.css'; // ¡Importamos los estilos aquí!
 
 const ChatBotAgendar = () => {
     const [messages, setMessages] = useState([
-        { from: "bot", text: "¡Guau-hola! 🐾 Soy Lucky tu asistente peludo. ¿En qué fecha quieres agendar una !Guau-cita! veterinaria?", options: "initial_dates" }
+        { from: "bot", text: "¡Guau-hola! 🐾 Soy Lucky tu asistente peludo. ¿En qué fecha quieres agendar una ¡Guau-cita! veterinaria?", options: "initial_dates" }
     ]);
     const [step, setStep] = useState("esperando_fecha");
     const [selectedDate, setSelectedDate] = useState(null);
