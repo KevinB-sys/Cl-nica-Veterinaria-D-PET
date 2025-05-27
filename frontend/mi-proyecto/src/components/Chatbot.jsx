@@ -251,7 +251,7 @@ const ChatBotAgendar = () => {
                         onClick={onSend}
                         className="chatbot-send-button"
                     >
-                        Enviar 🐾
+                        Enviar🐾
                     </button>
                 </div>
             )}

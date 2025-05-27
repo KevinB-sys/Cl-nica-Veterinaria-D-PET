@@ -101,7 +101,7 @@
   color: white;
   font-weight: bold; /* Mantenemos el bold */
   cursor: pointer;
-  font-size: 16px; /* Unificado a 16px */
+  font-size: 14px; /* Unificado a 16px */
   transition: background-color 0.3s ease;
 }
 
