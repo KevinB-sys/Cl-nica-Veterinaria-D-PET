@@ -1,0 +1,102 @@
+/* src/components/ChatBotAgendar/ChatBotAgendar.css */
+
+/* Define tus variables de color */
+:root {
+  --primary-color: #2c2c6c; /* El nuevo azul oscuro/púrpura */
+  --light-gray: #e0e0e0;
+  --background-gray: #f9f9f9;
+  --border-gray: #ccc;
+  --darker-primary: #1f1f4f; /* Un poco más oscuro para el hover */
+}
+
+.chatbot-container {
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.chatbot-header {
+  text-align: center;
+  background-color: var(--primary-color); /* ¡Cambiado aquí! */
+  color: white;
+  margin: 0;
+  padding: 10px 0;
+  border-radius: 8px 8px 0 0;
+}
+
+.chatbot-messages {
+  flex-grow: 1;
+  padding: 15px;
+  overflow-y: auto;
+  background-color: var(--background-gray);
+}
+
+.message-row {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.bot-message-row {
+  justify-content: flex-start;
+}
+
+.user-message-row {
+  justify-content: flex-end;
+}
+
+.message-bubble {
+  max-width: 70%;
+  padding: 10px 15px;
+  border-radius: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.bot-bubble {
+  background-color: var(--light-gray);
+  color: #000;
+}
+
+.user-bubble {
+  background-color: var(--primary-color); /* ¡Cambiado aquí! */
+  color: #fff;
+}
+
+.chatbot-input-area {
+  display: flex;
+  padding: 15px;
+  border-top: 1px solid var(--border-gray);
+  background-color: white;
+}
+
+.chatbot-input {
+  flex-grow: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border-gray);
+  outline: none;
+  font-size: 16px;
+}
+
+.chatbot-send-button {
+  margin-left: 10px;
+  padding: 10px 20px;
+  background-color: var(--primary-color); /* ¡Cambiado aquí! */
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.chatbot-send-button:hover {
+  background-color: var(--darker-primary); /* ¡Cambiado aquí! */
+}
