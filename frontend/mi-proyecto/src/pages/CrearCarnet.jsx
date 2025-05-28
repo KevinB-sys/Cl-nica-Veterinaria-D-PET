@@ -1,26 +1,15 @@
 import '../estilos css/crearcarnet.css';
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaDog, FaCat, FaUser, FaBirthdayCake, FaPaw } from "react-icons/fa";
 import { motion } from "framer-motion";
-import Swal from "sweetalert2"; 
+import Swal from "sweetalert2";
 import { registermascota } from '../services/mascotaService';
 import { getAllUsuarios } from '../services/usuariosService';
 
 export default function RegistroMascota() {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [duenos, setDuenos] = useState([]);
-  useEffect(() => {
-    const fetchDuenos = async () => {
-      const result = await getAllUsuarios();
-      if(result){
-        setDuenos(result);
-      }else{
-        alert("Error al cargar los dueños");
-      }
-    };
-    fetchDuenos();
-  }, [])
 
   const [form, setForm] = useState({
     nombre: "",
@@ -31,11 +20,37 @@ export default function RegistroMascota() {
     duenio_id: "",
   });
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const razasPorEspecie = {
+    PERRO: ["LABRADOR", "BULLDOG", "COCKER", "PUG", "OTRO"],
+    GATO: ["SIAMES", "PERSA", "ANGORA", "OTRO"],
+    AVE: ["LORO", "PERIQUITO", "CANARIO", "OTRO"],
+    ROEDOR: ["CONEJO", "HAMSTER", "CONEJILLO DE INDIAS", "OTRO"],
+    REPTIL: ["TORTUGA", "IGUANA", "GECKO", "OTRO"]
   };
 
-  const handleSubmit = async (e) => { 
+  useEffect(() => {
+    const fetchDuenos = async () => {
+      const result = await getAllUsuarios();
+      if (result) {
+        setDuenos(result);
+      } else {
+        alert("Error al cargar los dueños");
+      }
+    };
+    fetchDuenos();
+  }, [])
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+      // Si cambia especie, reseteamos la raza
+      ...(name === "especie" ? { raza: "" } : {})
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const confirmResult = await Swal.fire({
@@ -51,10 +66,9 @@ export default function RegistroMascota() {
 
     if (confirmResult.isConfirmed) {
       try {
-        // console.log(form);
-        const data = await registermascota(form); 
+        const data = await registermascota(form);
         console.log(data);
-        
+
         if (data.message === "Mascota registrada con éxito") {
           Swal.fire({
             icon: "success",
@@ -63,7 +77,7 @@ export default function RegistroMascota() {
             timer: 2000,
             showConfirmButton: false,
           }).then(() => {
-            navigate("/Services"); 
+            navigate("/Services");
           });
         } else {
           Swal.fire({
@@ -90,13 +104,13 @@ export default function RegistroMascota() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <img 
+      <img
         src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh8Hz0UUXxZm21BEiTgWaMMgmjHU0AKmWpwLck_ucBy2J0a2MlNaZbEeQ74sc_2-zxiqEPp3wpx43jHoEqKCWbbuwSXwSv3ihs9R2fSSh5K7-5nWVYtT6gSPG30_9qUoAZeFld2uCRcGiRmh8UD5QUH_jEzOGDncZluQbi6pnmYdjVDZIM0vmHDhetO0xE/s320/logo.png"
         className="logo-vet"
         alt="Logo Veterinaria"
       />
 
-      <h2 className="titulo-registro">Registro de Carnet</h2>
+      <h2 className="titulo-registro">Registro de carnet de Vacunación</h2>
 
       <form onSubmit={handleSubmit} className="formulario-registro">
         <div className="contenedor-campos">
@@ -107,11 +121,27 @@ export default function RegistroMascota() {
             </div>
             <div className="grupo-campo">
               <FaDog className="icono" />
-              <input type="text" name="especie" placeholder="Especie" onChange={handleChange} required />
+              <select name="especie" onChange={handleChange} required>
+                <option value="">Seleccione la especie</option>
+                <option value="PERRO">PERRO</option>
+                <option value="GATO">GATO</option>
+                <option value="AVE">AVE</option>
+                <option value="ROEDOR">ROEDOR</option>
+                <option value="REPTIL">REPTIL</option>
+              </select>
             </div>
+
             <div className="grupo-campo">
               <FaCat className="icono" />
-              <input type="text" name="raza" placeholder="Raza" onChange={handleChange} required />
+              <select name="raza" onChange={handleChange} required disabled={!form.especie}>
+                <option value="">
+                  {form.especie ? "Seleccione la raza" : "Seleccione primero una especie"}
+                </option>
+                {form.especie &&
+                  razasPorEspecie[form.especie]?.map((raza) => (
+                    <option key={raza} value={raza}>{raza}</option>
+                  ))}
+              </select>
             </div>
           </div>
 
@@ -120,13 +150,19 @@ export default function RegistroMascota() {
               <FaUser className="icono" />
               <select name="sexo" onChange={handleChange} required>
                 <option value="">Seleccione el sexo</option>
-                <option value="Macho">Macho</option>
-                <option value="Hembra">Hembra</option>
+                <option value="MACHO">MACHO</option>
+                <option value="HEMBRA">HEMBRA</option>
               </select>
             </div>
             <div className="grupo-campo">
               <FaBirthdayCake className="icono" />
-              <input type="date" name="fecha_nacimiento" onChange={handleChange} required />
+              <input
+                type="date"
+                name="fecha_nacimiento"
+                onChange={handleChange}
+                required
+                max={new Date().toISOString().split("T")[0]}
+              />
             </div>
             <div className="grupo-campo">
               <FaUser className="icono" />
