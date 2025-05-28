@@ -10,6 +10,8 @@ const registros = [
   { id: 1, fecha: '2023-10-05', edad: '2 años', peso: '15kg', vacuna: 'Rabia', proxVisita: '2024-10-05', sello: 'Firma1' },
   { id: 2, fecha: '2023-11-10', edad: '3 años', peso: '20kg', vacuna: 'Parvovirus', proxVisita: '2024-11-10', sello: 'Firma2' },
   { id: 3, fecha: '2023-12-15', edad: '4 año', peso: '10kg', vacuna: 'Moquillo', proxVisita: '2024-12-15', sello: 'Firma3' }
+ 
+
 ];
 
 export default function RegistroVacunacion() {
