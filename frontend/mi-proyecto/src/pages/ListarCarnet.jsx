@@ -131,7 +131,7 @@ export default function ListarCarnet() {
                 <p className="list-carnet-info"><FaShapes className="list-carnet-icon" /> <strong>Especie:</strong> {carnet.especie}</p>
                 <p className="list-carnet-info"><FaVenusMars className="list-carnet-icon" /> <strong>Sexo:</strong> {carnet.sexo}</p>
                 <p className="list-carnet-info"><FaCalendarAlt className="list-carnet-icon" /> <strong>Fecha Nacimiento:</strong> {carnet.fecha_nacimiento ? new Date(carnet.fecha_nacimiento).toISOString().split('T')[0] : 'N/A'}</p>
-                <p className="list-carnet-info"><FaVenusMars className="list-carnet-icon" /> <strong>Duenio:</strong> {carnet.duenio_id}</p>
+                {/* <p className="list-carnet-info"><FaVenusMars className="list-carnet-icon" /> <strong>Duenio:</strong> {carnet.duenio_id}</p> */}
               </div>
 
               <div className="list-carnet-actions">
