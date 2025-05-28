@@ -261,7 +261,7 @@ function MisCitas() {
                             <img src="https://lares.com.co/wp-content/uploads/2023/06/blog-mascotas-lares-scaled.jpg" alt="Mascota" />
                             <p><strong>Fecha:</strong> {formatDate(cita.fecha)}</p>
                             <p><strong>Hora:</strong> {cita.hora}</p>
-                            <p><strong>Estado:</strong> {cita.estado}</p>
+                            {/* <p><strong>Estado:</strong> {cita.estado}</p> */}
                             <p><strong>Observaciones:</strong> {cita.observaciones || 'N/A'}</p>
                             <div className="card-actions">
                                 <button className="btn btn-edit" onClick={() => handleEditarClick(cita)}>
@@ -327,7 +327,7 @@ function MisCitas() {
                                         )}
                                 </select>
                             </label>
-                            <label className="form-label">
+                            {/* <label className="form-label">
                                 Estado:
                                 <select
                                     name="estado"
@@ -340,7 +340,7 @@ function MisCitas() {
                                     <option value="Cancelada">Cancelada</option>
                                     <option value="Completada">Completada</option>
                                 </select>
-                            </label>
+                            </label> */}
                             <label className="form-label">
                                 Observaciones:
                                 <textarea

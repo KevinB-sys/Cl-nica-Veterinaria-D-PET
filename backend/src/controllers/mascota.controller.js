@@ -4,7 +4,7 @@ export const getMascotas = async (req, res) => {
   try {
     const mascotas = await getAllMascotas();
     if (mascotas.length === 0) {
-      return res.status(404).json({ message: "No hay mascotas registradas." });
+      return res.status(404).json({ message: "No hay carnet de vacunación registrados" });
     }
     res.json(mascotas);
   } catch (error) {
@@ -38,7 +38,7 @@ export const getMascotasPorUsuario = async (req, res) => {
     const mascotas = await getMascotasByDuenioId(duenio_id);
 
     if (mascotas.length === 0) {
-      return res.status(404).json({ message: `No se encontraron mascotas para el dueño con ID: ${duenio_id}.` });
+      return res.status(404).json({ message: `No tienes ningun carnet de vacunación` });
     }
 
     res.status(200).json(mascotas);
