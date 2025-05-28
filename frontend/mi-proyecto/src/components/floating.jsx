@@ -44,7 +44,7 @@ const FloatingChatbotWrapper = ({ children }) => {
       </button>
 
       {/* 2. EL CONTENEDOR DEL CHATBOT QUE APARECE/DESAPARECE */}
-      <div
+      <div className='floating-wrapper'
         style={{
           position: 'fixed', // También fijo en la pantalla
           bottom: isOpen ? '20px' : '-550px', // Animación de aparición/desaparición
