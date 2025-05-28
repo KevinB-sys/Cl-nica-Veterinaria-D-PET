@@ -1,6 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../estilos css/vercarnet.css';
+import '../estilos css/vercarnet.css'; // Asegúrate de que esta ruta sea correcta
+
+// Importar imagens de la veterinaria y el icono d ela vaxuna 
+import logoVeterinaria from '../imagenes/logo.png';
+import iconoVacuna from '../imagenes/vacuna.png';
 
 const registros = [
   { id: 1, fecha: '2023-10-05', edad: '2 años', peso: '15kg', vacuna: 'Rabia', proxVisita: '2024-10-05', sello: 'Firma1' },
@@ -17,7 +21,16 @@ export default function RegistroVacunacion() {
 
   return (
     <div className="registro-vacunacion-container">
-      <h2>Registro de Vacunación</h2>
+      <br />
+      <br />
+      {/* Este h2 se ocultará al imprimir */}
+      <h2>Registro de Vacunación</h2> 
+
+      {/* Este es el encabezado que se mostrará solo al imprimir */}
+      <div className="print-header">
+        <img src={logoVeterinaria} alt="Logo Veterinaria" className="logo-print" />
+        <h1>Carnet de Vacunación de Mascota</h1> {/* Título más específico para la impresión */}
+      </div>
 
       <table className="registro-vacunacion-table">
         <thead>
@@ -25,7 +38,7 @@ export default function RegistroVacunacion() {
             <th>Fecha</th>
             <th>Edad</th>
             <th>Peso</th>
-            <th>Vacuna</th>
+            <th>Vacuna <img src={iconoVacuna} alt="Vacuna" className="icono-header" /></th> {/* Icono junto a la columna de Vacuna */}
             <th>Próxima Visita</th>
             <th>Sello (firma)</th>
           </tr>
@@ -44,6 +57,7 @@ export default function RegistroVacunacion() {
         </tbody>
       </table>
 
+      {/* Estos botones se ocultarán al imprimir */}
       <div className="registro-buttons">
         <button className="btn-retroceder" onClick={() => navigate(-1)}>⬅ Volver</button>
         <button className="btn-imprimir" onClick={handlePrint}>🖨️ Imprimir</button>
