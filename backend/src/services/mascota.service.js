@@ -1,9 +1,9 @@
 import prisma from "../prisma/prismaClient.js";
 
 export const getAllMascotas = async () => {
-    return await prisma.mascota.findMany({
-        // select: { id: true, nombre: true, email: true },
-    });
+  return await prisma.mascota.findMany({
+    // select: { id: true, nombre: true, email: true },
+  });
 };
 
 export const createNewMascota = async (data) => {
@@ -27,4 +27,12 @@ export const createNewMascota = async (data) => {
   //   data,
   // });
 };
-  
+
+//listar mascotas por duenio_id ---
+export const getMascotasByDuenioId = async (duenio_id) => {
+  return await prisma.mascota.findMany({
+    where: {
+      duenio_id: duenio_id,
+    },
+  });
+};

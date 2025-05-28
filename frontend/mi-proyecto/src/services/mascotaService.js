@@ -20,3 +20,4 @@ export const registermascota = async (userData) => {
         return { state: "error", message: error.message || "Error en la conexión con el servidor" };
     }
 };
+
