@@ -137,13 +137,13 @@ export default function ListarCarnet() {
               <div className="list-carnet-actions">
                 {/* Asegúrate de que tus rutas de React Router estén configuradas para aceptar el ID de la mascota */}
                 <button className="list-carnet-btn list-carnet-view" onClick={() => navigate(`/Vercarnet`)}>
-                  <FaEye /> Ver
+                  <FaEye /> Ver vacunas
                 </button>
-                <button className="list-carnet-btn list-carnet-edit" onClick={() => navigate(`/Editarcarnet`)}>
+                {/* <button className="list-carnet-btn list-carnet-edit" onClick={() => navigate(`/Editarcarnet`)}>
                   <FaEdit /> Editar
-                </button>
-                <button className="list-carnet-btn list-carnet-add" onClick={() => navigate(`/Addcarnet`)}>
-                  <FaPlus /> Añadir
+                </button> */}
+                <button className="list-carnet-btn list-carnet-add" onClick={() => navigate(`/Addcarnet/${carnet.mascota_id}`)}>
+                  <FaPlus /> Administrar vacunas
                 </button>
               </div>
             </div>

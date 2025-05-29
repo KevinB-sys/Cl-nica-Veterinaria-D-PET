@@ -51,7 +51,8 @@ const App = () => {
           <Route path="/Vercarnet" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Vercarnet /></PrivateRoute>} />
           <Route path="/Editarcarnet" element={<PrivateRoute allowedRoles={[1, 3]}><Editarcarnet /></PrivateRoute>} />
           <Route path="/Calendario" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Calendario /></PrivateRoute>} />
-          <Route path="/Addcarnet" element={<PrivateRoute allowedRoles={[1, 3]}><Addcarnet /></PrivateRoute>} />
+          {/* <Route path="/Addcarnet" element={<PrivateRoute allowedRoles={[1, 3]}><Addcarnet /></PrivateRoute>} /> */}
+          <Route path="/Addcarnet/:id" element={<PrivateRoute allowedRoles={[1, 3]}><Addcarnet /></PrivateRoute>} />
           <Route path="/Profile" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Profile /></PrivateRoute>} />
           <Route path="/Recuperacion" element={<Recuperacion />} /> {/* La recuperación usualmente es pública */}
           <Route path="/Reset" element={<Reset />} /> {/* Ruta para restablecer la contraseña */}
