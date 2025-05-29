@@ -327,12 +327,12 @@ function MisCitas() {
                                         )}
                                 </select>
                             </label>
-                            {/* <label className="form-label">
-                                Estado:
+                            <label className="form-label" >
                                 <select
                                     name="estado"
                                     value={citaSeleccionadaParaEditar.estado}
                                     className="form-input"
+                                    hidden
                                     required
                                 >
                                     <option value="Pendiente">Pendiente</option>
@@ -340,7 +340,7 @@ function MisCitas() {
                                     <option value="Cancelada">Cancelada</option>
                                     <option value="Completada">Completada</option>
                                 </select>
-                            </label> */}
+                            </label>
                             <label className="form-label">
                                 Observaciones:
                                 <textarea
