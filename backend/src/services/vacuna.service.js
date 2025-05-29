@@ -13,7 +13,7 @@ export const createNewVacuna = async (data) => {
   return await prisma.vacunacion.create({
     data: {
       vacunacion_id: vacunaId,
-      mascota_id: 2,
+      mascota_id: 10,
       vacuna,
       fecha_aplicacion: new Date(fecha),
       proxima_visita: new Date(proxVisita),
