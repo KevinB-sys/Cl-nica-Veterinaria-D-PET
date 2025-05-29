@@ -15,9 +15,9 @@ export default function RegistroVacunacionEditable() {
   ]);
 
   // Función para agregar una nueva fila al registro
-  const handleAgregarFila = () => {
-    setRegistros([...registros, { id: Date.now(), fecha: '', edad: '', peso: '', vacuna: '', proxVisita: '', sello: '' }]);
-  };
+  // const handleAgregarFila = () => {
+  //   setRegistros([...registros, { id: Date.now(), fecha: '', edad: '', peso: '', vacuna: '', proxVisita: '', sello: '' }]);
+  // };
 
   // Función para manejar los cambios en los campos del registro
   const handleChange = (index, field, value) => {
