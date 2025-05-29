@@ -48,7 +48,9 @@ const App = () => {
           <Route path="/Carnet" element={<PrivateRoute allowedRoles={[1, 3]}><Carnet /></PrivateRoute>} />
           <Route path="/CrearCarnet" element={<PrivateRoute allowedRoles={[1, 3]}><CrearCarnet /></PrivateRoute>} />
           <Route path="/ListarCarnet" element={<PrivateRoute allowedRoles={[1, 2, 3]}><ListarCarnet /></PrivateRoute>} />
-          <Route path="/Vercarnet" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Vercarnet /></PrivateRoute>} />
+          {/* <Route path="/Vercarnet" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Vercarnet /></PrivateRoute>} /> */}
+          <Route path="/Vercarnet/:id" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Vercarnet /></PrivateRoute>} />
+          {/* Ruta para editar el carnet de vacunación */}
           <Route path="/Editarcarnet" element={<PrivateRoute allowedRoles={[1, 3]}><Editarcarnet /></PrivateRoute>} />
           <Route path="/Calendario" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Calendario /></PrivateRoute>} />
           {/* <Route path="/Addcarnet" element={<PrivateRoute allowedRoles={[1, 3]}><Addcarnet /></PrivateRoute>} /> */}
