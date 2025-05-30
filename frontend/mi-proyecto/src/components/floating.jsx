@@ -19,8 +19,8 @@ const FloatingChatbotWrapper = ({ children }) => {
         onClick={toggleChat}
         style={{
           position: 'fixed', // Lo fija en la pantalla
-          bottom: '100px',    // Distancia desde abajo
-          right: '30px',     // Distancia desde la derecha
+          bottom: '30px',    // Distancia desde abajo
+          right: '1220px',     // Distancia desde la derecha
           zIndex: 1001,      // Asegura que esté por encima de casi todo
           width: '50px',
           height: '50px',
