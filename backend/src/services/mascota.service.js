@@ -36,3 +36,17 @@ export const getMascotasByDuenioId = async (duenio_id) => {
     },
   });
 };
+
+
+//listar mascotas por id ---
+export const getMascotaById = async (mascota_id) => {
+  const id = parseInt(mascota_id, 10);
+  if (isNaN(id)) {
+    throw new Error("mascota_id debe ser un entero");
+  }
+  return await prisma.mascota.findUnique({
+    where: {
+      mascota_id: id,
+    },
+  });
+};

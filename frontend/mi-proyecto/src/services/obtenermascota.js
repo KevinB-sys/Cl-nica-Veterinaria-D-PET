@@ -67,3 +67,33 @@ export const getMascotasByDuenioId = async (duenioId) => {
         throw error; // Re-lanza el error para que el componente pueda manejarlo
     }
 };
+
+
+//Obtener mascota por ID
+export const getMascotaById = async (mascotaId) => {
+    try {
+        const token = localStorage.getItem('token'); // Obtener el token del localStorage
+
+        if (!token) {
+            throw new Error("No se encontró token de autenticación. Por favor, inicie sesión.");
+        }
+
+        const response = await fetch(`${API_BASE_URL}/mascotas/${mascotaId}`, {
+            method: "GET", // Aunque fetch por defecto es GET, es buena práctica especificarlo
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Incluir el token en los headers
+            }
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Error al obtener la mascota por ID.');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching mascota by ID:', error);
+        throw error; // Re-lanza el error para que el componente pueda manejarlo
+    }
+};

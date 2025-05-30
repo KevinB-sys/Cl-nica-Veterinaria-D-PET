@@ -84,30 +84,36 @@
 /* Estilos para el encabezado de impresión (por defecto oculto en pantalla) */
 .print-header {
   display: none;
-  /* Oculto por defecto en pantalla */
-  text-align: center;
-  margin-bottom: 20px;
 }
 
 .logo-print {
   width: 150px;
-  /* Ajusta el tamaño de tu logo */
   height: auto;
   margin-bottom: 10px;
 }
 
 .print-header h1 {
   font-size: 28px;
-  /* Tamaño del título específico para la impresión */
   color: #333;
   margin-top: 0;
 }
 
 .icono-header {
   height: 20px;
-  /* Tamaño del icono en el encabezado de la tabla */
   vertical-align: middle;
   margin-left: 5px;
+}
+
+/* NUEVOS ESTILOS PARA EL CARNET DOBLABLE */
+.print-content {
+  display: none;
+}
+
+.error-message {
+  color: #dc3545;
+  font-weight: bold;
+  text-align: center;
+  margin: 20px 0;
 }
 
 /* Media query para la impresión */
@@ -116,22 +122,29 @@
   /*
    * Reseteo básico para la impresión:
    * Elimina márgenes y paddings globales para evitar hojas extra.
-   * CUIDADO: Un '*' muy amplio puede tener efectos no deseados.
-   * Es mejor ser específico si puedes.
    */
   body,
   html {
     margin: 0 !important;
     padding: 0 !important;
     width: 100%;
-    height: auto;
+    height: 100%;
     overflow: visible !important;
-    /* Asegura que el contenido no se oculte */
+    font-family: Arial, sans-serif;
   }
 
-  /* Asegura que no haya saltos de página inesperados para los elementos principales del layout */
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Configuración de la página impresa - CLAVE PARA UNA SOLA HOJA */
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  /* Asegura que no haya saltos de página inesperados */
   .app-container {
-    /* Si tu Layout tiene un div principal con esta clase */
     margin: 0 !important;
     padding: 0 !important;
     min-height: auto !important;
@@ -140,96 +153,266 @@
   }
 
   /* Oculta los elementos que no queremos en la impresión */
+  .screen-content,
   .registro-vacunacion-container h2,
-  /* Oculta el título principal de la pantalla */
   .btn-retroceder,
   .btn-imprimir,
   .registro-buttons,
-
-  /* ¡OCULTA EL NAVBAR (header) Y EL FOOTER! */
   header,
-  /* Oculta todos los elementos <header> */
   .footer,
-  /* Reemplaza '.footer' con la CLASE O ID REAL de tu footer si es diferente */
-
-  /* Oculta otros elementos del layout si no quieres que aparezcan */
   .scroll-to-top-button,
-  /* Ejemplo: Si tu botón de scroll tiene esta clase */
   .floating-wrapper,
-  /* Ejemplo: Si tu componente Floating agrega un wrapper con esta clase */
-  .chatbot-container
-
-  /* Ejemplo: Si tu Chatbot tiene un contenedor con esta clase */
-    {
+  .chatbot-container {
     display: none !important;
-    /* Es CRUCIAL para asegurar que se oculten */
   }
 
-  /* Muestra el encabezado específico para la impresión */
-  .print-header {
-    display: block;
-    /* Muestra el encabezado al imprimir */
+  /* Muestra SOLO el contenido del carnet al imprimir */
+  .print-content {
+    display: block !important;
   }
 
   /* Ajustes del contenedor principal del carnet para la impresión */
   .registro-vacunacion-container {
     box-shadow: none;
-    /* Elimina la sombra */
     background-color: white;
-    /* Asegura el fondo blanco */
-    padding: 20px;
-    /* Dale un padding general para la impresión */
-    margin: 0 auto;
-    /* Centra el contenido */
-    width: 90%;
-    /* Ocupa todo el ancho disponible */
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
     box-sizing: border-box;
-    /* Para que el padding no desborde el ancho */
-    margin-top: 1px;
+    page-break-inside: avoid;
   }
 
-  /* Estilos de la tabla para impresión */
-  .registro-vacunacion-table {
+  /* ESTILOS PARA EL CARNET DOBLABLE - OPTIMIZADO PARA UNA SOLA HOJA */
+  
+  /* Cada mitad ocupa exactamente la mitad de la página disponible */
+  .print-page-half {
+    height: calc(50% - 5mm);
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    position: relative;
+    page-break-inside: avoid;
+    overflow: hidden;
+  }
+
+  /* ESTILOS PARA LA PORTADA - OPTIMIZADO */
+  .portada {
+    border-bottom: 2px dashed #999;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: white;
+    margin-bottom: 2px;
+  }
+
+  .portada-header {
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .logo-portada {
+    width: 60px;
+    height: auto;
+    margin-bottom: 5px;
+  }
+
+  .portada h1 {
+    font-size: 18pt;
+    font-weight: bold;
+    color: #2c3e50;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .mascota-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    background: #f8f9fa;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 0;
+    border-bottom: 1px dotted #dee2e6;
+  }
+
+  .info-row:last-child {
+    border-bottom: none;
+  }
+
+  .info-row strong {
+    color: #495057;
+    font-weight: bold;
+    min-width: 100px;
+    font-size: 9pt;
+  }
+
+  .info-row span {
+    color: #212529;
+    font-weight: normal;
+    text-align: right;
+    flex-grow: 1;
+    font-size: 9pt;
+  }
+
+  .portada-footer {
+    text-align: center;
+    margin-top: 5px;
+  }
+
+  .portada-footer p {
+    margin: 2px 0;
+    color: #6c757d;
+    font-size: 8pt;
+  }
+
+  .portada-footer em {
+    font-style: italic;
+    font-size: 7pt;
+  }
+
+  /* ESTILOS PARA EL HISTORIAL - OPTIMIZADO */
+  .historial {
+    padding-top: 8px;
+    height: calc(50% - 5mm);
+    overflow: hidden;
+  }
+
+  .historial-header {
+    text-align: center;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .historial h2 {
+    font-size: 14pt;
+    font-weight: bold;
+    color: #2c3e50;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .icono-historial {
+    width: 16px;
+    height: 16px;
+  }
+
+  .historial-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 30px;
-    /* Espacio después del encabezado de impresión */
+    font-size: 8pt;
+    margin-bottom: 5px;
+    table-layout: fixed;
   }
 
-  .registro-vacunacion-table th,
-  .registro-vacunacion-table td {
-    border: 1px solid #000;
-    /* Bordes negros para mayor claridad */
-    padding: 10px;
-    /* Un poco menos de padding para que quepa más contenido */
+  .historial-table th {
+    background-color: #e9ecef !important;
+    border: 1px solid #000 !important;
+    padding: 2px 1px;
     text-align: center;
-    font-size: 14px;
-    /* Tamaño de fuente más adecuado para impresión */
-    color: #000;
-    /* Asegura que el texto sea negro */
-  }
-
-  .registro-vacunacion-table th {
-    background-color: #e0e0e0 !important;
-    /* Un gris más claro para el encabezado de la tabla */
-    color: black !important;
-    /* Asegura que el texto del encabezado sea negro */
     font-weight: bold;
+    font-size: 7pt;
+    color: black !important;
+    line-height: 1.1;
   }
 
-  .registro-vacunacion-table tr:nth-child(even) {
-    background-color: #f8f8f8 !important;
-    /* Un gris muy claro para filas pares */
+  .historial-table td {
+    border: 1px solid #000 !important;
+    padding: 2px 1px;
+    text-align: center;
+    font-size: 7pt;
+    color: black !important;
+    line-height: 1.1;
+    word-wrap: break-word;
   }
 
-  .registro-vacunacion-table tr:hover {
+  .historial-table tr:nth-child(even) {
+    background-color: #f8f9fa !important;
+  }
+
+  .historial-table tr:hover {
     background-color: transparent !important;
-    /* Deshabilita el hover en la impresión */
   }
 
-  /* Configuración de la página impresa */
-  @page {
-    margin: 1cm;
-    /* Márgenes de la página impresa */
+  /* Anchos específicos para las columnas */
+  .historial-table th:nth-child(1),
+  .historial-table td:nth-child(1) {
+    width: 18%;
+  }
+
+  .historial-table th:nth-child(2),
+  .historial-table td:nth-child(2) {
+    width: 12%;
+  }
+
+  .historial-table th:nth-child(3),
+  .historial-table td:nth-child(3) {
+    width: 12%;
+  }
+
+  .historial-table th:nth-child(4),
+  .historial-table td:nth-child(4) {
+    width: 40%;
+  }
+
+  .historial-table th:nth-child(5),
+  .historial-table td:nth-child(5) {
+    width: 18%;
+  }
+
+  .no-vacunas {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    margin: 20px 0;
+    font-size: 10pt;
+  }
+
+  .historial-footer {
+    display: none !important;
+  }
+
+  .historial-footer small {
+    display: none !important;
+  }
+
+  /* Línea de corte visual para indicar dónde doblar - MÁS PEQUEÑA */
+  .portada::after {
+    content: "✂ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ✂";
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #999;
+    font-size: 6pt;
+    letter-spacing: 1px;
+  }
+
+  /* Forzar que todo quepa en una sola página */
+  .print-content {
+    max-height: 100vh;
+    overflow: hidden;
+    page-break-after: avoid;
+    page-break-before: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Ocultar elementos específicos de tu layout actual */
+  .print-header {
+    display: none !important;
   }
 }

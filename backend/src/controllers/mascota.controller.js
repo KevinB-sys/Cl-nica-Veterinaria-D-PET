@@ -1,4 +1,4 @@
-import { getAllMascotas, createNewMascota, getMascotasByDuenioId } from "../services/mascota.service.js";
+import { getAllMascotas, createNewMascota, getMascotasByDuenioId, getMascotaById } from "../services/mascota.service.js";
 
 export const getMascotas = async (req, res) => {
   try {
@@ -44,5 +44,25 @@ export const getMascotasPorUsuario = async (req, res) => {
     res.status(200).json(mascotas);
   } catch (error) {
     res.status(500).json({ message: `Error al obtener las mascotas del usuario: ${error.message}` });
+  }
+};
+
+export const getMascotaPorId = async (req, res) => {
+  try {
+    const { mascota_id } = req.params;
+
+    if (!mascota_id) {
+      return res.status(400).json({ message: "El ID de la mascota es requerido." });
+    }
+
+    const mascota = await getMascotaById(mascota_id);
+
+    if (!mascota) {
+      return res.status(404).json({ message: `No se encontró la mascota con ID ${mascota_id}` });
+    }
+
+    res.status(200).json(mascota);
+  } catch (error) {
+    res.status(500).json({ message: `Error al obtener la mascota: ${error.message}` });
   }
 };
