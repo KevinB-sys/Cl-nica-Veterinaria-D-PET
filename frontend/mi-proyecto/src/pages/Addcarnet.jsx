@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import '../estilos css/Editarcarnet.css'; // Asegúrate de que esta ruta sea correcta
-// Si tienes estilos específicos para ver el carnet que no están en Editarcarnet.css,
-// deberías importarlos también o fusionarlos. Por ahora, asumiré que Editarcarnet.css es suficiente.
-import { createvacuna, getVacunasByMascota } from "../services/vacunasService"; // Importa getVacunasByMascota
+import '../estilos css/Editarcarnet.css';
+import { createvacuna, getVacunasByMascota } from "../services/vacunasService";
 import Swal from "sweetalert2";
 
 export default function RegistroVacunacionEditable() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  // Estados para manejar las vacunas existentes y las nuevas a añadir
   const [vacunasExistentes, setVacunasExistentes] = useState([]);
-  const [registrosNuevos, setRegistrosNuevos] = useState([]); // Cambiado el nombre para mayor claridad
+  const [registrosNuevos, setRegistrosNuevos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // useEffect para cargar las vacunas existentes cuando el componente se monta o el ID cambia
   useEffect(() => {
     const fetchVacunasExistentes = async () => {
       if (!id) {
@@ -53,13 +49,11 @@ export default function RegistroVacunacionEditable() {
     fetchVacunasExistentes();
   }, [id]);
 
-  // Función para obtener la fecha actual en formato YYYY-MM-DD
   const obtenerFechaActual = () => {
     const hoy = new Date();
     return hoy.toISOString().split('T')[0];
   };
 
-  // Función para agregar una nueva fila para un nuevo registro de vacuna
   const handleAgregarFila = () => {
     setRegistrosNuevos([
       ...registrosNuevos,
@@ -67,7 +61,6 @@ export default function RegistroVacunacionEditable() {
     ]);
   };
 
-  // Función para manejar los cambios en los campos de los nuevos registros
   const handleChange = (index, field, value) => {
     const updatedRegistrosNuevos = [...registrosNuevos];
 
@@ -103,7 +96,6 @@ export default function RegistroVacunacionEditable() {
     setRegistrosNuevos(updatedRegistrosNuevos);
   };
 
-  // Función para manejar el guardado de los nuevos registros
   const handleGuardar = async () => {
     if (registrosNuevos.length === 0) {
       Swal.fire({
@@ -129,7 +121,6 @@ export default function RegistroVacunacionEditable() {
 
     try {
       for (const registro of registrosNuevos) {
-        // Validaciones adicionales antes de enviar al backend
         if (registro.peso === '' || isNaN(registro.peso) || parseInt(registro.peso) <= 0) {
           Swal.fire({
             icon: "error",
@@ -185,15 +176,12 @@ export default function RegistroVacunacionEditable() {
         timer: 2500,
         showConfirmButton: false
       });
-      // Después de guardar, recarga las vacunas existentes para que la tabla se actualice
-      // y limpia los nuevos registros.
-      setRegistrosNuevos([]); // Limpia los campos de "añadir"
-      // Volvemos a llamar a la función que carga las vacunas existentes
+
+      setRegistrosNuevos([]);
       const result = await getVacunasByMascota(id);
       if (result.state === "success") {
         setVacunasExistentes(result.data);
       } else {
-        // Manejar error si la recarga falla
         Swal.fire({
           icon: 'error',
           title: 'Error al recargar',
@@ -214,7 +202,6 @@ export default function RegistroVacunacionEditable() {
     }
   };
 
-  // Muestra un mensaje de carga mientras se obtienen los datos
   if (loading) {
     return (
       <div className="registro-vacunacion-container">
@@ -223,7 +210,6 @@ export default function RegistroVacunacionEditable() {
     );
   }
 
-  // Muestra un mensaje de error si algo salió mal al cargar las vacunas existentes
   if (error) {
     return (
       <div className="registro-vacunacion-container">
@@ -237,7 +223,6 @@ export default function RegistroVacunacionEditable() {
     <div className="registro-vacunacion-container">
       <h2>Carnet de Vacunación de Mascota ID: {id}</h2>
 
-      {/* Tabla para VACUNAS EXISTENTES */}
       <h3>Vacunas Existentes</h3>
       {vacunasExistentes.length === 0 ? (
         <p>No hay vacunas registradas para esta mascota. Puedes añadir una nueva.</p>
@@ -250,6 +235,7 @@ export default function RegistroVacunacionEditable() {
               <th>Peso (Kg)</th>
               <th>Vacuna</th>
               <th>Próxima Visita</th>
+              <th>Acciones</th> {/* Nueva columna para acciones */}
             </tr>
           </thead>
           <tbody>
@@ -260,13 +246,47 @@ export default function RegistroVacunacionEditable() {
                 <td>{vacuna.peso}</td>
                 <td>{vacuna.vacuna}</td>
                 <td>{new Date(vacuna.proxima_visita).toLocaleDateString()}</td>
+                <td>
+                  {/* Botones de acción (funcionalidad a implementar más adelante) */}
+                  <button
+                    className="btn-accion btn-editar"
+                    onClick={() => {
+                      // Puedes agregar un Swal aquí para indicar que la función está en desarrollo
+                      Swal.fire({
+                        icon: 'info',
+                        title: 'En desarrollo',
+                        text: 'La funcionalidad de editar se implementará más adelante.',
+                        timer: 1500,
+                        showConfirmButton: false
+                      });
+                      console.log('Editar vacuna:', vacuna.vacunacion_id);
+                    }}
+                  >
+                    ✏️ Editar
+                  </button>
+                  <button
+                    className="btn-accion btn-eliminar"
+                    onClick={() => {
+                      // Puedes agregar un Swal aquí para indicar que la función está en desarrollo
+                      Swal.fire({
+                        icon: 'info',
+                        title: 'En desarrollo',
+                        text: 'La funcionalidad de eliminar se implementará más adelante.',
+                        timer: 1500,
+                        showConfirmButton: false
+                      });
+                      console.log('Eliminar vacuna:', vacuna.vacunacion_id);
+                    }}
+                  >
+                    🗑️ Eliminar
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
 
-      {/* Tabla para AÑADIR NUEVAS VACUNAS */}
       <h3>Añadir Nuevas Vacunas</h3>
       <table className="registro-vacunacion-table">
         <thead>
