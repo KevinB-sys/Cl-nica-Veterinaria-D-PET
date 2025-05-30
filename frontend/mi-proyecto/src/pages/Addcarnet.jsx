@@ -1,109 +1,169 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import '../estilos css/Editarcarnet.css';
-import { createvacuna } from "../services/vacunasService";
-import Swal from "sweetalert2"; // Asegúrate de que esto esté importado
+import '../estilos css/Editarcarnet.css'; // Asegúrate de que esta ruta sea correcta
+// Si tienes estilos específicos para ver el carnet que no están en Editarcarnet.css,
+// deberías importarlos también o fusionarlos. Por ahora, asumiré que Editarcarnet.css es suficiente.
+import { createvacuna, getVacunasByMascota } from "../services/vacunasService"; // Importa getVacunasByMascota
+import Swal from "sweetalert2";
 
 export default function RegistroVacunacionEditable() {
   const navigate = useNavigate();
-  const { id } = useParams(); // Obtén el ID de la URL
+  const { id } = useParams();
 
-  // Estado inicial de registros existentes
-  const registrosIniciales = [
-    // { id: 1, fecha: '2023-10-05', edad: '1 años', peso: '15', vacuna: 'Rabia', proxVisita: '2024-10-05' },
-    // { id: 2, fecha: '2023-11-10', edad: '2 años', peso: '20', vacuna: 'Parvovirus', proxVisita: '2024-11-10' },
-    // { id: 3, fecha: '2023-12-15', edad: '1 años', peso: '10', vacuna: 'Moquillo', proxVisita: '2024-12-15' }
-  ];
+  // Estados para manejar las vacunas existentes y las nuevas a añadir
+  const [vacunasExistentes, setVacunasExistentes] = useState([]);
+  const [registrosNuevos, setRegistrosNuevos] = useState([]); // Cambiado el nombre para mayor claridad
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const [registros, setRegistros] = useState(registrosIniciales);
-
-  // --- MODIFICACIÓN AQUÍ ---
+  // useEffect para cargar las vacunas existentes cuando el componente se monta o el ID cambia
   useEffect(() => {
-    if (id) {
-      console.log("ID de la mascota desde la URL:", id);
-
-      // Muestra un SweetAlert2 con el ID de la mascota
-      Swal.fire({
-        icon: "info",
-        title: "Carnet de Vacunación",
-        text: `Estás editando o creando el carnet de vacunación para la Mascota ID: ${id}`,
-        confirmButtonText: "Entendido",
-        timer: 3500, // Se cierra automáticamente después de 3.5 segundos
-        timerProgressBar: true,
-      });
-
-      // Aquí podrías cargar datos de vacunación existentes para esa mascota si fuera necesario
-    } else {
-      // Si el ID no se encuentra en la URL, puedes mostrar una advertencia
-      Swal.fire({
-        icon: "warning",
-        title: "Advertencia",
-        text: "No se encontró un ID de mascota en la URL. Asegúrate de que la ruta esté bien definida.",
-        confirmButtonText: "Cerrar",
-      });
-      console.error("No se pudo obtener el ID de la mascota de la URL.");
-    }
-  }, [id]); // El efecto se ejecuta cuando 'id' cambia
-
-  // --- FIN DE LA MODIFICACIÓN ---
-
-  // Función para obtener la fecha actual en formato YYYY-MM-DD
-  const obtenerFechaActual = () => {
-    const hoy = new Date();
-    return hoy.toISOString().split('T')[0]; // Formato YYYY-MM-DD
-  };
-
-  // Función para agregar una nueva fila al registro
-  const handleAgregarFila = () => {
-    setRegistros([
-      ...registros,
-      { id: Date.now(), fecha: obtenerFechaActual(), edad: '', peso: '', vacuna: '', proxVisita: '' }
-    ]);
-  };
-
-  // Función para manejar los cambios en los campos del registro
-  const handleChange = (index, field, value) => {
-    const nuevosRegistros = [...registros];
-    nuevosRegistros[index][field] = value;
-    setRegistros(nuevosRegistros);
-  };
-
-  // Función para manejar el guardar solo de las nuevas filas
-  const handleGuardar = async () => {
-    try {
-      // Filtrar solo las filas nuevas (que no están en registrosIniciales)
-      const registrosNuevos = registros.filter(registro =>
-        !registrosIniciales.some(reg => reg.id === registro.id)
-      );
-
-      if (registrosNuevos.length === 0) {
+    const fetchVacunasExistentes = async () => {
+      if (!id) {
+        setError("No se encontró el ID de la mascota en la URL.");
+        setLoading(false);
         Swal.fire({
-          icon: "info",
-          title: "Sin cambios",
-          text: "No hay nuevos registros para guardar.",
-          timer: 2500,
-          showConfirmButton: false
+          icon: 'warning',
+          title: 'ID no encontrado',
+          text: 'No se pudo cargar el carnet porque falta el ID de la mascota. Asegúrate de que la URL sea correcta.',
+          confirmButtonText: 'Cerrar'
         });
         return;
       }
 
-      // Añade una verificación antes de iterar
-      if (!id || isNaN(parseInt(id))) {
-          Swal.fire({
-              icon: "error",
-              title: "Error de Mascota ID",
-              text: "No se pudo obtener un ID de mascota válido de la URL. Por favor, recarga la página o revisa la URL.",
-              timer: 3500,
-              showConfirmButton: false
-          });
-          return; // Detener la ejecución si el ID es inválido
-      }
+      setLoading(true);
+      setError(null);
 
+      const result = await getVacunasByMascota(id);
+
+      if (result.state === "success") {
+        setVacunasExistentes(result.data);
+      } else {
+        setError(result.message);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al cargar',
+          text: result.message || 'Ocurrió un error desconocido al cargar las vacunas existentes.',
+          confirmButtonText: 'Cerrar'
+        });
+      }
+      setLoading(false);
+    };
+
+    fetchVacunasExistentes();
+  }, [id]);
+
+  // Función para obtener la fecha actual en formato YYYY-MM-DD
+  const obtenerFechaActual = () => {
+    const hoy = new Date();
+    return hoy.toISOString().split('T')[0];
+  };
+
+  // Función para agregar una nueva fila para un nuevo registro de vacuna
+  const handleAgregarFila = () => {
+    setRegistrosNuevos([
+      ...registrosNuevos,
+      { id: Date.now(), fecha: obtenerFechaActual(), edad: '', peso: '', vacuna: '', proxVisita: '' }
+    ]);
+  };
+
+  // Función para manejar los cambios en los campos de los nuevos registros
+  const handleChange = (index, field, value) => {
+    const updatedRegistrosNuevos = [...registrosNuevos];
+
+    if (field === 'peso') {
+      const pesoValue = parseInt(value, 10);
+      if (isNaN(pesoValue) || pesoValue <= 0) {
+        Swal.fire({
+          icon: "error",
+          title: "Error de entrada",
+          text: "El peso debe ser un número positivo.",
+          timer: 2000,
+          showConfirmButton: false
+        });
+        return;
+      }
+      updatedRegistrosNuevos[index][field] = pesoValue;
+    } else if (field === 'proxVisita') {
+      const fechaActual = obtenerFechaActual();
+      if (value && value < fechaActual) {
+        Swal.fire({
+          icon: "error",
+          title: "Error de fecha",
+          text: "La próxima visita no puede ser una fecha anterior a la actual.",
+          timer: 2000,
+          showConfirmButton: false
+        });
+        return;
+      }
+      updatedRegistrosNuevos[index][field] = value;
+    } else {
+      updatedRegistrosNuevos[index][field] = value;
+    }
+    setRegistrosNuevos(updatedRegistrosNuevos);
+  };
+
+  // Función para manejar el guardado de los nuevos registros
+  const handleGuardar = async () => {
+    if (registrosNuevos.length === 0) {
+      Swal.fire({
+        icon: "info",
+        title: "Sin cambios",
+        text: "No hay nuevos registros para guardar.",
+        timer: 2500,
+        showConfirmButton: false
+      });
+      return;
+    }
+
+    if (!id || isNaN(parseInt(id))) {
+      Swal.fire({
+        icon: "error",
+        title: "Error de Mascota ID",
+        text: "No se pudo obtener un ID de mascota válido de la URL. Por favor, recarga la página o revisa la URL.",
+        timer: 3500,
+        showConfirmButton: false
+      });
+      return;
+    }
+
+    try {
       for (const registro of registrosNuevos) {
-        // Asegúrate de enviar el mascota_id con cada registro
+        // Validaciones adicionales antes de enviar al backend
+        if (registro.peso === '' || isNaN(registro.peso) || parseInt(registro.peso) <= 0) {
+          Swal.fire({
+            icon: "error",
+            title: "Error de validación",
+            text: "El peso debe ser un número positivo y no puede estar vacío.",
+            timer: 2500,
+            showConfirmButton: false
+          });
+          return;
+        }
+        if (registro.proxVisita && registro.proxVisita < obtenerFechaActual()) {
+          Swal.fire({
+            icon: "error",
+            title: "Error de validación",
+            text: "La próxima visita no puede ser una fecha anterior a la actual.",
+            timer: 2500,
+            showConfirmButton: false
+          });
+          return;
+        }
+        if (!registro.edad || !registro.vacuna) {
+          Swal.fire({
+            icon: "error",
+            title: "Campos incompletos",
+            text: "Por favor, completa los campos de 'Edad en años' y 'Vacuna'.",
+            timer: 2500,
+            showConfirmButton: false
+          });
+          return;
+        }
+
         const dataToSend = {
           ...registro,
-          mascota_id: parseInt(id) // Convertir el ID a entero
+          mascota_id: parseInt(id)
         };
         const response = await createvacuna(dataToSend);
         if (response.state === "error") {
@@ -114,18 +174,33 @@ export default function RegistroVacunacionEditable() {
             timer: 2500,
             showConfirmButton: false
           });
-        } else {
-          Swal.fire({
-            icon: "success",
-            title: "¡Éxito!",
-            text: "Registro guardado exitosamente",
-            timer: 2500,
-            showConfirmButton: false
-          });
+          return;
         }
       }
 
-      navigate('/ListarCarnet'); // Redirigir después de guardar
+      Swal.fire({
+        icon: "success",
+        title: "¡Éxito!",
+        text: "Registros guardados exitosamente",
+        timer: 2500,
+        showConfirmButton: false
+      });
+      // Después de guardar, recarga las vacunas existentes para que la tabla se actualice
+      // y limpia los nuevos registros.
+      setRegistrosNuevos([]); // Limpia los campos de "añadir"
+      // Volvemos a llamar a la función que carga las vacunas existentes
+      const result = await getVacunasByMascota(id);
+      if (result.state === "success") {
+        setVacunasExistentes(result.data);
+      } else {
+        // Manejar error si la recarga falla
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al recargar',
+          text: 'Se guardaron las vacunas, pero hubo un error al recargar la lista: ' + result.message,
+          confirmButtonText: 'Cerrar'
+        });
+      }
 
     } catch (error) {
       console.error("Error al guardar registros", error);
@@ -139,10 +214,60 @@ export default function RegistroVacunacionEditable() {
     }
   };
 
+  // Muestra un mensaje de carga mientras se obtienen los datos
+  if (loading) {
+    return (
+      <div className="registro-vacunacion-container">
+        <p>Cargando carnet de vacunación...</p>
+      </div>
+    );
+  }
+
+  // Muestra un mensaje de error si algo salió mal al cargar las vacunas existentes
+  if (error) {
+    return (
+      <div className="registro-vacunacion-container">
+        <p className="error-message">Error al cargar el carnet: {error}</p>
+        <button className="btn-retroceder" onClick={() => navigate(-1)}>⬅ Volver</button>
+      </div>
+    );
+  }
+
   return (
     <div className="registro-vacunacion-container">
-      <h2>Registro de Vacunación</h2>
+      <h2>Carnet de Vacunación de Mascota ID: {id}</h2>
 
+      {/* Tabla para VACUNAS EXISTENTES */}
+      <h3>Vacunas Existentes</h3>
+      {vacunasExistentes.length === 0 ? (
+        <p>No hay vacunas registradas para esta mascota. Puedes añadir una nueva.</p>
+      ) : (
+        <table className="registro-vacunacion-table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Edad</th>
+              <th>Peso (Kg)</th>
+              <th>Vacuna</th>
+              <th>Próxima Visita</th>
+            </tr>
+          </thead>
+          <tbody>
+            {vacunasExistentes.map((vacuna) => (
+              <tr key={vacuna.vacunacion_id}>
+                <td>{new Date(vacuna.fecha_aplicacion).toLocaleDateString()}</td>
+                <td>{vacuna.edad}</td>
+                <td>{vacuna.peso}</td>
+                <td>{vacuna.vacuna}</td>
+                <td>{new Date(vacuna.proxima_visita).toLocaleDateString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+      {/* Tabla para AÑADIR NUEVAS VACUNAS */}
+      <h3>Añadir Nuevas Vacunas</h3>
       <table className="registro-vacunacion-table">
         <thead>
           <tr>
@@ -154,13 +279,13 @@ export default function RegistroVacunacionEditable() {
           </tr>
         </thead>
         <tbody>
-          {registros.map((registro, index) => (
+          {registrosNuevos.map((registro, index) => (
             <tr key={registro.id}>
               <td>
                 <input
                   type="date"
                   value={registro.fecha}
-                  readOnly={registrosIniciales.some(reg => reg.id === registro.id)}
+                  readOnly
                   onChange={(e) => handleChange(index, 'fecha', e.target.value)}
                 />
               </td>
@@ -169,13 +294,16 @@ export default function RegistroVacunacionEditable() {
                   type="text"
                   value={registro.edad}
                   onChange={(e) => handleChange(index, 'edad', e.target.value)}
+                  placeholder="Ej: 1 año"
                 />
               </td>
               <td>
                 <input
-                  type="text"
+                  type="number"
                   value={registro.peso}
                   onChange={(e) => handleChange(index, 'peso', e.target.value)}
+                  min="1"
+                  placeholder="Ej: 15"
                 />
               </td>
               <td>
@@ -183,6 +311,7 @@ export default function RegistroVacunacionEditable() {
                   type="text"
                   value={registro.vacuna}
                   onChange={(e) => handleChange(index, 'vacuna', e.target.value)}
+                  placeholder="Ej: Rabia"
                 />
               </td>
               <td>
@@ -190,6 +319,7 @@ export default function RegistroVacunacionEditable() {
                   type="date"
                   value={registro.proxVisita}
                   onChange={(e) => handleChange(index, 'proxVisita', e.target.value)}
+                  min={obtenerFechaActual()}
                 />
               </td>
             </tr>
@@ -199,7 +329,7 @@ export default function RegistroVacunacionEditable() {
 
       <div className="registro-buttons">
         <button className="btn-retroceder" onClick={() => navigate(-1)}>⬅ Volver</button>
-        <button className="btn-agregar" onClick={handleAgregarFila}>➕ Agregar Fila</button>
+        <button className="btn-agregar" onClick={handleAgregarFila}>➕ Añadir</button>
         <button className="btn-geditar" onClick={handleGuardar}>💾 Guardar</button>
       </div>
     </div>
