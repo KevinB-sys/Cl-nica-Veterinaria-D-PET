@@ -181,7 +181,7 @@ const CalendarView = () => {
     const telefonoData = await obtenerTelefono(usuario_id);
     console.log("Número de teléfono del usuario:", telefonoData.whatsapp || telefonoData.telefono);
     //Logica para enviar el mensaje de WhatsApp de recordatorio 
-
+    
 
     const data = await agendarcita(citaData);
 
