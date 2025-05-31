@@ -115,7 +115,7 @@ export default function RegistroVacunacion() {
       <div className="screen-content">
         <br />
         <br />
-        <h2>Carnet de Vacunación de {mascota?.nombre || `Mascota ID: ${id}`}</h2>
+        <h2>CARNET DE VACUNACIÓN DE {mascota?.nombre || `Mascota ID: ${id}`}</h2>
 
         {vacunas.length === 0 ? (
           <p>No hay vacunas registradas para esta mascota.</p>
