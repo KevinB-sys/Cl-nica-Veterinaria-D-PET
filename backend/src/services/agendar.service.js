@@ -66,3 +66,15 @@ export const deleteCita = async (cita_id) => {
         },
     });
 };
+
+
+//Para los recordatorios de citas
+
+//Obtener numero de telefeno del usuario 
+export const getTelefonoByUserId = async (usuario_id) => {
+    const usuario = await prisma.usuario.findUnique({
+        where: { usuario_id: usuario_id },
+        select: { telefono: true, whatsapp: true }
+    });
+    return usuario;
+};

@@ -3,7 +3,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../estilos css/calendario.css";
 import Swal from "sweetalert2";
-import { agendarcita } from "../services/agendarService";
+import { agendarcita, obtenerTelefono } from "../services/agendarService";
 import { useNavigate } from "react-router-dom";
 import { obtenerCitas } from "../services/obtenercitaService";
 
@@ -176,6 +176,11 @@ const CalendarView = () => {
       observaciones: observacion,
       usuario_id: usuario_id
     };
+
+    //Para sacar en una varibale l numero de telefono del usuario
+    const telefonoData = await obtenerTelefono(usuario_id);
+    console.log("Número de teléfono del usuario:", telefonoData.whatsapp || telefonoData.telefono);
+    //Logica para enviar el mensaje de WhatsApp de recordatorio 
 
 
     const data = await agendarcita(citaData);

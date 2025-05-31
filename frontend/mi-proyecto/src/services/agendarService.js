@@ -20,3 +20,18 @@ export const agendarcita = async (userData) => {
         return { state: "error", message: error.message || "Error en la conexión con el servidor" };
     }
 };
+
+//Para obtener el numero de telefono del usuario por su ID
+export const obtenerTelefono = async (usuario_id) => {
+    try {
+        const res = await fetch(`http://localhost:5000/api/citas/telefono/${usuario_id}`);
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.message || "Error al obtener teléfono");
+        }
+        return await res.json();
+    } catch (error) {
+        console.error("Error al obtener teléfono:", error);
+        return { state: "error", message: error.message || "Error en la conexión con el servidor" };
+    }
+};
