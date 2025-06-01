@@ -218,10 +218,73 @@ export default function RegistroVacunacionEditable() {
       </div>
     );
   }
-
   return (
     <div className="registro-vacunacion-container">
-      <h2>Carnet de Vacunación de Mascota ID: {id}</h2>
+      <h2>Administrar registro de vacunas</h2>
+      <h3>Añadir Nuevas Vacunas</h3>
+      <table className="registro-vacunacion-table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Edad en años</th>
+            <th>Peso (Kg)</th>
+            <th>Vacuna</th>
+            <th>Próxima Visita</th>
+          </tr>
+        </thead>
+        <tbody>
+          {registrosNuevos.map((registro, index) => (
+            <tr key={registro.id}>
+              <td>
+                <input
+                  type="date"
+                  value={registro.fecha}
+                  readOnly
+                  onChange={(e) => handleChange(index, 'fecha', e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={registro.edad}
+                  onChange={(e) => handleChange(index, 'edad', e.target.value)}
+                  placeholder="Ej: 1 año"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  value={registro.peso}
+                  onChange={(e) => handleChange(index, 'peso', e.target.value)}
+                  min="1"
+                  placeholder="Ej: 15"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={registro.vacuna}
+                  onChange={(e) => handleChange(index, 'vacuna', e.target.value)}
+                  placeholder="Ej: Rabia"
+                />
+              </td>
+              <td>
+                <input
+                  type="date"
+                  value={registro.proxVisita}
+                  onChange={(e) => handleChange(index, 'proxVisita', e.target.value)}
+                  min={obtenerFechaActual()}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="registro-buttons">
+        <button className="btn-retroceder" onClick={() => navigate(-1)}>⬅ Volver</button>
+        <button className="btn-agregar" onClick={handleAgregarFila}>➕ Añadir</button>
+        <button className="btn-geditar" onClick={handleGuardar}>💾 Guardar</button>
+      </div>
 
       <h3>Vacunas Existentes</h3>
       {vacunasExistentes.length === 0 ? (
@@ -286,72 +349,6 @@ export default function RegistroVacunacionEditable() {
           </tbody>
         </table>
       )}
-
-      <h3>Añadir Nuevas Vacunas</h3>
-      <table className="registro-vacunacion-table">
-        <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Edad en años</th>
-            <th>Peso (Kg)</th>
-            <th>Vacuna</th>
-            <th>Próxima Visita</th>
-          </tr>
-        </thead>
-        <tbody>
-          {registrosNuevos.map((registro, index) => (
-            <tr key={registro.id}>
-              <td>
-                <input
-                  type="date"
-                  value={registro.fecha}
-                  readOnly
-                  onChange={(e) => handleChange(index, 'fecha', e.target.value)}
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={registro.edad}
-                  onChange={(e) => handleChange(index, 'edad', e.target.value)}
-                  placeholder="Ej: 1 año"
-                />
-              </td>
-              <td>
-                <input
-                  type="number"
-                  value={registro.peso}
-                  onChange={(e) => handleChange(index, 'peso', e.target.value)}
-                  min="1"
-                  placeholder="Ej: 15"
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={registro.vacuna}
-                  onChange={(e) => handleChange(index, 'vacuna', e.target.value)}
-                  placeholder="Ej: Rabia"
-                />
-              </td>
-              <td>
-                <input
-                  type="date"
-                  value={registro.proxVisita}
-                  onChange={(e) => handleChange(index, 'proxVisita', e.target.value)}
-                  min={obtenerFechaActual()}
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <div className="registro-buttons">
-        <button className="btn-retroceder" onClick={() => navigate(-1)}>⬅ Volver</button>
-        <button className="btn-agregar" onClick={handleAgregarFila}>➕ Añadir</button>
-        <button className="btn-geditar" onClick={handleGuardar}>💾 Guardar</button>
-      </div>
     </div>
   );
 }
