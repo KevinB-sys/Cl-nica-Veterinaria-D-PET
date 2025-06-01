@@ -1,240 +1,157 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import '../estilos css/vercarnet.css';
-
-// Importar imágenes de la veterinaria y el icono de la vacuna
-import logoVeterinaria from '../imagenes/logo.png';
-import iconoVacuna from '../imagenes/vacuna.png';
-
-// Importa las funciones para obtener datos
-import { getVacunasByMascota } from '../services/vacunasService';
-import { getMascotaById } from '../services/obtenermascota'; // Asegúrate de que la ruta sea correcta
+import { useNavigate } from 'react-router-dom';
+import { FaPaw, FaDog, FaShapes, FaVenusMars, FaCalendarAlt, FaEdit, FaPlus, FaTrash } from 'react-icons/fa';
+import '../estilos css/editar.css';
+import { getAllMascotas } from "../services/obtenermascota";
+import { deleteMascota } from "../services/mascotaService";
 import Swal from 'sweetalert2';
 
-export default function RegistroVacunacion() {
-  const navigate = useNavigate();
-  const { id } = useParams();
-
-  // Estados para manejar los datos, carga y errores
-  const [vacunas, setVacunas] = useState([]);
-  const [mascota, setMascota] = useState(null);
+export default function ListarCarnet() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [carnets, setCarnets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [deleting, setDeleting] = useState(null); // Para mostrar estado de eliminación
+  const navigate = useNavigate();
 
-  // useEffect para cargar las vacunas y datos de la mascota
   useEffect(() => {
-    const fetchData = async () => {
-      if (!id) {
-        setError("No se encontró el ID de la mascota en la URL.");
-        setLoading(false);
-        Swal.fire({
-          icon: 'warning',
-          title: 'ID no encontrado',
-          text: 'No se pudo cargar el carnet porque falta el ID de la mascota. Asegúrate de que la URL sea correcta.',
-          confirmButtonText: 'Cerrar'
-        });
-        return;
-      }
-
-      // CONVERSIÓN A ENTERO - SOLUCIÓN AL ERROR DE PRISMA
-      const mascotaId = parseInt(id, 10);
-      if (isNaN(mascotaId)) {
-        setError("El ID de la mascota no es válido.");
-        setLoading(false);
-        Swal.fire({
-          icon: 'error',
-          title: 'ID inválido',
-          text: 'El ID de la mascota debe ser un número válido.',
-          confirmButtonText: 'Cerrar'
-        });
-        return;
-      }
-
+    const fetchCarnets = async () => {
       setLoading(true);
       setError(null);
-
       try {
-        // Cargar datos de la mascota y vacunas en paralelo
-        // Usar mascotaId (entero) en lugar de id (string)
-        const [vacunasResult, mascotaData] = await Promise.all([
-          getVacunasByMascota(mascotaId), // Usar el ID convertido a entero
-          getMascotaById(mascotaId) // Usar el ID convertido a entero
-        ]);
-
-        if (vacunasResult.state === "success") {
-          setVacunas(vacunasResult.data);
-        } else {
-          throw new Error(vacunasResult.message || 'Error al cargar las vacunas');
-        }
-
-        setMascota(mascotaData);
-
+        const data = await getAllMascotas();
+        setCarnets(data);
       } catch (err) {
-        console.error('Error completo:', err); // Para debugging
-        setError(err.message);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al cargar',
-          text: err.message || 'Ocurrió un error desconocido al cargar los datos.',
-          confirmButtonText: 'Cerrar'
-        });
+        console.error('Error al cargar carnets:', err);
+        setError(err.message || 'Error desconocido al cargar los carnets.');
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
     };
 
-    fetchData();
-  }, [id]);
+    fetchCarnets();
+  }, []);
 
-  const handlePrint = () => {
-    window.print();
+  // Función para manejar la eliminación
+  const handleDelete = async (mascota_id, nombreMascota) => {
+    // Confirmación antes de eliminar con SweetAlert2
+    const result = await Swal.fire({
+      title: '¿Estás seguro?',
+      text: `¿Deseas eliminar el carnet de ${nombreMascota}? Esta acción no se puede deshacer, recuerda eliminar sus vacunaciones antes de eliminar el carnet.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (!result.isConfirmed) {
+      return;
+    }
+
+    setDeleting(mascota_id); // Mostrar estado de carga en el botón específico
+
+    try {
+      const deleteResult = await deleteMascota(mascota_id);
+      
+      if (deleteResult.state === "error") {
+        throw new Error(deleteResult.message);
+      }
+
+      // Si la eliminación fue exitosa, actualizar el estado local
+      setCarnets(prevCarnets => prevCarnets.filter(carnet => carnet.mascota_id !== mascota_id));
+      
+      // Mostrar mensaje de éxito con SweetAlert2
+      await Swal.fire({
+        title: '¡Eliminado!',
+        text: `El carnet de ${nombreMascota} ha sido eliminado exitosamente.`,
+        icon: 'success',
+        confirmButtonColor: '#3085d6'
+      });
+      
+    } catch (err) {
+      console.error('Error al eliminar carnet:', err);
+      
+      // Mostrar mensaje de error con SweetAlert2
+      await Swal.fire({
+        title: 'Error',
+        text: `Error al eliminar el carnet: ${err.message}`,
+        icon: 'error',
+        confirmButtonColor: '#3085d6'
+      });
+    } finally {
+      setDeleting(null); // Quitar estado de carga
+    }
   };
 
-  // Muestra un mensaje de carga mientras se obtienen los datos
+  const filteredCarnets = carnets.filter(carnet =>
+    carnet.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (loading) {
-    return (
-      <div className="registro-vacunacion-container">
-        <p>Cargando carnet de vacunación...</p>
-      </div>
-    );
+    return <div className="list-carnet-container"><p>Cargando carnets...</p></div>;
   }
 
-  // Muestra un mensaje de error si algo salió mal
   if (error) {
-    return (
-      <div className="registro-vacunacion-container">
-        <p className="error-message">Error al cargar el carnet: {error}</p>
-        <button className="btn-retroceder" onClick={() => navigate(-1)}>⬅ Volver</button>
-      </div>
-    );
+    return <div className="list-carnet-container"><p style={{ color: 'red', textAlign: 'center' }}>Error: {error}</p></div>;
   }
 
   return (
-    <div className="registro-vacunacion-container">
-      {/* Contenido visible en pantalla */}
-      <div className="screen-content">
-        <br />
-        <br />
-        <h2>CARNET DE VACUNACIÓN DE {mascota?.nombre || `Mascota ID: ${id}`}</h2>
+    <div className="list-carnet-container">
+      <h2 className="list-carnet-title">Edición de Carnets</h2>
 
-        {vacunas.length === 0 ? (
-          <p>No hay vacunas registradas para esta mascota.</p>
+      <input
+        type="text"
+        placeholder="Buscar por nombre de mascota..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="list-carnet-search"
+      />
+
+      <div className="list-carnet-grid">
+        <div className="list-carnet-card add-card" onClick={() => navigate('/Crearcarnet')}>
+          <FaPlus className="add-icon" />
+          <p>Añadir Carnet</p>
+        </div>
+
+        {filteredCarnets.length > 0 ? (
+          filteredCarnets.map((carnet) => (
+            <div key={carnet.mascota_id} className="list-carnet-card">
+              <div className="list-carnet-header">
+                <FaPaw className="list-carnet-icont" /> FICHA DE SALUD
+              </div>
+              <img
+                src={carnet.imagen || 'https://www.experta.com.ar/blogg/wp-content/uploads/sites/2/2019/01/mascotas.jpg'}
+                alt={`Imagen de ${carnet.nombre}`}
+                className="list-carnet-img"
+              />
+              <div>
+                <p className="list-carnet-info"><FaPaw className="list-carnet-icon" /> <strong>Mascota:</strong> {carnet.nombre}</p>
+                <p className="list-carnet-info"><FaDog className="list-carnet-icon" /> <strong>Raza:</strong> {carnet.raza || 'N/A'}</p>
+                <p className="list-carnet-info"><FaShapes className="list-carnet-icon" /> <strong>Especie:</strong> {carnet.especie}</p>
+                <p className="list-carnet-info"><FaVenusMars className="list-carnet-icon" /> <strong>Sexo:</strong> {carnet.sexo}</p>
+                <p className="list-carnet-info"><FaCalendarAlt className="list-carnet-icon" /> <strong>Fecha Nacimiento:</strong> {carnet.fecha_nacimiento ? new Date(carnet.fecha_nacimiento).toISOString().split('T')[0] : 'N/A'}</p>
+              </div>
+
+              <div className="list-carnet-actions">
+                <button className="list-carnet-btn list-carnet-edit" onClick={() => navigate(`/Editar/${carnet.mascota_id}`)}>
+                  <FaEdit /> Editar
+                </button>
+                
+                <button 
+                  className="list-carnet-btn list-carnet-delet" 
+                  onClick={() => handleDelete(carnet.mascota_id, carnet.nombre)}
+                  disabled={deleting === carnet.mascota_id}
+                >
+                  <FaTrash /> {deleting === carnet.mascota_id ? 'Eliminando...' : 'Eliminar'}
+                </button>
+              </div>
+            </div>
+          ))
         ) : (
-          <table className="registro-vacunacion-table">
-            <thead>
-              <tr>
-                <th>Fecha</th>
-                <th>Edad</th>
-                <th>Peso (kg)</th>
-                <th>Vacuna <img src={iconoVacuna} alt="Vacuna" className="icono-header" /></th>
-                <th>Próxima Visita</th>
-              </tr>
-            </thead>
-            <tbody>
-              {vacunas.map((vacuna) => (
-                <tr key={vacuna.vacunacion_id}>
-                  <td>{new Date(vacuna.fecha_aplicacion).toLocaleDateString()}</td>
-                  <td>{vacuna.edad}</td>
-                  <td>{vacuna.peso}</td>
-                  <td>{vacuna.vacuna}</td>
-                  <td>{new Date(vacuna.proxima_visita).toLocaleDateString()}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <p className="list-carnet-no-results">No se encontraron carnets.</p>
         )}
-
-        <div className="registro-buttons">
-          <button className="btn-retroceder" onClick={() => navigate(-1)}>⬅ Volver</button>
-          <button className="btn-imprimir" onClick={handlePrint}>🖨️ Imprimir</button>
-        </div>
-      </div>
-
-      {/* Contenido específico para impresión - CARNET DOBLABLE */}
-      <div className="print-content">
-        {/* PORTADA - Primera mitad de la hoja A4 */}
-        <div className="print-page-half portada">
-          <div className="portada-header">
-            <img src={logoVeterinaria} alt="Logo Veterinaria" className="logo-portada" />
-            <h1>CARNET DE VACUNACIÓN</h1>
-          </div>
-
-          <div className="mascota-info">
-            <div className="info-row">
-              <strong>Nombre:</strong> <span>{mascota?.nombre || 'N/A'}</span>
-            </div>
-            <div className="info-row">
-              <strong>Especie:</strong> <span>{mascota?.especie || 'N/A'}</span>
-            </div>
-            <div className="info-row">
-              <strong>Raza:</strong> <span>{mascota?.raza || 'N/A'}</span>
-            </div>
-            <div className="info-row">
-              <strong>Fecha de Nacimiento:</strong>
-              <span>{mascota?.fecha_nacimiento ? new Date(mascota.fecha_nacimiento).toLocaleDateString() : 'N/A'}</span>
-            </div>
-            <div className="info-row">
-              <strong>Sexo:</strong> 
-              <span>{mascota?.sexo || 'N/A'}</span>
-            </div>
-            {/* //Aqui poner el propietario */}
-            <div className="info-row">
-              <strong>Propietario:</strong> <span>{mascota?.propietario_nombre || mascota?.propietario || 'N/A'}</span>
-            </div>
-          </div>
-
-          <div className="portada-footer">
-            <p>Este carnet certifica el estado de vacunación de la mascota</p>
-            <p><em>Manténgalo en lugar seguro</em></p>
-          </div>
-        </div>
-
-        {/* HISTORIAL - Segunda mitad de la hoja A4 */}
-        <div className="print-page-half historial">
-          <div className="historial-header">
-            <h2>HISTORIAL DE VACUNACIÓN</h2>
-            <img src={iconoVacuna} alt="Vacuna" className="icono-historial" />
-          </div>
-
-          {vacunas.length === 0 ? (
-            <p className="no-vacunas">No hay vacunas registradas para esta mascota.</p>
-          ) : (
-            <table className="historial-table">
-              <thead>
-                <tr>
-                  <th>Fecha</th>
-                  <th>Edad</th>
-                  <th>Peso (kg)</th>
-                  <th>Vacuna</th>
-                  <th>Próxima</th>
-                </tr>
-              </thead>
-              <tbody>
-                {vacunas.map((vacuna) => (
-                  <tr key={vacuna.vacunacion_id}>
-                    <td>{new Date(vacuna.fecha_aplicacion).toLocaleDateString('es-ES', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: '2-digit'
-                    })}</td>
-                    <td>{vacuna.edad}</td>
-                    <td>{vacuna.peso}</td>
-                    <td>{vacuna.vacuna}</td>
-                    <td>{new Date(vacuna.proxima_visita).toLocaleDateString('es-ES', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: '2-digit'
-                    })}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-
-          <div className="historial-footer">
-            <p><small>Fecha de emisión: {new Date().toLocaleDateString()}</small></p>
-          </div>
-        </div>
       </div>
     </div>
   );

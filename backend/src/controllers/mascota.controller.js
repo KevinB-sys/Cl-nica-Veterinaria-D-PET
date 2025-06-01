@@ -1,4 +1,4 @@
-import { getAllMascotas, createNewMascota, getMascotasByDuenioId, getMascotaById } from "../services/mascota.service.js";
+import { getAllMascotas, createNewMascota, getMascotasByDuenioId, getMascotaById, updateMascotaById, deleteMascotaById } from "../services/mascota.service.js";
 
 export const getMascotas = async (req, res) => {
   try {
@@ -64,5 +64,39 @@ export const getMascotaPorId = async (req, res) => {
     res.status(200).json(mascota);
   } catch (error) {
     res.status(500).json({ message: `Error al obtener la mascota: ${error.message}` });
+  }
+};
+
+//Editar mascota por id ---
+export const updateMascota = async (req, res) => {
+  try {
+    const { mascota_id } = req.params;
+
+    if (!mascota_id) {
+      return res.status(400).json({ message: "El ID de la mascota es requerido." });
+    }
+
+    const updatedMascota = await updateMascotaById(mascota_id, req.body);
+
+    res.status(200).json({ message: "Mascota actualizada con éxito", updatedMascota });
+  } catch (error) {
+    res.status(400).json({ message: `Error al actualizar la mascota: ${error.message}` });
+  }
+};
+
+//Eliminar mascota por id ---
+export const deleteMascota = async (req, res) => {
+  try {
+    const { mascota_id } = req.params;
+
+    if (!mascota_id) {
+      return res.status(400).json({ message: "El ID de la mascota es requerido." });
+    }
+
+    await deleteMascotaById(mascota_id);
+
+    res.status(200).json({ message: "Mascota eliminada con éxito" });
+  } catch (error) {
+    res.status(400).json({ message: `Error al eliminar la mascota: ${error.message}` });
   }
 };

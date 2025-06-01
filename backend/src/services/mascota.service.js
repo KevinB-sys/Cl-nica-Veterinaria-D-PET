@@ -50,3 +50,31 @@ export const getMascotaById = async (mascota_id) => {
     },
   });
 };
+
+//Editar mascota por id ---
+export const updateMascotaById = async (mascota_id, data) => {
+  const id = parseInt(mascota_id, 10);
+  if (isNaN(id)) {
+    throw new Error("mascota_id debe ser un entero");
+  }
+  return await prisma.mascota.update({
+    where: {
+      mascota_id: id,
+    },
+    data,
+  });
+};
+
+
+// Eliminar mascota por id ---
+export const deleteMascotaById = async (mascota_id) => {
+  const id = parseInt(mascota_id, 10);
+  if (isNaN(id)) {
+    throw new Error("mascota_id debe ser un entero");
+  }
+  return await prisma.mascota.delete({
+    where: {
+      mascota_id: id,
+    },
+  });
+};

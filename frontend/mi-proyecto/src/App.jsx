@@ -24,7 +24,7 @@ import RegistrarVet from'./pages/RegistrarVet';
 import Administrar from './pages/Administrar';
 import Horario from './pages/Horario';
 import Citas from './pages/Citas'; // Asegúrate de que la ruta sea correcta
-
+import Editar from './pages/Editar'; // Asegúrate de que la ruta sea correcta
 const App = () => {
   return (
     <Router>
@@ -55,6 +55,7 @@ const App = () => {
           <Route path="/Calendario" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Calendario /></PrivateRoute>} />
           {/* <Route path="/Addcarnet" element={<PrivateRoute allowedRoles={[1, 3]}><Addcarnet /></PrivateRoute>} /> */}
           <Route path="/Addcarnet/:id" element={<PrivateRoute allowedRoles={[1, 3]}><Addcarnet /></PrivateRoute>} />
+          <Route path="/Editar/:id" element={<PrivateRoute allowedRoles={[1, 3]}><Editar /></PrivateRoute>} />
           <Route path="/Profile" element={<PrivateRoute allowedRoles={[1, 2, 3]}><Profile /></PrivateRoute>} />
           <Route path="/Recuperacion" element={<Recuperacion />} /> {/* La recuperación usualmente es pública */}
           <Route path="/Reset" element={<Reset />} /> {/* Ruta para restablecer la contraseña */}

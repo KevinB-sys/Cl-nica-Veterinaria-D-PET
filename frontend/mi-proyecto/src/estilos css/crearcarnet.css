@@ -75,8 +75,24 @@
     transition: background 0.3s ease;
 }
 
+.boton-cancelar {
+    background: #e61b1b;
+    color: #fff;
+    padding: 14px;
+    width: 60%;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background 0.3s ease;
+}
+
 .boton-enviar:hover {
     background: #1f1f4d;
+}
+
+.boton-cancelar:hover {
+    background: #da8c8c;
 }
 
 /* Responsive: en pantallas pequeñas mostrar solo una columna */
