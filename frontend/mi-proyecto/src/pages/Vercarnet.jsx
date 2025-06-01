@@ -125,7 +125,7 @@ export default function RegistroVacunacion() {
               <tr>
                 <th>Fecha</th>
                 <th>Edad</th>
-                <th>Peso</th>
+                <th>Peso (kg)</th>
                 <th>Vacuna <img src={iconoVacuna} alt="Vacuna" className="icono-header" /></th>
                 <th>Próxima Visita</th>
               </tr>
@@ -174,6 +174,11 @@ export default function RegistroVacunacion() {
               <span>{mascota?.fecha_nacimiento ? new Date(mascota.fecha_nacimiento).toLocaleDateString() : 'N/A'}</span>
             </div>
             <div className="info-row">
+              <strong>Sexo:</strong> 
+              <span>{mascota?.sexo || 'N/A'}</span>
+            </div>
+            {/* //Aqui poner el propietario */}
+            <div className="info-row">
               <strong>Propietario:</strong> <span>{mascota?.propietario_nombre || mascota?.propietario || 'N/A'}</span>
             </div>
           </div>
@@ -199,7 +204,7 @@ export default function RegistroVacunacion() {
                 <tr>
                   <th>Fecha</th>
                   <th>Edad</th>
-                  <th>Peso</th>
+                  <th>Peso (kg)</th>
                   <th>Vacuna</th>
                   <th>Próxima</th>
                 </tr>
