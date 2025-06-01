@@ -47,7 +47,8 @@ const CalendarView = () => {
     if (citasDelDia.length > 0) {
       // Crear un string en formato de lista
       const citasInfo = citasDelDia
-        .map((cita) => `<li>${cita.hora}</li>`) // Utilizamos <li> para cada hora
+        // .map((cita) => `<li>${cita.hora}</li>`) // Utilizamos <li> para cada hora
+        .map((cita) => `<li>${cita.hora} - ${cita.observaciones || 'Sin observación'}</li>`)
         .join(""); // Unir los elementos de lista sin saltos de línea
 
       // Mostrar un alert con las citas del día usando SweetAlert2
