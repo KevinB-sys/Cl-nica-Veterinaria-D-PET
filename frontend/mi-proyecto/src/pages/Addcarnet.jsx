@@ -299,6 +299,7 @@ export default function RegistroVacunacionEditable() {
               <th>Vacuna</th>
               <th>Próxima Visita</th>
               <th>Acciones</th> {/* Nueva columna para acciones */}
+              {/* <th>ID de vacuna</th> */}
             </tr>
           </thead>
           <tbody>
@@ -343,6 +344,10 @@ export default function RegistroVacunacionEditable() {
                   >
                     🗑️ Eliminar
                   </button>
+                {/* </td>
+                  {vacuna.vacunacion_id}
+                <td> */}
+
                 </td>
               </tr>
             ))}
