@@ -81,9 +81,8 @@ const SobreNosotros = () => {
         <div className="info-card">
           <h3>Horario de Atención</h3>
           <ul className="schedule-list">
-            <li>Lunes a Viernes: 8:00 AM - 5:30 PM</li>
-            <li>Sábados: 9:00 AM - 12:00 PM</li>
-            <li>Emergencias 24/7 via teléfono</li>
+            <li>Lunes a Sábado: 8:00 AM - 5:30 PM</li>
+            <li>Domingos: 8:00 AM - 12:00 PM</li>
           </ul>
         </div>
 

@@ -71,7 +71,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  border-bottom: 2px solid rgb(107, 221, 117);
+  border-bottom: 2px solid #2c2c6c;
   padding-bottom: 10px;
 }
 
@@ -97,7 +97,7 @@
 
 .schedule-list li::before {
   content: '•';
-  color: rgb(107, 221, 117);
+  color: #2c2c6c;
   font-size: 1.5rem;
   position: absolute;
   left: 5px;
@@ -118,7 +118,7 @@
 
 .social-links a:hover {
   background-color: rgba(44, 44, 108, 0.05);
-  color: rgb(107, 221, 117);
+  color: rgb(125, 171, 223);
 }
 
 .social-links svg {

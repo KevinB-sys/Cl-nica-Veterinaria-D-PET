@@ -11,7 +11,38 @@ import { getVacunasByMascota } from '../services/vacunasService';
 import { getMascotaById } from '../services/obtenermascota'; // Asegúrate de que la ruta sea correcta
 import Swal from 'sweetalert2';
 
+
+
 export default function RegistroVacunacion() {
+
+  const formatearFechaParaVisualizacion = (fecha) => {
+    if (!fecha) return '';
+
+    // Crear la fecha como fecha local en lugar de UTC
+    const fechaString = fecha.split('T')[0]; // Obtener solo la parte de la fecha
+    const [year, month, day] = fechaString.split('-');
+    const date = new Date(year, month - 1, day); // Los meses en JS van de 0-11
+
+    return date.toLocaleDateString();
+  };
+
+  // Función específica para formato corto (dd/mm/yy)
+  const formatearFechaCorta = (fecha) => {
+    if (!fecha) return '';
+
+    const fechaString = fecha.split('T')[0];
+    const [year, month, day] = fechaString.split('-');
+    const date = new Date(year, month - 1, day);
+
+    return date.toLocaleDateString('es-ES', {
+      day: '2-digit',
+      month: '2-digit',
+      year: '2-digit'
+    });
+  };
+
+
+
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -133,11 +164,13 @@ export default function RegistroVacunacion() {
             <tbody>
               {vacunas.map((vacuna) => (
                 <tr key={vacuna.vacunacion_id}>
-                  <td>{new Date(vacuna.fecha_aplicacion).toLocaleDateString()}</td>
+                  {/* <td>{new Date(vacuna.fecha_aplicacion).toLocaleDateString()}</td> */}
+                  <td>{formatearFechaParaVisualizacion(vacuna.fecha_aplicacion)}</td>
                   <td>{vacuna.edad}</td>
                   <td>{vacuna.peso}</td>
                   <td>{vacuna.vacuna}</td>
-                  <td>{new Date(vacuna.proxima_visita).toLocaleDateString()}</td>
+                  {/* <td>{new Date(vacuna.proxima_visita).toLocaleDateString()}</td> */}
+                  <td>{formatearFechaParaVisualizacion(vacuna.proxima_visita)}</td>
                 </tr>
               ))}
             </tbody>
@@ -171,10 +204,11 @@ export default function RegistroVacunacion() {
             </div>
             <div className="info-row">
               <strong>Fecha de Nacimiento:</strong>
-              <span>{mascota?.fecha_nacimiento ? new Date(mascota.fecha_nacimiento).toLocaleDateString() : 'N/A'}</span>
+              {/* <span>{mascota?.fecha_nacimiento ? new Date(mascota.fecha_nacimiento).toLocaleDateString() : 'N/A'}</span> */}
+              <span>{mascota?.fecha_nacimiento ? formatearFechaParaVisualizacion(mascota.fecha_nacimiento) : 'N/A'}</span>
             </div>
             <div className="info-row">
-              <strong>Sexo:</strong> 
+              <strong>Sexo:</strong>
               <span>{mascota?.sexo || 'N/A'}</span>
             </div>
             {/* //Aqui poner el propietario */}
@@ -212,19 +246,11 @@ export default function RegistroVacunacion() {
               <tbody>
                 {vacunas.map((vacuna) => (
                   <tr key={vacuna.vacunacion_id}>
-                    <td>{new Date(vacuna.fecha_aplicacion).toLocaleDateString('es-ES', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: '2-digit'
-                    })}</td>
+                    <td>{formatearFechaCorta(vacuna.fecha_aplicacion)}</td>
                     <td>{vacuna.edad}</td>
                     <td>{vacuna.peso}</td>
                     <td>{vacuna.vacuna}</td>
-                    <td>{new Date(vacuna.proxima_visita).toLocaleDateString('es-ES', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: '2-digit'
-                    })}</td>
+                    <td>{formatearFechaCorta(vacuna.proxima_visita)}</td>
                   </tr>
                 ))}
               </tbody>

@@ -61,6 +61,17 @@ export default function RegistroVacunacionEditable() {
     return date.toISOString().split('T')[0];
   };
 
+  const formatearFechaParaVisualizacion = (fecha) => {
+    if (!fecha) return '';
+
+    // Crear la fecha como fecha local en lugar de UTC
+    const fechaString = fecha.split('T')[0]; // Obtener solo la parte de la fecha
+    const [year, month, day] = fechaString.split('-');
+    const date = new Date(year, month - 1, day); // Los meses en JS van de 0-11
+
+    return date.toLocaleDateString();
+  };
+
   const handleAgregarFila = () => {
     setRegistrosNuevos([
       ...registrosNuevos,
@@ -191,7 +202,7 @@ export default function RegistroVacunacionEditable() {
       };
 
       const response = await updateVacuna(vacunaEditando.vacunacion_id, dataToUpdate);
-      
+
       if (response.state === "error") {
         Swal.fire({
           icon: "error",
@@ -212,7 +223,7 @@ export default function RegistroVacunacionEditable() {
       });
 
       setVacunaEditando(null);
-      
+
       // Recargar las vacunas existentes
       const result = await getVacunasByMascota(id);
       if (result.state === "success") {
@@ -246,7 +257,7 @@ export default function RegistroVacunacionEditable() {
     if (result.isConfirmed) {
       try {
         const response = await deleteVacuna(vacunacionId);
-        
+
         if (response.state === "error") {
           Swal.fire({
             icon: "error",
@@ -557,11 +568,13 @@ export default function RegistroVacunacionEditable() {
                 ) : (
                   // Modo visualización
                   <>
-                    <td>{new Date(vacuna.fecha_aplicacion).toLocaleDateString()}</td>
+                    {/* <td>{new Date(vacuna.fecha_aplicacion).toLocaleDateString()}</td> */}
+                    <td>{formatearFechaParaVisualizacion(vacuna.fecha_aplicacion)}</td>
                     <td>{vacuna.edad}</td>
                     <td>{vacuna.peso}</td>
                     <td>{vacuna.vacuna}</td>
-                    <td>{new Date(vacuna.proxima_visita).toLocaleDateString()}</td>
+                    {/* <td>{new Date(vacuna.proxima_visita).toLocaleDateString()}</td> */}
+                    <td>{formatearFechaParaVisualizacion(vacuna.proxima_visita)}</td>
                     <td>
                       <button
                         className="btn-accion btn-editar"

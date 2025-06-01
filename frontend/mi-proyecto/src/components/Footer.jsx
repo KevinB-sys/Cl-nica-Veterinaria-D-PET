@@ -32,7 +32,6 @@ const Footer = () => {
             <li><a href="#">Vacunación</a></li>
             <li><a href="#">Cirugías</a></li>
             <li><a href="#">Estética canina</a></li>
-            <li><a href="#">Emergencias 24h</a></li>
           </ul>
         </div>
 
