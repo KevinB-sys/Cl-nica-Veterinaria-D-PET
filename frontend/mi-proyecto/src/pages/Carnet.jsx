@@ -18,9 +18,14 @@ export default function Carnet() {
 
         {/* Tarjeta para listar carnets */}
         <div className="carnet-card" onClick={() => navigate('/ListarCarnet')}>
-          <img src="https://cdn-icons-png.flaticon.com/128/1491/1491106.png" alt="Crear Carnet" />
+          <img src="https://cdn-icons-png.flaticon.com/128/3659/3659538.png" alt="Crear Carnet" />
           <h3>Listar Carnets</h3>
-          <p>Consulta y administra los carnets existentes.</p>
+          <p>Consulta y administra vacunas a los carnets existentes.</p>
+        </div>
+        <div className="carnet-card" onClick={() => navigate('/EditarCarnet')}>
+          <img src="https://cdn-icons-png.flaticon.com/128/1491/1491106.png" alt="Crear Carnet" />
+          <h3>Editar Carnets</h3>
+          <p>Modifca la información de carnets existentes.</p>
         </div>
       </div>
     </div>
