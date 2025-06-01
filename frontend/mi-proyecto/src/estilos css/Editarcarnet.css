@@ -95,4 +95,100 @@
     background-color: #6479ec;
   }
 
+  .btn-accion {
+  padding: 6px 12px;
+  margin: 2px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 80px;
+  justify-content: center;
+}
+
+.btn-accion:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-accion:active {
+  transform: translateY(0);
+}
+
+.btn-accion:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Botón Editar */
+.btn-editar {
+  background-color: #2c2c6c;
+  color: white;
+  border: 1px solid #2980b9;
+}
+
+.btn-editar:hover:not(:disabled) {
+  background-color: #6a76df;
+  border-color: #1f639a;
+}
+
+.btn-editar:active:not(:disabled) {
+  background-color: #1f639a;
+}
+
+/* Botón Eliminar */
+.btn-eliminar {
+  background-color: #e74c3c;
+  color: white;
+  border: 1px solid #c0392b;
+}
+
+.btn-eliminar:hover:not(:disabled) {
+  background-color: #c0392b;
+  border-color: #a93226;
+}
+
+.btn-eliminar:active:not(:disabled) {
+  background-color: #a93226;
+}
+
+/* Botón Guardar (para modo edición) */
+.btn-guardar {
+  background-color: #6b8add;
+  color: white;
+  border: 1px solid #223e99;
+}
+
+.btn-guardar:hover:not(:disabled) {
+  background-color: #afa9e7;
+  border-color: #3b38ec;
+}
+
+.btn-guardar:active:not(:disabled) {
+  background-color: #1e8449;
+}
+
+/* Botón Cancelar (para modo edición) */
+.btn-cancelar {
+  background-color: #95a5a6;
+  color: white;
+  border: 1px solid #7f8c8d;
+}
+
+.btn-cancelar:hover:not(:disabled) {
+  background-color: #7f8c8d;
+  border-color: #6c7b7d;
+}
+
+.btn-cancelar:active:not(:disabled) {
+  background-color: #6c7b7d;
+}
+
   

@@ -39,3 +39,45 @@ export const getVacunasByMascota = async (mascotaId) => {
         return { state: "error", message: error.message || "Error en la conexión con el servidor" };
     }
 };
+
+//Editar vacunación por ID
+export const updateVacuna = async (vacunaId, userData) => {
+    try {
+        const res = await fetch(`http://localhost:5000/api/vacunas/${vacunaId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userData),
+        });
+
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.message || "Error al actualizar la vacuna");
+        }
+
+        return await res.json();
+    } catch (error) {
+        console.error("Error en actualizar vacuna:", error);
+        return { state: "error", message: error.message || "Error en la conexión con el servidor" };
+    }
+};
+
+//Eliminar vacunación por ID
+export const deleteVacuna = async (vacunaId) => {
+    try {
+        const res = await fetch(`http://localhost:5000/api/vacunas/${vacunaId}`, {
+            method: "DELETE",
+        });
+
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.message || "Error al eliminar la vacuna");
+        }
+
+        return await res.json();
+    } catch (error) {
+        console.error("Error en eliminar vacuna:", error);
+        return { state: "error", message: error.message || "Error en la conexión con el servidor" };
+    }
+};

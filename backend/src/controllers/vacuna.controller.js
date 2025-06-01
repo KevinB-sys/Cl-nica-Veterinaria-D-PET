@@ -1,4 +1,4 @@
-import { getAllvacuna, createNewVacuna, getVacunasByMascotaId } from "../services/vacuna.service.js";
+import { getAllvacuna, createNewVacuna, getVacunasByMascotaId, updateVacunaById, deleteVacunaById } from "../services/vacuna.service.js";
 
 export const getAllvacunas = async (req, res) => {
   try {
@@ -36,5 +36,32 @@ export const getVacunasByMascota = async (req, res) => {
   } catch (error) {
     console.error("Error en el controlador getVacunasByMascota:", error);
     res.status(500).json({ message: "Error interno del servidor al obtener las vacunas de la mascota." });
+  }
+};
+
+//Editar vacunación por ID
+export const updateVacuna = async (req, res) => {
+  const { vacunaId } = req.params;
+  try {
+    const updatedVacuna = await updateVacunaById(vacunaId, req.body);
+    res.status(200).json({ message: "Vacuna actualizada con éxito", data: updatedVacuna });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+//Eliminar vacunación por ID
+export const deleteVacuna = async (req, res) => {
+  const { vacunaId } = req.params;
+  try {
+    const result = await deleteVacunaById(vacunaId);
+    if (result.state === "success") {
+      res.status(200).json({ message: "Vacuna eliminada con éxito" });
+    } else {
+      res.status(500).json({ message: result.message });
+    }
+  } catch (error) {
+    console.error("Error al eliminar la vacuna:", error);
+    res.status(500).json({ message: "Error interno del servidor al eliminar la vacuna." });
   }
 };
