@@ -10,8 +10,7 @@ import iconoVacuna from '../imagenes/vacuna.png';
 import { getVacunasByMascota } from '../services/vacunasService';
 import { getMascotaById } from '../services/obtenermascota'; // Asegúrate de que la ruta sea correcta
 import Swal from 'sweetalert2';
-
-
+import { getUsuarioByUsuarioId } from '../services/usuariosService'; // trae el nombre del propeitario por usuario_id
 
 export default function RegistroVacunacion() {
 
@@ -41,14 +40,13 @@ export default function RegistroVacunacion() {
     });
   };
 
-
-
   const navigate = useNavigate();
   const { id } = useParams();
 
   // Estados para manejar los datos, carga y errores
   const [vacunas, setVacunas] = useState([]);
   const [mascota, setMascota] = useState(null);
+  const [propietario, setPropietario] = useState(null); // Nuevo estado para el propietario
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -86,10 +84,9 @@ export default function RegistroVacunacion() {
 
       try {
         // Cargar datos de la mascota y vacunas en paralelo
-        // Usar mascotaId (entero) en lugar de id (string)
         const [vacunasResult, mascotaData] = await Promise.all([
-          getVacunasByMascota(mascotaId), // Usar el ID convertido a entero
-          getMascotaById(mascotaId) // Usar el ID convertido a entero
+          getVacunasByMascota(mascotaId),
+          getMascotaById(mascotaId)
         ]);
 
         if (vacunasResult.state === "success") {
@@ -100,8 +97,20 @@ export default function RegistroVacunacion() {
 
         setMascota(mascotaData);
 
+        // Obtener el nombre del propietario si existe usuario_id
+        if (mascotaData && mascotaData.duenio_id) {
+          try {
+            // const propietarioData = await getUsuarioByUsuarioId(mascotaData.usuario_id);
+            const propietarioData = await getUsuarioByUsuarioId(mascotaData.duenio_id);
+            setPropietario(propietarioData);
+          } catch (propietarioError) {
+            console.error('Error al obtener datos del propietario:', propietarioError);
+            // No lanzamos error aquí, solo mostramos N/A en el propietario
+          }
+        }
+
       } catch (err) {
-        console.error('Error completo:', err); // Para debugging
+        console.error('Error completo:', err);
         setError(err.message);
         Swal.fire({
           icon: 'error',
@@ -119,6 +128,20 @@ export default function RegistroVacunacion() {
 
   const handlePrint = () => {
     window.print();
+  };
+
+  // Función para obtener el nombre del propietario
+  const obtenerNombrePropietario = () => {
+    if (propietario && propietario.nombre) {
+      return propietario.nombre;
+    }
+    if (mascota?.propietario_nombre) {
+      return mascota.propietario_nombre;
+    }
+    if (mascota?.propietario) {
+      return mascota.propietario;
+    }
+    return 'N/A';
   };
 
   // Muestra un mensaje de carga mientras se obtienen los datos
@@ -164,12 +187,10 @@ export default function RegistroVacunacion() {
             <tbody>
               {vacunas.map((vacuna) => (
                 <tr key={vacuna.vacunacion_id}>
-                  {/* <td>{new Date(vacuna.fecha_aplicacion).toLocaleDateString()}</td> */}
                   <td>{formatearFechaParaVisualizacion(vacuna.fecha_aplicacion)}</td>
                   <td>{vacuna.edad}</td>
                   <td>{vacuna.peso}</td>
                   <td>{vacuna.vacuna}</td>
-                  {/* <td>{new Date(vacuna.proxima_visita).toLocaleDateString()}</td> */}
                   <td>{formatearFechaParaVisualizacion(vacuna.proxima_visita)}</td>
                 </tr>
               ))}
@@ -204,16 +225,15 @@ export default function RegistroVacunacion() {
             </div>
             <div className="info-row">
               <strong>Fecha de Nacimiento:</strong>
-              {/* <span>{mascota?.fecha_nacimiento ? new Date(mascota.fecha_nacimiento).toLocaleDateString() : 'N/A'}</span> */}
               <span>{mascota?.fecha_nacimiento ? formatearFechaParaVisualizacion(mascota.fecha_nacimiento) : 'N/A'}</span>
             </div>
             <div className="info-row">
               <strong>Sexo:</strong>
               <span>{mascota?.sexo || 'N/A'}</span>
             </div>
-            {/* //Aqui poner el propietario */}
             <div className="info-row">
-              <strong>Propietario:</strong> <span>{mascota?.propietario_nombre || mascota?.propietario || 'N/A'}</span>
+              <strong>Propietario:</strong> 
+              <span>{obtenerNombrePropietario()}</span>
             </div>
           </div>
 
