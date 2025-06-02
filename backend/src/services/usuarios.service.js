@@ -68,3 +68,13 @@ export const updateUsuario = async (id, newData) => {
     data: dataToUpdate,
   });
 };
+
+//Buscar nombre de usuario por usuario_id
+export const getUsuarioByUsuarioId = async (usuario_id) => {
+  return await prisma.usuario.findUnique({
+    where: {
+      usuario_id: usuario_id, // Busca por el usuario_id (UUID)
+    },
+    select: { id: true, usuario_id: true, nombre: true, email: true },
+  });
+};

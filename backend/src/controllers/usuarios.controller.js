@@ -1,4 +1,4 @@
-import { getAllUsuarios, createNewUsuario, getUsuarioById, updateUsuario } from "../services/usuarios.service.js";
+import { getAllUsuarios, createNewUsuario, getUsuarioById, updateUsuario, getUsuarioByUsuarioId } from "../services/usuarios.service.js";
 
 export const getUsuarios = async (req, res) => {
   try {
@@ -48,3 +48,18 @@ export const updateUsuarioController = async (req, res) => {
   }
 };
 
+//Buscar usuario por usuario_id
+export const getUsuarioByUsuarioIdController = async (req, res) => {
+  try {
+    const { usuario_id } = req.params; // Obtenemos el 'usuario_id' de los parámetros de la ruta
+    const usuario = await getUsuarioByUsuarioId(usuario_id);
+
+    if (usuario) {
+      res.json(usuario);
+    } else {
+      res.status(404).json({ message: "Usuario no encontrado" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

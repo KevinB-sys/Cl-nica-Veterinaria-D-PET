@@ -21,3 +21,23 @@ export const getAllUsuarios = async () => {
         return { state: "error", message: error.message || "Error en la conexión con el servidor" };
     }
 }
+//Obtener usuario por usuario_id
+export const getUsuarioByUsuarioId = async (usuario_id) => {
+    try {
+        const res = await fetch(`http://localhost:5000/api/usuarios/usuario/${usuario_id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.message || "Error al obtener el usuario");
+        }
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error("Error en getUsuarioByUsuarioId:", error);
+        return { state: "error", message: error.message || "Error en la conexión con el servidor" };
+    }
+}

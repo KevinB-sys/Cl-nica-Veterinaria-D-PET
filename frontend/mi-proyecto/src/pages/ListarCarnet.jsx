@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaPaw, FaDog, FaShapes, FaEye, FaEdit, FaVenusMars, FaCalendarAlt, FaPlus } from 'react-icons/fa';
 import '../estilos css/listar.css';
-import { getAllMascotas, getMascotasByDuenioId } from "../services/obtenermascota"; // Importamos ambas funciones
+import { getAllMascotas, getMascotasByDuenioId } from "../services/obtenermascota"; // 
+import { getUsuarioByUsuarioId } from "../services/usuariosService"; // trae el nombre pr usuario_id
 
 export default function ListarCarnet() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -13,64 +14,74 @@ export default function ListarCarnet() {
 
   useEffect(() => {
     const fetchCarnets = async () => {
-      setLoading(true); // Inicia el estado de carga
-      setError(null);   // Limpia cualquier error previo
+      setLoading(true);
+      setError(null);
 
       try {
-        const token = localStorage.getItem('token'); // Obtiene el token del localStorage
+        const token = localStorage.getItem('token');
         let usuario_id = null;
-        let rol_id = null; // Variable para almacenar el rol_id
+        let rol_id = null;
 
         if (!token) {
-          // Si no hay token, el usuario no está autenticado, redirigir al login
           navigate('/login');
-          return; // Detener la ejecución
+          return;
         }
 
-        // --- Decodificación manual del token ---
         try {
           const payloadBase64 = token.split(".")[1];
           const decodedPayload = JSON.parse(atob(payloadBase64));
           usuario_id = decodedPayload.usuario_id;
-          rol_id = decodedPayload.rol_id; // Asume que el rol se llama rol_id en el payload
+          rol_id = decodedPayload.rol_id;
+        // eslint-disable-next-line no-unused-vars
         } catch (decodeError) {
-          console.error("Error al decodificar el token:", decodeError);
-          throw new Error("Token inválido o corrupto. Por favor, inicie sesión nuevamente.");
+          throw new Error("Token inválido. Inicie sesión nuevamente.");
         }
-        // --- Fin de la decodificación manual ---
 
         if (!usuario_id || !rol_id) {
-          throw new Error("Información de usuario o rol incompleta en el token.");
+          throw new Error("Información de usuario incompleta.");
         }
 
         let data;
-        if (rol_id === 2) { // Si el rol es 2 (Cliente)
-          // Cliente solo ve sus propias mascotas
+        if (rol_id === 2) {
           data = await getMascotasByDuenioId(usuario_id);
-        } else if (rol_id === 1 || rol_id === 3) { // Si el rol es 1 (Veterinario) o 3 (Administrador)
-          // Veterinarios y administradores ven todas las mascotas
+        } else if (rol_id === 1 || rol_id === 3) {
           data = await getAllMascotas();
         } else {
-          // Rol no reconocido, mostrar error
-          throw new Error('Rol de usuario no reconocido. Acceso denegado.');
+          throw new Error('Rol no reconocido.');
         }
 
-        setCarnets(data); // Asigna los datos obtenidos al estado
+        // --- Obtener nombres de los propietarios ---
+        const dataWithOwners = await Promise.all(
+          data.map(async (mascota) => {
+            try {
+              const propietario = await getUsuarioByUsuarioId(mascota.duenio_id);
+              return {
+                ...mascota,
+                nombre_propietario: propietario.nombre || 'Desconocido'
+              };
+            } catch (e) {
+              console.error(`Error obteniendo nombre de propietario para ID ${mascota.duenio_id}:`, e);
+              return {
+                ...mascota,
+                nombre_propietario: 'Desconocido'
+              };
+            }
+          })
+        );
 
+        setCarnets(dataWithOwners);
       } catch (err) {
-        console.error('Error al cargar carnets:', err);
-        setError(err.message || 'Error desconocido al cargar los carnets.');
-        // En caso de error de token o autenticación, redirigir al login
-        if (err.message.includes('token') || err.message.includes('autenticación')) {
+        setError(err.message || 'Error al cargar los carnets.');
+        if (err.message.includes('token')) {
           navigate('/login');
         }
       } finally {
-        setLoading(false); // Finaliza el estado de carga
+        setLoading(false);
       }
     };
 
     fetchCarnets();
-  }, [navigate]); // `Maps` se añade a las dependencias para evitar warnings
+  }, [navigate]);
 
   // Filtra los carnets mostrados según el término de búsqueda
   const filteredCarnets = carnets.filter(carnet =>
@@ -131,7 +142,8 @@ export default function ListarCarnet() {
                 <p className="list-carnet-info"><FaShapes className="list-carnet-icon" /> <strong>Especie:</strong> {carnet.especie}</p>
                 <p className="list-carnet-info"><FaVenusMars className="list-carnet-icon" /> <strong>Sexo:</strong> {carnet.sexo}</p>
                 <p className="list-carnet-info"><FaCalendarAlt className="list-carnet-icon" /> <strong>Fecha Nacimiento:</strong> {carnet.fecha_nacimiento ? new Date(carnet.fecha_nacimiento).toISOString().split('T')[0] : 'N/A'}</p>
-                <p className="list-carnet-info"><FaVenusMars className="list-carnet-icon" /> <strong>Propietario:</strong>NOSE</p>
+               <p className="list-carnet-info"><FaVenusMars className="list-carnet-icon" /> <strong>Propietario:</strong> {carnet.nombre_propietario}</p>
+
               </div>
 
               <div className="list-carnet-actions">
