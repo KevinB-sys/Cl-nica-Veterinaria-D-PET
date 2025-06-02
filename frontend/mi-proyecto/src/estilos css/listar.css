@@ -45,7 +45,7 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: 0.3s;
   text-align: left;
-  height: 350px; /* Altura ajustada para acomodar la imagen */
+  height: 400px; /* Altura ajustada para acomodar la imagen */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
