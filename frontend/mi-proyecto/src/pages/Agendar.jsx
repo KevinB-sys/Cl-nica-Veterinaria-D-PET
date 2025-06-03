@@ -6,8 +6,14 @@ import Swal from "sweetalert2";
 import { agendarcita, obtenerTelefono } from "../services/agendarService";
 import { useNavigate } from "react-router-dom";
 import { obtenerCitas } from "../services/obtenercitaService";
+import { enviarRecordatorioWpp } from "../services/recordatorioWpp";  //Este envia mensajes de whatsapp, recibe un numero y un mensaje
 
+// OBTENER NUMERO POR USUARIO_ID DEL TOKEN 
+//OBTENER EL NOMBRE DEL USUARIO POR USUARIO_ID DEL TOKEN
 
+//ESTABLECER UNA PLANTILLA DE MENSAJE PARA EL RECORDATORIO DE WHATSAPP
+// EJEMPLO: "Hola [Nombre del Usuario], te recordamos que tienes una cita agendada el [Fecha] a las [Hora]. ¡Te esperamos! 🐾"
+//PROBAR SIN LA API PARA EVITAR BLOQUEO DE MI NUMERO DE WHATSAPP
 const CalendarView = () => {
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState("");
