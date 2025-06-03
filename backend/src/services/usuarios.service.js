@@ -78,3 +78,17 @@ export const getUsuarioByUsuarioId = async (usuario_id) => {
     select: { id: true, usuario_id: true, nombre: true, email: true },
   });
 };
+
+
+//Obtiene el whatsapp de un usuario por su usuario_id
+export const getWhatsappByUsuarioId = async (usuario_id) => {
+  const usuario = await prisma.usuario.findUnique({
+    where: {
+      usuario_id: usuario_id, // Busca por el usuario_id (UUID)
+    },
+    select: { whatsapp: true },
+  });
+
+  return usuario ? usuario.whatsapp : null;
+};
+

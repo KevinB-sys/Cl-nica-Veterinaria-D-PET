@@ -6,24 +6,105 @@ import Swal from "sweetalert2";
 import { agendarcita, obtenerTelefono } from "../services/agendarService";
 import { useNavigate } from "react-router-dom";
 import { obtenerCitas } from "../services/obtenercitaService";
-import { enviarRecordatorioWpp } from "../services/recordatorioWpp";  //Este envia mensajes de whatsapp, recibe un numero y un mensaje
+import { enviarRecordatorioWpp } from "../services/recordatorioWpp";
+import { getWhatsappByUsuarioId, getUsuarioByUsuarioId } from "../services/usuariosService";
 
-// OBTENER NUMERO POR USUARIO_ID DEL TOKEN 
-//OBTENER EL NOMBRE DEL USUARIO POR USUARIO_ID DEL TOKEN
-
-//ESTABLECER UNA PLANTILLA DE MENSAJE PARA EL RECORDATORIO DE WHATSAPP
-// EJEMPLO: "Hola [Nombre del Usuario], te recordamos que tienes una cita agendada el [Fecha] a las [Hora]. ¡Te esperamos! 🐾"
-//PROBAR SIN LA API PARA EVITAR BLOQUEO DE MI NUMERO DE WHATSAPP
 const CalendarView = () => {
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState("");
   const [observacion, setObservacion] = useState("");
   const [citas, setCitas] = useState([]);
-  // Ahora este estado solo guardará las horas que realmente están disponibles para selección
   const [horasDisponiblesParaSeleccion, setHorasDisponiblesParaSeleccion] = useState([]);
   const navigate = useNavigate();
+
   const manejarClick = () => {
     navigate('/citas');
+  };
+
+  // Función para enviar recordatorio con delay de 5 minutos (para prueba)
+  const enviarRecordatorioConDelay = async (usuario_id, fechaCita, horaCita) => {
+    try {
+      console.log("Iniciando proceso de recordatorio para usuario:", usuario_id);
+
+      // Validar que tenemos el usuario_id
+      if (!usuario_id) {
+        console.error("Error: usuario_id es null o undefined");
+        return;
+      }
+
+      let phoneNumber = null;
+      let nombreUsuario = "Usuario";
+
+      // Intentar obtener el número de WhatsApp usando el método principal
+      try {
+        const whatsappResponse = await getWhatsappByUsuarioId(usuario_id);
+        if (whatsappResponse.state !== "error") {
+          phoneNumber = whatsappResponse.whatsapp ||
+            whatsappResponse.data?.whatsapp ||
+            whatsappResponse.telefono ||
+            whatsappResponse.data?.telefono;
+        }
+      // eslint-disable-next-line no-unused-vars
+      } catch (error) {
+        console.log("Método principal falló, intentando alternativo...");
+      }
+
+      // Si no se encontró con el método principal, usar el método alternativo
+      if (!phoneNumber || phoneNumber.trim() === '') {
+        try {
+          const telefonoData = await obtenerTelefono(usuario_id);
+          phoneNumber = telefonoData.whatsapp || telefonoData.telefono;
+        } catch (altError) {
+          console.error("Error en método alternativo:", altError);
+        }
+      }
+
+      // Obtener el nombre del usuario
+      try {
+        const usuarioResponse = await getUsuarioByUsuarioId(usuario_id);
+        if (usuarioResponse.state !== "error") {
+          nombreUsuario = usuarioResponse.nombre ||
+            usuarioResponse.data?.nombre ||
+            "Usuario";
+        }
+      // eslint-disable-next-line no-unused-vars
+      } catch (error) {
+        console.log("No se pudo obtener el nombre del usuario, usando 'Usuario' por defecto");
+      }
+
+      // Validar que finalmente tenemos el número
+      if (!phoneNumber || phoneNumber.trim() === '') {
+        console.error("No se pudo obtener el número de WhatsApp por ningún método");
+        return;
+      }
+
+      // Crear el mensaje de recordatorio
+      const mensaje = `Hola ${nombreUsuario}, te recordamos que tienes una cita agendada el ${fechaCita} a las ${horaCita}. ¡Te esperamos! 🐾`;
+
+      console.log("Recordatorio programado para:", {
+        numero: phoneNumber,
+        usuario: nombreUsuario,
+        envioEn: "30 segundos"
+      });
+
+      // Programar el envío del recordatorio para 30 segundos después (para prueba)
+      setTimeout(async () => {
+        try {
+          console.log("Enviando recordatorio por WhatsApp...");
+          const recordatorioResponse = await enviarRecordatorioWpp(phoneNumber, mensaje);
+
+          if (recordatorioResponse.state === "error") {
+            console.error("Error al enviar recordatorio:", recordatorioResponse.message);
+          } else {
+            console.log("✅ Recordatorio enviado exitosamente");
+          }
+        } catch (error) {
+          console.error("Error en el envío del recordatorio:", error);
+        }
+      }, 30 * 1000); // 30 segundos en milisegundos  (24 * 60 * 60 * 1000 para 24 horas)
+    } catch (error) {
+      console.error("Error general en enviarRecordatorioConDelay:", error);
+    }
   };
 
   useEffect(() => {
@@ -183,19 +264,48 @@ const CalendarView = () => {
       usuario_id: usuario_id
     };
 
-    //Para sacar en una varibale l numero de telefono del usuario
-    const telefonoData = await obtenerTelefono(usuario_id);
-    console.log("Número de teléfono del usuario:", telefonoData.whatsapp || telefonoData.telefono);
-    //Logica para enviar el mensaje de WhatsApp de recordatorio 
-    
+    // Para sacar en una variable el numero de telefono del usuario (código original comentado)
+    // const telefonoData = await obtenerTelefono(usuario_id);
+    // console.log("Número de teléfono del usuario:", telefonoData.whatsapp || telefonoData.telefono);
 
-    const data = await agendarcita(citaData);
+    try {
+      const data = await agendarcita(citaData);
 
-    if (data.message === "Cita agendada con exito") {
-      Swal.fire({ icon: "success", title: "¡Agenda exitoso!", text: "Cita agendada correctamente", timer: 2000, showConfirmButton: false })
-        .then(() => navigate("/"));
-    } else {
-      Swal.fire({ icon: "error", title: "Error", text: data.message || "Ocurrió un problema al agendar la cita." });
+      if (data.message === "Cita agendada con exito") {
+        // Formatear la fecha para el mensaje del recordatorio
+        const fechaFormateadaParaRecordatorio = date.toLocaleDateString('es-ES', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+
+        // Enviar recordatorio con delay de 5 minutos
+        if (usuario_id) {
+          enviarRecordatorioConDelay(usuario_id, fechaFormateadaParaRecordatorio, time);
+        }
+
+        Swal.fire({
+          icon: "success",
+          title: "¡Agenda exitoso!",
+          text: "Cita agendada correctamente. Recibirás un recordatorio por WhatsApp en 5 minutos.",
+          timer: 3000,
+          showConfirmButton: false
+        }).then(() => navigate("/"));
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: data.message || "Ocurrió un problema al agendar la cita."
+        });
+      }
+    } catch (error) {
+      console.error("Error al agendar cita:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Ocurrió un problema al agendar la cita. Inténtalo nuevamente."
+      });
     }
   };
 
@@ -222,13 +332,13 @@ const CalendarView = () => {
           />
           <div className="time-selector">
             <label>Horas disponibles:</label>
-            {horasDisponiblesParaSeleccion.length > 0 ? ( // Usamos el nuevo estado
+            {horasDisponiblesParaSeleccion.length > 0 ? (
               <div className="time-buttons">
-                {horasDisponiblesParaSeleccion.map((hora) => ( // Iteramos solo sobre las disponibles
+                {horasDisponiblesParaSeleccion.map((hora) => (
                   <button
                     key={hora}
                     className={`time-btn ${time === hora ? "selected" : ""}`}
-                    onClick={() => setTime(hora)} // Sencillo setTime
+                    onClick={() => setTime(hora)}
                   >
                     {hora}
                   </button>

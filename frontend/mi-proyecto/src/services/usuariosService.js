@@ -41,3 +41,23 @@ export const getUsuarioByUsuarioId = async (usuario_id) => {
         return { state: "error", message: error.message || "Error en la conexión con el servidor" };
     }
 }
+// Obtener el whatsapp de un usuario por su usuario_id
+export const getWhatsappByUsuarioId = async (usuario_id) => {
+    try {
+        const res = await fetch(`http://localhost:5000/api/usuarios/whatsapp/${usuario_id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.message || "Error al obtener el WhatsApp del usuario");
+        }
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error("Error en getWhatsappByUsuarioId:", error);
+        return { state: "error", message: error.message || "Error en la conexión con el servidor" };
+    }
+}

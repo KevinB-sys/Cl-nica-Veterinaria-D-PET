@@ -1,4 +1,4 @@
-import { getAllUsuarios, createNewUsuario, getUsuarioById, updateUsuario, getUsuarioByUsuarioId } from "../services/usuarios.service.js";
+import { getAllUsuarios, createNewUsuario, getUsuarioById, updateUsuario, getUsuarioByUsuarioId, getWhatsappByUsuarioId } from "../services/usuarios.service.js";
 
 export const getUsuarios = async (req, res) => {
   try {
@@ -58,6 +58,22 @@ export const getUsuarioByUsuarioIdController = async (req, res) => {
       res.json(usuario);
     } else {
       res.status(404).json({ message: "Usuario no encontrado" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Obtener el número de WhatsApp por usuario_id
+export const getWhatsappByUsuarioIdController = async (req, res) => {
+  try {
+    const { usuario_id } = req.params; // Obtenemos el 'usuario_id' de los parámetros de la ruta
+    const whatsapp = await getWhatsappByUsuarioId(usuario_id);
+
+    if (whatsapp) {
+      res.json(whatsapp);
+    } else {
+      res.status(404).json({ message: "Número de WhatsApp no encontrado" });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
