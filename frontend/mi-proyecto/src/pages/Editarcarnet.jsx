@@ -107,8 +107,12 @@ export default function ListarCarnet() {
     }
   };
 
+  // const filteredCarnets = carnets.filter(carnet =>
+  //   carnet.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
   const filteredCarnets = carnets.filter(carnet =>
-    carnet.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    carnet.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    carnet.nombre_propietario.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) {
@@ -125,7 +129,7 @@ export default function ListarCarnet() {
 
       <input
         type="text"
-        placeholder="Buscar por nombre de mascota..."
+        placeholder="Buscar por nombre de mascota o propietario ...."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="list-carnet-search"

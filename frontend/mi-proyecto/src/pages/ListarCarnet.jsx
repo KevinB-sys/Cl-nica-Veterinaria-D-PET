@@ -32,7 +32,7 @@ export default function ListarCarnet() {
           const decodedPayload = JSON.parse(atob(payloadBase64));
           usuario_id = decodedPayload.usuario_id;
           rol_id = decodedPayload.rol_id;
-        // eslint-disable-next-line no-unused-vars
+          // eslint-disable-next-line no-unused-vars
         } catch (decodeError) {
           throw new Error("Token inválido. Inicie sesión nuevamente.");
         }
@@ -85,7 +85,8 @@ export default function ListarCarnet() {
 
   // Filtra los carnets mostrados según el término de búsqueda
   const filteredCarnets = carnets.filter(carnet =>
-    carnet.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    carnet.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    carnet.nombre_propietario.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // --- Renderizado Condicional ---
@@ -111,7 +112,7 @@ export default function ListarCarnet() {
 
       <input
         type="text"
-        placeholder="Buscar por nombre de mascota..."
+        placeholder="Buscar por nombre de mascota o propietario ...."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="list-carnet-search"
@@ -142,7 +143,7 @@ export default function ListarCarnet() {
                 <p className="list-carnet-info"><FaShapes className="list-carnet-icon" /> <strong>Especie:</strong> {carnet.especie}</p>
                 <p className="list-carnet-info"><FaVenusMars className="list-carnet-icon" /> <strong>Sexo:</strong> {carnet.sexo}</p>
                 <p className="list-carnet-info"><FaCalendarAlt className="list-carnet-icon" /> <strong>Fecha Nacimiento:</strong> {carnet.fecha_nacimiento ? new Date(carnet.fecha_nacimiento).toISOString().split('T')[0] : 'N/A'}</p>
-               <p className="list-carnet-info"><FaVenusMars className="list-carnet-icon" /> <strong>Propietario:</strong> {carnet.nombre_propietario}</p>
+                <p className="list-carnet-info"><FaVenusMars className="list-carnet-icon" /> <strong>Propietario:</strong> {carnet.nombre_propietario}</p>
 
               </div>
 
