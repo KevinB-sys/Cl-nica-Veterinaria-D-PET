@@ -258,7 +258,7 @@ function MisCitas() {
 
                     return (
                         <div key={cita.cita_id} className="cita-card">
-                            <img src="https://lares.com.co/wp-content/uploads/2023/06/blog-mascotas-lares-scaled.jpg" alt="Mascota" />
+                            <img src="https://static6.depositphotos.com/1003366/614/i/450/depositphotos_6145138-stock-photo-british-kitten-rare-color-lilac.jpg" alt="Mascota" />
                             <p><strong>Fecha:</strong> {formatDate(cita.fecha)}</p>
                             <p><strong>Hora:</strong> {cita.hora}</p>
                             {/* <p><strong>Estado:</strong> {cita.estado}</p> */}
