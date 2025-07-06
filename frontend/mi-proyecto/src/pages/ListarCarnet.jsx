@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaPaw, FaDog, FaShapes, FaEye, FaEdit, FaVenusMars, FaCalendarAlt, FaPlus } from 'react-icons/fa';
+import { FaPaw, FaDog, FaShapes, FaEye, FaEdit, FaVenusMars, FaCalendarAlt, FaPlus, FaIdCard } from 'react-icons/fa';
 import '../estilos css/listar.css';
 import { getAllMascotas, getMascotasByDuenioId } from "../services/obtenermascota"; // 
 import { getUsuarioByUsuarioId } from "../services/usuariosService"; // trae el nombre pr usuario_id
@@ -11,6 +11,13 @@ export default function ListarCarnet() {
   const [loading, setLoading] = useState(true); // Estado para indicar si los datos están cargando
   const [error, setError] = useState(null);   // Estado para almacenar mensajes de error
   const navigate = useNavigate();
+
+  // Función para generar el código de carnet
+  const generateCarnetCode = (index) => {
+    const letter = 'A';
+    const number = String(index + 1).padStart(3, '0');
+    return `${letter}${number}`;
+  };
 
   useEffect(() => {
     const fetchCarnets = async () => {
@@ -50,20 +57,22 @@ export default function ListarCarnet() {
           throw new Error('Rol no reconocido.');
         }
 
-        // --- Obtener nombres de los propietarios ---
+        // --- Obtener nombres de los propietarios y generar códigos de carnet ---
         const dataWithOwners = await Promise.all(
-          data.map(async (mascota) => {
+          data.map(async (mascota, index) => {
             try {
               const propietario = await getUsuarioByUsuarioId(mascota.duenio_id);
               return {
                 ...mascota,
-                nombre_propietario: propietario.nombre || 'Desconocido'
+                nombre_propietario: propietario.nombre || 'Desconocido',
+                codigo_carnet: generateCarnetCode(index) // Generar código único
               };
             } catch (e) {
               console.error(`Error obteniendo nombre de propietario para ID ${mascota.duenio_id}:`, e);
               return {
                 ...mascota,
-                nombre_propietario: 'Desconocido'
+                nombre_propietario: 'Desconocido',
+                codigo_carnet: generateCarnetCode(index) // Generar código único
               };
             }
           })
@@ -84,10 +93,12 @@ export default function ListarCarnet() {
   }, [navigate]);
 
   // Filtra los carnets mostrados según el término de búsqueda
-  const filteredCarnets = carnets.filter(carnet =>
-    carnet.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    carnet.nombre_propietario.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCarnets = carnets.filter(({ nombre, nombre_propietario, codigo_carnet }) =>
+    nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    nombre_propietario.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    codigo_carnet.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
 
   // --- Renderizado Condicional ---
   if (loading) {
@@ -112,7 +123,7 @@ export default function ListarCarnet() {
 
       <input
         type="text"
-        placeholder="Buscar por nombre de mascota o propietario ...."
+        placeholder="Buscar por nombre de mascota, propietario o código (ej: A001, 1)..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="list-carnet-search"
@@ -130,7 +141,7 @@ export default function ListarCarnet() {
           filteredCarnets.map((carnet) => (
             <div key={carnet.mascota_id} className="list-carnet-card">
               <div className="list-carnet-header">
-                <FaPaw className="list-carnet-icont" /> FICHA DE SALUD
+                <FaPaw className="list-carnet-icont" /> FICHA DE SALUD - {carnet.codigo_carnet}
               </div>
               <img
                 src={carnet.imagen || 'https://www.experta.com.ar/blogg/wp-content/uploads/sites/2/2019/01/mascotas.jpg'}
@@ -138,13 +149,13 @@ export default function ListarCarnet() {
                 className="list-carnet-img"
               />
               <div>
+                <p className="list-carnet-info"><FaIdCard className="list-carnet-icon" /> <strong>CI:</strong> {carnet.codigo_carnet}</p>
                 <p className="list-carnet-info"><FaPaw className="list-carnet-icon" /> <strong>Mascota:</strong> {carnet.nombre}</p>
                 <p className="list-carnet-info"><FaDog className="list-carnet-icon" /> <strong>Raza:</strong> {carnet.raza || 'N/A'}</p>
                 <p className="list-carnet-info"><FaShapes className="list-carnet-icon" /> <strong>Especie:</strong> {carnet.especie}</p>
                 <p className="list-carnet-info"><FaVenusMars className="list-carnet-icon" /> <strong>Sexo:</strong> {carnet.sexo}</p>
                 <p className="list-carnet-info"><FaCalendarAlt className="list-carnet-icon" /> <strong>Fecha Nacimiento:</strong> {carnet.fecha_nacimiento ? new Date(carnet.fecha_nacimiento).toISOString().split('T')[0] : 'N/A'}</p>
                 <p className="list-carnet-info"><FaVenusMars className="list-carnet-icon" /> <strong>Propietario:</strong> {carnet.nombre_propietario}</p>
-
               </div>
 
               <div className="list-carnet-actions">
