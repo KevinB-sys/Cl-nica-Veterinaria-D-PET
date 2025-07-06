@@ -31,6 +31,14 @@ function MisCitas() {
         return null;
     };
 
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setCitaSeleccionadaParaEditar(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
     useEffect(() => {
         const id = getUserIdFromToken();
         if (id) {
@@ -90,7 +98,8 @@ function MisCitas() {
         fetchUserCitas();
     }, [usuarioId]);
 
-    const getAvailableHoursForDate = (selectedDate) => {
+    // Función modificada para obtener horas disponibles excluyendo la cita actual en edición
+    const getAvailableHoursForDate = (selectedDate, excludeCitaId = null) => {
         if (!selectedDate || !allCitas.length) return ALL_POSSIBLE_HOURS;
 
         try {
@@ -103,7 +112,14 @@ function MisCitas() {
                     try {
                         const citaFecha = new Date(cita.fecha);
                         citaFecha.setHours(0, 0, 0, 0);
-                        return citaFecha.toISOString().split('T')[0] === fechaNormalizada;
+                        const fechaCoincide = citaFecha.toISOString().split('T')[0] === fechaNormalizada;
+
+                        // Excluir la cita actual si se está editando
+                        if (excludeCitaId && cita.cita_id === excludeCitaId) {
+                            return false;
+                        }
+
+                        return fechaCoincide;
                     } catch (e) {
                         console.error("Error procesando fecha de cita:", e);
                         return false;
@@ -120,10 +136,12 @@ function MisCitas() {
 
     const handleDateChange = (e) => {
         const newDate = new Date(e.target.value);
+        const availableHours = getAvailableHoursForDate(newDate, citaSeleccionadaParaEditar?.cita_id);
+
         setCitaSeleccionadaParaEditar(prev => ({
             ...prev,
             fecha: e.target.value,
-            hora: prev.hora && getAvailableHoursForDate(newDate).includes(prev.hora)
+            hora: prev.hora && availableHours.includes(prev.hora)
                 ? prev.hora
                 : ''
         }));
@@ -313,16 +331,21 @@ function MisCitas() {
                                     disabled={!citaSeleccionadaParaEditar.fecha}
                                 >
                                     <option value="">Seleccione una hora</option>
-                                    {getAvailableHoursForDate(new Date(citaSeleccionadaParaEditar.fecha)).map(hora => (
+                                    {/* Mostrar horas disponibles excluyendo la cita actual */}
+                                    {getAvailableHoursForDate(
+                                        new Date(citaSeleccionadaParaEditar.fecha),
+                                        citaSeleccionadaParaEditar.cita_id
+                                    ).map(hora => (
                                         <option key={hora} value={hora}>{hora}</option>
                                     ))}
+                                    {/* Mostrar la hora actual si no está en las disponibles (para mantener consistencia) */}
                                     {citaSeleccionadaParaEditar.hora &&
-                                        !getAvailableHoursForDate(new Date(citaSeleccionadaParaEditar.fecha)).includes(citaSeleccionadaParaEditar.hora) && (
-                                            <option
-                                                value={citaSeleccionadaParaEditar.hora}
-                                                disabled
-                                            >
-                                                {citaSeleccionadaParaEditar.hora} (Ocupada)
+                                        !getAvailableHoursForDate(
+                                            new Date(citaSeleccionadaParaEditar.fecha),
+                                            citaSeleccionadaParaEditar.cita_id
+                                        ).includes(citaSeleccionadaParaEditar.hora) && (
+                                            <option value={citaSeleccionadaParaEditar.hora}>
+                                                {citaSeleccionadaParaEditar.hora}
                                             </option>
                                         )}
                                 </select>
@@ -346,6 +369,7 @@ function MisCitas() {
                                 <textarea
                                     name="observaciones"
                                     value={citaSeleccionadaParaEditar.observaciones || ''}
+                                    onChange={handleInputChange}
                                     className="form-input"
                                 />
                             </label>
