@@ -144,7 +144,7 @@ export default function ListarCarnet() {
                 <FaPaw className="list-carnet-icont" /> FICHA DE SALUD - {carnet.codigo_carnet}
               </div>
               <img
-                src={carnet.imagen || 'https://www.experta.com.ar/blogg/wp-content/uploads/sites/2/2019/01/mascotas.jpg'}
+                src={carnet.imagen || 'https://www.shutterstock.com/image-photo/row-heads-dogs-cats-paws-600nw-2467944695.jpg'}
                 alt={`Imagen de ${carnet.nombre}`}
                 className="list-carnet-img"
               />
